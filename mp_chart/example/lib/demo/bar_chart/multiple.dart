@@ -202,10 +202,10 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     startYear = 1980;
     endYear = startYear + groupCount;
 
-    List<BarEntry> values1 = List();
-    List<BarEntry> values2 = List();
-    List<BarEntry> values3 = List();
-    List<BarEntry> values4 = List();
+    List<BarEntry> values1 = [];
+    List<BarEntry> values2 = [];
+    List<BarEntry> values3 = [];
+    List<BarEntry> values4 = [];
 
     double randomMultiplier = range * 100000;
 
@@ -238,8 +238,11 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     set4 = BarDataSet(values4, "Company D");
     set4.setColor1(Color.fromARGB(255, 255, 102, 0));
 
-    controller.data =
-        BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
+    controller.data = BarData([]
+      ..add(set1)
+      ..add(set2)
+      ..add(set3)
+      ..add(set4));
     controller.data
       ..setValueFormatter(LargeValueFormatter())
       ..setValueTypeface(Util.LIGHT)

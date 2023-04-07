@@ -14,11 +14,14 @@ import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_chart/mp/painter/painter.dart';
 
+import '../data_interfaces/i_data_set.dart';
+import '../entry/entry.dart';
+
 class CombinedChartRenderer extends DataRenderer {
   /// all rederers for the different kinds of data this combined-renderer can draw
-  List<DataRenderer> _renderers = List<DataRenderer>();
+  List<DataRenderer> _renderers = <DataRenderer>[];
 
-  ChartPainter _painter;
+  late ChartPainter _painter;
 
   CombinedChartRenderer(CombinedChartPainter chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -90,7 +93,7 @@ class CombinedChartRenderer extends DataRenderer {
     for (DataRenderer renderer in _renderers) renderer.drawExtras(c);
   }
 
-  List<Highlight> mHighlightBuffer = List<Highlight>();
+  List<Highlight> mHighlightBuffer = <Highlight>[];
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
@@ -98,7 +101,7 @@ class CombinedChartRenderer extends DataRenderer {
     if (chart == null) return;
 
     for (DataRenderer renderer in _renderers) {
-      ChartData data;
+      ChartData? data = null;
 
       if (renderer is BarChartRenderer)
         data = renderer.provider.getBarData();
@@ -113,7 +116,9 @@ class CombinedChartRenderer extends DataRenderer {
 
       int dataIndex = data == null
           ? -1
-          : (chart.getData() as CombinedData).getAllData().indexOf(data);
+          : ((chart.getData() as CombinedData).getAllData()
+                  as List<ChartData<IDataSet<Entry>>>)
+              .indexOf(data);
 
       mHighlightBuffer.clear();
 
@@ -130,7 +135,7 @@ class CombinedChartRenderer extends DataRenderer {
   ///
   /// @param index
   /// @return
-  DataRenderer getSubRenderer(int index) {
+  DataRenderer? getSubRenderer(int index) {
     if (index >= _renderers.length || index < 0)
       return null;
     else

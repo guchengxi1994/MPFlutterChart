@@ -8,13 +8,13 @@ import 'package:mp_chart/mp/core/enums/rounding.dart';
 
 class XBounds {
   /// minimum visible entry index
-  int _min;
+  late int _min;
 
   /// maximum visible entry index
-  int _max;
+  late int _max;
 
   /// range of visible entry indices
-  int _range;
+  late int _range;
 
   Animator _animator;
 
@@ -54,9 +54,9 @@ class XBounds {
 
     double low = chart.getLowestVisibleX();
     double high = chart.getHighestVisibleX();
-    Entry entryFrom =
+    Entry? entryFrom =
         dataSet.getEntryForXValue1(low, double.nan, Rounding.DOWN);
-    Entry entryTo = dataSet.getEntryForXValue1(high, double.nan, Rounding.UP);
+    Entry? entryTo = dataSet.getEntryForXValue1(high, double.nan, Rounding.UP);
 
     _min = entryFrom == null ? 0 : dataSet.getEntryIndex2(entryFrom);
     _max = entryTo == null ? 0 : dataSet.getEntryIndex2(entryTo);

@@ -24,9 +24,9 @@ mixin IDataSet<T extends Entry> {
 
   void calcMinMaxY(double fromX, double toX);
 
-  T getEntryForXValue1(double xValue, double closestToY, Rounding rounding);
+  T? getEntryForXValue1(double xValue, double closestToY, Rounding rounding);
 
-  T getEntryForXValue2(double xValue, double closestToY);
+  T? getEntryForXValue2(double xValue, double closestToY);
 
   List<T> getEntriesForXValue(double xValue);
 

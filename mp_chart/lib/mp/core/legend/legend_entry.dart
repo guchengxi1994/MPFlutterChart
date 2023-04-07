@@ -8,13 +8,13 @@ class LegendEntry {
   LegendEntry.empty();
 
   LegendEntry(
-      String label,
+      String? label,
       LegendForm form,
       double formSize,
       double formLineWidth,
-      DashPathEffect formLineDashEffect,
+      DashPathEffect? formLineDashEffect,
       Color formColor) {
-    this._label = label;
+    this.label = label;
     this._form = form;
     this._formSize = formSize;
     this._formLineWidth = formLineWidth;
@@ -24,7 +24,7 @@ class LegendEntry {
 
   /// The legend entry text.
   /// A `null` label will start a group.
-  String _label;
+  late String? label = null;
 
   /// The form to draw for this entry.
   ///
@@ -46,18 +46,10 @@ class LegendEntry {
   /// Line dash path effect used for shapes that consist of lines.
   ///
   /// Set to null to use the legend's default
-  DashPathEffect formLineDashEffect;
+  late DashPathEffect? formLineDashEffect = null;
 
   /// The color for drawing the form
   Color _formColor = ColorUtils.COLOR_NONE;
-
-  // ignore: unnecessary_getters_setters
-  String get label => _label;
-
-  // ignore: unnecessary_getters_setters
-  set label(String value) {
-    _label = value;
-  }
 
   // ignore: unnecessary_getters_setters
   LegendForm get form => _form;

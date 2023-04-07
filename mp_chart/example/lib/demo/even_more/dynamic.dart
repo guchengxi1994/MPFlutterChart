@@ -151,7 +151,6 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
     double value = (random.nextDouble() * 50) + 50 * (randomDataSetIndex + 1);
 
-
     //for test ChartData's addEntryByIndex
 //    var x =  10.0 - 0.5 * randomSet.getEntryCount().toDouble();
 //    data.addEntryByIndex(0, Entry(x: x, y: value),
@@ -198,7 +197,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0).getEntryCount();
-      List<Entry> values = List();
+      List<Entry> values = [];
       for (int i = 0; i < amount; i++) {
         values.add(new Entry(
             x: i.toDouble(), y: (random.nextDouble() * 50) + 50 * count));

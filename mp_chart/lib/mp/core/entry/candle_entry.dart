@@ -15,13 +15,13 @@ class CandleEntry extends Entry {
   double _open = 0;
 
   CandleEntry(
-      {double x,
-      double shadowH,
-      double shadowL,
-      double open,
-      double close,
-      ui.Image icon,
-      Object data})
+      {required double x,
+      required double shadowH,
+      required double shadowL,
+      required double open,
+      required double close,
+      required ui.Image icon,
+      required Object data})
       : super(x: x, y: (shadowH + shadowL) / 2, icon: icon, data: data) {
     this._shadowHigh = shadowH;
     this._shadowLow = shadowL;
@@ -51,7 +51,8 @@ class CandleEntry extends Entry {
         shadowL: _shadowLow,
         open: _open,
         close: _close,
-        data: mData);
+        data: mData,
+        icon: super.mIcon);
     return c;
   }
 

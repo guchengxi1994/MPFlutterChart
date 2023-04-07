@@ -19,7 +19,7 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
-  ScatterDataProvider _provider;
+  late ScatterDataProvider _provider;
 
   ScatterChartRenderer(ScatterDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -34,14 +34,16 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
   @override
   void drawData(Canvas c) {
-    ScatterData scatterData = _provider.getScatterData();
+    ScatterData? scatterData = _provider.getScatterData();
+
+    if (scatterData == null) return;
 
     for (IScatterDataSet set in scatterData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
 
-  List<double> mPixelBuffer = List(2);
+  List<double> mPixelBuffer = []..length = 2;
 
   void drawDataSet(Canvas c, IScatterDataSet dataSet) {
     if (dataSet.getEntryCount() < 1) return;
@@ -81,9 +83,9 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
   void drawValues(Canvas c) {
     // if values are drawn
     if (isDrawingValuesAllowed(_provider)) {
-      List<IScatterDataSet> dataSets = _provider.getScatterData().dataSets;
+      List<IScatterDataSet> dataSets = _provider.getScatterData()!.dataSets;
 
-      for (int i = 0; i < _provider.getScatterData().getDataSetCount(); i++) {
+      for (int i = 0; i < _provider.getScatterData()!.getDataSetCount(); i++) {
         IScatterDataSet dataSet = dataSets[i];
 
         if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1) continue;
@@ -158,14 +160,20 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    ScatterData scatterData = _provider.getScatterData();
+    ScatterData? scatterData = _provider.getScatterData();
+
+    if (scatterData == null) return;
 
     for (Highlight high in indices) {
-      IScatterDataSet set = scatterData.getDataSetByIndex(high.dataSetIndex);
+      IScatterDataSet? set = scatterData.getDataSetByIndex(high.dataSetIndex);
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
-      final Entry e = set.getEntryForXValue2(high.x, high.y);
+      final Entry? e = set.getEntryForXValue2(high.x, high.y);
+
+      if (e == null) {
+        return;
+      }
 
       if (!isInBoundsX(e, set)) continue;
 

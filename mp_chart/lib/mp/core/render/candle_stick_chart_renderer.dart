@@ -17,13 +17,13 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
-  CandleDataProvider _porvider;
+  late CandleDataProvider _porvider;
 
-  List<double> _shadowBuffers = List(8);
-  List<double> _bodyBuffers = List(4);
-  List<double> _rangeBuffers = List(4);
-  List<double> _openBuffers = List(4);
-  List<double> _closeBuffers = List(4);
+  List<double> _shadowBuffers = []..length = 8;
+  List<double> _bodyBuffers = []..length = 4;
+  List<double> _rangeBuffers = []..length = 4;
+  List<double> _openBuffers = []..length = 4;
+  List<double> _closeBuffers = []..length = 4;
 
   CandleStickChartRenderer(CandleDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -38,7 +38,9 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
   @override
   void drawData(Canvas c) {
-    CandleData candleData = _porvider.getCandleData();
+    CandleData? candleData = _porvider.getCandleData();
+
+    if (candleData == null) return;
 
     for (ICandleDataSet set in candleData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
@@ -227,7 +229,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   void drawValues(Canvas c) {
     // if values are drawn
     if (isDrawingValuesAllowed(_porvider)) {
-      List<ICandleDataSet> dataSets = _porvider.getCandleData().dataSets;
+      List<ICandleDataSet> dataSets = _porvider.getCandleData()!.dataSets;
 
       for (int i = 0; i < dataSets.length; i++) {
         ICandleDataSet dataSet = dataSets[i];
@@ -309,14 +311,19 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    CandleData candleData = _porvider.getCandleData();
+    CandleData? candleData = _porvider.getCandleData();
+
+    if (candleData == null) return;
 
     for (Highlight high in indices) {
-      ICandleDataSet set = candleData.getDataSetByIndex(high.dataSetIndex);
+      ICandleDataSet? set = candleData.getDataSetByIndex(high.dataSetIndex);
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
-      CandleEntry e = set.getEntryForXValue2(high.x, high.y);
+      CandleEntry? e = set.getEntryForXValue2(high.x, high.y);
+      if (e == null) {
+        return;
+      }
 
       if (!isInBoundsX(e, set)) continue;
 

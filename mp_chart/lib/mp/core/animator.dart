@@ -18,7 +18,7 @@ abstract class Animator {
   /// The phase of drawn values on the x-axis. 0 - 1
   double phaseX = MAX;
 
-  double angle;
+  late double angle;
 
   Animator(this.listener);
 
@@ -120,7 +120,7 @@ abstract class Animator {
 class ChartAnimator extends Animator {
   static const int REFRESH_RATE = 16;
 
-  Timer _countdownTimer;
+  late Timer? _countdownTimer = null;
 
   bool _isShowed = false;
 
@@ -298,17 +298,17 @@ class ChartAnimatorBySys extends Animator {
   static const int ANIMATE_XY = 2;
   static const int ANIMATE_SPIN = 3;
 
-  AnimationController _controller;
+  late AnimationController _controller;
   ChartTickerProvider _provider = ChartTickerProvider();
 
-  EasingFunction easingFunction_1;
-  EasingFunction easingFunction_2;
+  late EasingFunction? easingFunction_1 = null;
+  late EasingFunction? easingFunction_2 = null;
 
-  double fromAngle;
-  double toAngle;
+  late double fromAngle;
+  late double toAngle;
 
-  double durationMinPercent;
-  bool xDurationLong;
+  late double durationMinPercent;
+  late bool xDurationLong;
 
   bool animating = false;
 
@@ -322,7 +322,7 @@ class ChartAnimatorBySys extends Animator {
       switch (which) {
         case ANIMATE_X:
           {
-            phaseX = easingFunction_1.getInterpolation(percent);
+            phaseX = easingFunction_1!.getInterpolation(percent);
             if (phaseX >= MAX) {
               phaseX = MAX;
             }
@@ -331,7 +331,7 @@ class ChartAnimatorBySys extends Animator {
           break;
         case ANIMATE_Y:
           {
-            phaseY = easingFunction_1.getInterpolation(percent);
+            phaseY = easingFunction_1!.getInterpolation(percent);
             if (phaseY >= MAX) {
               phaseY = MAX;
             }
@@ -342,27 +342,27 @@ class ChartAnimatorBySys extends Animator {
           {
             if (easingFunction_2 != null) {
               if (xDurationLong) {
-                phaseX = easingFunction_1.getInterpolation(percent);
+                phaseX = easingFunction_1!.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseY = easingFunction_2.getInterpolation(percentMin);
+                phaseY = easingFunction_2!.getInterpolation(percentMin);
               } else {
-                phaseY = easingFunction_1.getInterpolation(percent);
+                phaseY = easingFunction_1!.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseX = easingFunction_2.getInterpolation(percentMin);
+                phaseX = easingFunction_2!.getInterpolation(percentMin);
               }
             } else {
               if (xDurationLong) {
-                phaseX = easingFunction_1.getInterpolation(percent);
+                phaseX = easingFunction_1!.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseY = easingFunction_1.getInterpolation(percentMin);
+                phaseY = easingFunction_1!.getInterpolation(percentMin);
               } else {
-                phaseY = easingFunction_1.getInterpolation(percent);
+                phaseY = easingFunction_1!.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseX = easingFunction_1.getInterpolation(percentMin);
+                phaseX = easingFunction_1!.getInterpolation(percentMin);
               }
             }
             this.listener?.onAnimationUpdate(phaseX, phaseY);
@@ -372,7 +372,7 @@ class ChartAnimatorBySys extends Animator {
           {
             angle = fromAngle +
                 (toAngle - fromAngle) *
-                    easingFunction_1.getInterpolation(percent);
+                    easingFunction_1!.getInterpolation(percent);
             if (angle >= toAngle) {
               angle = toAngle;
             }
@@ -733,7 +733,7 @@ class EaseOutExpoEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return (input == 1) ? 1 : (-pow(2, -10 * (input + 1)));
+    return (input == 1) ? 1 : (-pow(2, -10 * (input + 1)).toDouble());
   }
 }
 
@@ -742,7 +742,7 @@ class EaseInExpoEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return (input == 0) ? 0 : pow(2, 10 * (input - 1));
+    return (input == 0) ? 0 : pow(2, 10 * (input - 1)).toDouble();
   }
 }
 
@@ -802,7 +802,7 @@ class EaseInQuartEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return pow(input, 4);
+    return pow(input, 4).toDouble();
   }
 }
 
@@ -835,7 +835,7 @@ class EaseInCubicEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return pow(input, 3);
+    return pow(input, 3).toDouble();
   }
 }
 

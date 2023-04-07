@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
@@ -295,7 +294,7 @@ abstract class BarLineChartBasePainter<
 
     // if highlighting is enabled
     if (valuesToHighlight())
-      renderer.drawHighlighted(canvas, indicesToHighlight);
+      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
 
     // Removes clipping rectangle
     canvas.restore();
@@ -502,7 +501,7 @@ abstract class BarLineChartBasePainter<
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getData());
-    renderer?.initBuffers();
+    renderer.initBuffers();
     calcMinMax();
 
     if (!_customViewPortEnabled) {
@@ -662,7 +661,7 @@ abstract class BarLineChartBasePainter<
       return _axisRight.axisRange;
   }
 
-  List<double> mGetPositionBuffer = List(2);
+  List<double> mGetPositionBuffer = []..length = 2;
 
   /// Returns a recyclable MPPointF instance.
   /// Returns the position (in pixels) the provided Entry has inside the chart
@@ -671,7 +670,7 @@ abstract class BarLineChartBasePainter<
   /// @param e
   /// @return
   MPPointF getPosition(Entry e, AxisDependency axis) {
-    if (e == null) return null;
+    // if (e == null) return null;
 
     mGetPositionBuffer[0] = e.x;
     mGetPositionBuffer[1] = e.y;
@@ -739,12 +738,13 @@ abstract class BarLineChartBasePainter<
   /// @param x
   /// @param y
   /// @return
-  Entry getEntryByTouchPoint(double x, double y) {
-    Highlight h = getHighlightByTouchPoint(x, y);
-    if (h != null) {
-      return getData().getEntryForHighlight(h);
-    }
-    return null;
+  Entry? getEntryByTouchPoint(double x, double y) {
+    Highlight h = getHighlightByTouchPoint(x, y)!;
+    // if (h != null) {
+    //   return getData().getEntryForHighlight(h);
+    // }
+    // return null;
+    return getData().getEntryForHighlight(h);
   }
 
   /// returns the DataSet object displayed at the touched position of the chart
@@ -752,13 +752,14 @@ abstract class BarLineChartBasePainter<
   /// @param x
   /// @param y
   /// @return
-  IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(
+  IBarLineScatterCandleBubbleDataSet? getDataSetByTouchPoint(
       double x, double y) {
-    Highlight h = getHighlightByTouchPoint(x, y);
-    if (h != null) {
-      return getData().getDataSetByIndex(h.dataSetIndex);
-    }
-    return null;
+    Highlight h = getHighlightByTouchPoint(x, y)!;
+    // if (h != null) {
+    //   return getData().getDataSetByIndex(h.dataSetIndex);
+    // }
+    // return null;
+    return getData().getDataSetByIndex(h.dataSetIndex);
   }
 
   /// buffer for storing lowest visible x point
@@ -882,7 +883,7 @@ abstract class BarLineChartBasePainter<
 
   @override
   BarLineScatterCandleBubbleData getData() {
-    return super.getData();
+    return super.getData() as BarLineScatterCandleBubbleData;
   }
 
   /// Returns true if either the left or the right or both axes are inverted.
@@ -894,25 +895,25 @@ abstract class BarLineChartBasePainter<
     return false;
   }
 
-  bool updateEntry(int index, Entry entry, int dataSetIndex){
+  bool updateEntry(int index, Entry entry, int dataSetIndex) {
     var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet == null) {
+    if (dataSet == null) {
       return false;
     }
 
     return dataSet.updateEntryByIndex(index, entry);
   }
 
-  void addEntryByIndex(int index, Entry entry, int dataSetIndex){
+  void addEntryByIndex(int index, Entry entry, int dataSetIndex) {
     var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet != null){
+    if (dataSet != null) {
       dataSet.addEntryByIndex(index, entry);
     }
   }
 
-  void addEntry(Entry entry, int dataSetIndex){
+  void addEntry(Entry entry, int dataSetIndex) {
     var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet != null) {
+    if (dataSet != null) {
       addEntryByIndex(dataSet.getEntryCount(), entry, dataSetIndex);
     }
   }

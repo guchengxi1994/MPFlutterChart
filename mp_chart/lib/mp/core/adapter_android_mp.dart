@@ -30,10 +30,11 @@ class DashPathEffect {
 }
 
 class TypeFace {
-  String _fontFamily;
-  FontWeight _fontWeight;
+  late String _fontFamily;
+  late FontWeight _fontWeight;
 
-  TypeFace({String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+  TypeFace(
+      {required String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
     _fontFamily = fontFamily;
     _fontWeight = fontWeight;
   }

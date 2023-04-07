@@ -16,7 +16,7 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
     double distanceToCenter =
         painter.distanceToCenter(x, y) / painter.getFactor();
 
-    Highlight closest;
+    late Highlight closest;
     double distance = double.infinity;
 
     for (int i = 0; i < highlights.length; i++) {
@@ -49,7 +49,8 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
 
     MPPointF pOut = MPPointF.getInstance1(0, 0);
     for (int i = 0; i < painter.getData().getDataSetCount(); i++) {
-      IDataSet dataSet = painter.getData().getDataSetByIndex(i);
+      IDataSet? dataSet = painter.getData().getDataSetByIndex(i);
+      if (dataSet == null) continue;
 
       final Entry entry = dataSet.getEntryForIndex(index);
 

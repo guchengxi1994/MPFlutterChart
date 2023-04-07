@@ -46,8 +46,8 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   final YAxis _yAxis;
 
   ////////////
-  YAxisRendererRadarChart _yAxisRenderer;
-  XAxisRendererRadarChart _xAxisRenderer;
+  late YAxisRendererRadarChart _yAxisRenderer;
+  late XAxisRendererRadarChart _xAxisRenderer;
 
   Color get webColor => _webColor;
 
@@ -148,7 +148,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     _yAxis.calculate(getData().getYMin2(AxisDependency.LEFT),
         getData().getYMax2(AxisDependency.LEFT));
     xAxis.calculate(
-        0, getData().getMaxEntryCountSet().getEntryCount().toDouble());
+        0, getData().getMaxEntryCountSet()!.getEntryCount().toDouble());
   }
 
   @override
@@ -178,7 +178,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     renderer.drawData(canvas);
 
     if (valuesToHighlight())
-      renderer.drawHighlighted(canvas, indicesToHighlight);
+      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
 
     if (_yAxis.enabled && !_yAxis.drawLimitLineBehindData)
       _yAxisRenderer.renderLimitLines(canvas);
@@ -206,7 +206,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   ///
   /// @return
   double getSliceAngle() {
-    return 360 / getData().getMaxEntryCountSet().getEntryCount();
+    return 360 / getData().getMaxEntryCountSet()!.getEntryCount();
   }
 
   @override
@@ -216,7 +216,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
     double sliceangle = getSliceAngle();
 
-    int max = getData().getMaxEntryCountSet().getEntryCount();
+    int max = getData().getMaxEntryCountSet()!.getEntryCount();
 
     int index = 0;
 
@@ -234,7 +234,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
   @override
   double getRequiredLegendOffset() {
-    var size = legendRenderer.legendLabelPaint.text.style.fontSize;
+    var size = legendRenderer.legendLabelPaint.text?.style?.fontSize;
     return (size == null ? Utils.convertDpToPixel(9) : size) * 4.0;
   }
 

@@ -42,7 +42,7 @@ abstract class Utils {
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -66,7 +66,7 @@ abstract class Utils {
       drawOffsetX += x;
       drawOffsetY += y;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -116,7 +116,7 @@ abstract class Utils {
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -140,7 +140,7 @@ abstract class Utils {
       drawOffsetX += x;
       drawOffsetY += y;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       paint.paint(c, Offset(drawOffsetX - paint.width / 2, drawOffsetY));
     }
@@ -170,7 +170,7 @@ abstract class Utils {
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -194,7 +194,7 @@ abstract class Utils {
       drawOffsetX += x;
       drawOffsetY += y;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text?.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -256,7 +256,7 @@ abstract class Utils {
 
   static void calcTextSize4(
       TextPainter paint, String demoText, FSize outputFSize) {
-    paint.text = TextSpan(text: demoText, style: paint.text.style);
+    paint.text = TextSpan(text: demoText, style: paint.text?.style);
     paint.layout();
     outputFSize.width = paint.width;
     outputFSize.height = paint.height;
@@ -274,11 +274,11 @@ abstract class Utils {
       try {
         var len = d.toString().split(".")[1].length;
         var value = "0.";
-        for(var i = 0; i < len; i++){
+        for (var i = 0; i < len; i++) {
           value += "0";
         }
         value += "1";
-        if(d >= 0){
+        if (d >= 0) {
           res = double.parse(value);
         } else {
           res = -double.parse(value);
@@ -311,14 +311,14 @@ abstract class Utils {
 
   static int calcTextWidth(TextPainter p, String demoText) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text?.style?.color, p.text?.style?.fontSize);
     painter.layout();
     return painter.width.toInt();
   }
 
   static int calcTextHeight(TextPainter p, String demoText) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text?.style?.color, p.text?.style?.fontSize);
     painter.layout();
     return painter.height.toInt();
   }
@@ -331,7 +331,7 @@ abstract class Utils {
 
   static void calcTextSize2(TextPainter p, String demoText, FSize outputFSize) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text?.style?.color, p.text?.style?.fontSize);
     painter.layout();
     outputFSize.width = painter.width;
     outputFSize.height = painter.height;
@@ -369,7 +369,7 @@ abstract class Utils {
     final double d =
         (log(number < 0 ? -number : number) / ln10).ceil().toDouble();
     final int pw = 1 - d.toInt();
-    final double magnitude = pow(10.0, pw);
+    final double magnitude = pow(10.0, pw).toDouble();
     final int shifted = (number * magnitude).round();
     return shifted / magnitude;
   }

@@ -18,7 +18,7 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
-  BubbleDataProvider _provider;
+  late BubbleDataProvider _provider;
 
   BubbleChartRenderer(BubbleDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -39,15 +39,17 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   @override
   void drawData(Canvas c) {
-    BubbleData bubbleData = _provider.getBubbleData();
+    BubbleData? bubbleData = _provider.getBubbleData();
+
+    if (bubbleData == null) return;
 
     for (IBubbleDataSet set in bubbleData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
 
-  List<double> sizeBuffer = List(4);
-  List<double> pointBuffer = List(2);
+  List<double> sizeBuffer = []..length = 4;
+  List<double> pointBuffer = []..length = 2;
 
   double getShapeSize(
       double entrySize, double maxSize, double reference, bool normalizeSize) {
@@ -109,7 +111,9 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   @override
   void drawValues(Canvas c) {
-    BubbleData bubbleData = _provider.getBubbleData();
+    BubbleData? bubbleData = _provider.getBubbleData();
+
+    if (bubbleData == null) return;
 
     if (bubbleData == null) return;
 
@@ -202,16 +206,22 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    BubbleData bubbleData = _provider.getBubbleData();
+    BubbleData? bubbleData = _provider.getBubbleData();
+
+    if (bubbleData == null) return;
 
     double phaseY = animator.getPhaseY();
 
     for (Highlight high in indices) {
-      IBubbleDataSet set = bubbleData.getDataSetByIndex(high.dataSetIndex);
+      IBubbleDataSet? set = bubbleData.getDataSetByIndex(high.dataSetIndex);
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
-      final BubbleEntry entry = set.getEntryForXValue2(high.x, high.y);
+      final BubbleEntry? entry = set.getEntryForXValue2(high.x, high.y);
+
+      if (entry == null) {
+        return;
+      }
 
       if (entry.y != high.y) continue;
 

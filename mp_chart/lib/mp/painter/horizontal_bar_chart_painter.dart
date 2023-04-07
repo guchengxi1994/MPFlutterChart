@@ -1,7 +1,5 @@
 import 'dart:math';
-import 'dart:ui';
 
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
@@ -150,7 +148,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getBarData());
-    renderer?.initBuffers();
+    renderer.initBuffers();
     calcMinMax();
 
     double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
@@ -214,13 +212,15 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   @override
   List<double> getMarkerPosition(Highlight high) {
-    return new List()..add(high.drawY)..add(high.drawX);
+    return []
+      ..add(high.drawY)
+      ..add(high.drawX);
   }
 
   @override
   Rect getBarBounds(BarEntry e) {
     Rect bounds = Rect.zero;
-    IBarDataSet set = getBarData().getDataSetForEntry(e);
+    IBarDataSet? set = getBarData().getDataSetForEntry(e);
 
     if (set == null) {
       bounds = Rect.fromLTRB(double.minPositive, double.minPositive,
@@ -243,7 +243,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
     return getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
   }
 
-  List<double> mGetPositionBuffer = List(2);
+  List<double> mGetPositionBuffer = []..length = 2;
 
   /// Returns a recyclable MPPointF instance.
   ///
@@ -252,7 +252,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
   /// @return
   @override
   MPPointF getPosition(Entry e, AxisDependency axis) {
-    if (e == null) return null;
+    // if (e == null) return null;
 
     List<double> vals = mGetPositionBuffer;
     vals[0] = e.y;
@@ -270,11 +270,12 @@ class HorizontalBarChartPainter extends BarChartPainter {
   /// @param y
   /// @return
   @override
-  Highlight getHighlightByTouchPoint(double x, double y) {
+  Highlight? getHighlightByTouchPoint(double x, double y) {
     if (getBarData() != null) {
       return highlighter.getHighlight(y, x); // switch x and y
     }
     return null;
+    // return highlighter.getHighlight(y, x);
   }
 
   @override

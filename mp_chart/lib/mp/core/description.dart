@@ -10,7 +10,7 @@ class Description extends ComponentBase {
   String _text = "Description Label";
 
   /// the custom position of the description text
-  MPPointF _position;
+  late MPPointF _position;
 
   /// the alignment of the description text
   TextAlign _textAlign = TextAlign.center;

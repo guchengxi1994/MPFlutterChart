@@ -37,7 +37,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
 
   @override
   DataSet<Entry> copy1() {
-    List<Entry> entries = List<Entry>();
+    List<Entry> entries = <Entry>[];
     for (int i = 0; i < values.length; i++) {
       entries.add(values[i].copy());
     }
@@ -76,7 +76,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param shape
   void setScatterShape(ScatterShape shape) {
-    _shapeRenderer = getRendererForShape(shape);
+    _shapeRenderer = getRendererForShape(shape)!;
   }
 
   /// Sets a  IShapeRenderer responsible for drawing this DataSet.
@@ -117,7 +117,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     return _scatterShapeHoleColor;
   }
 
-  static IShapeRenderer getRendererForShape(ScatterShape shape) {
+  static IShapeRenderer? getRendererForShape(ScatterShape shape) {
     switch (shape) {
       case ScatterShape.SQUARE:
         return SquareShapeRenderer();
@@ -133,8 +133,8 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
         return ChevronUpShapeRenderer();
       case ScatterShape.CHEVRON_DOWN:
         return ChevronDownShapeRenderer();
+      default:
+        return null;
     }
-
-    return null;
   }
 }

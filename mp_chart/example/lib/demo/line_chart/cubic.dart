@@ -167,7 +167,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<Entry> values = List();
+    List<Entry> values = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range + 1)) + 20;
@@ -193,7 +193,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(List()..add(set1))
+    controller.data = LineData.fromList([]..add(set1))
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
       ..setDrawValues(false);

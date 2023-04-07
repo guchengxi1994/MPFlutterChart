@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
@@ -21,28 +20,28 @@ import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/pie_chart_painter.dart';
 
 class PieChartRenderer extends DataRenderer {
-  PieChartPainter _painter;
+  late PieChartPainter _painter;
 
   /// paint for the hole in the center of the pie chart and the transparent
   /// circle
-  Paint _holePaint;
-  Paint _transparentCirclePaint;
-  Paint _valueLinePaint;
+  late Paint _holePaint;
+  late Paint _transparentCirclePaint;
+  late Paint _valueLinePaint;
 
   /// paint object for the text that can be displayed in the center of the
   /// chart
-  TextPainter _centerTextPaint;
+  late TextPainter _centerTextPaint;
 
   /// paint object used for drwing the slice-text
-  TextPainter _entryLabelsPaint;
+  late TextPainter _entryLabelsPaint;
 
 //   StaticLayout _centerTextLayout;
   // ignore: unused_field
-  String _centerTextLastValue;
+  late String _centerTextLastValue;
 
   // ignore: unused_field
   Rect _centerTextLastBounds = Rect.zero;
-  List<Rect> _rectBuffer = List()
+  List<Rect> _rectBuffer = []
     ..add(Rect.zero)
     ..add(Rect.zero)
     ..add(Rect.zero);
@@ -54,7 +53,7 @@ class PieChartRenderer extends DataRenderer {
 
   PieChartRenderer(
       PieChartPainter chart, Animator animator, ViewPortHandler viewPortHandler,
-      {TypeFace centerTextTypeface, TypeFace entryLabelTypeface})
+      {TypeFace? centerTextTypeface, TypeFace? entryLabelTypeface})
       : super(animator, viewPortHandler) {
     _painter = chart;
 
@@ -127,7 +126,7 @@ class PieChartRenderer extends DataRenderer {
 //
 //    drawBitmap.eraseColor(Color.TRANSPARENT);
 
-    PieData pieData = _painter.getData();
+    PieData pieData = _painter.getData() as PieData;
 
     for (IPieDataSet set in pieData.dataSets) {
       if (set.isVisible() && set.getEntryCount() > 0) drawDataSet(c, set);
@@ -443,7 +442,7 @@ class PieChartRenderer extends DataRenderer {
 
     final double labelRadius = radius - labelRadiusOffset;
 
-    PieData data = _painter.getData();
+    PieData data = _painter.getData() as PieData;
     List<IPieDataSet> dataSets = data.dataSets;
 
     double yValueSum = data.getYValueSum();
@@ -705,7 +704,7 @@ class PieChartRenderer extends DataRenderer {
   /// @param x
   /// @param y
   void drawEntryLabel(Canvas c, String label, double x, double y,
-      {double labelTextSize, Color labelColor}) {
+      {double? labelTextSize, Color? labelColor}) {
     _entryLabelsPaint = PainterUtils.create(
         _entryLabelsPaint,
         label,
@@ -831,7 +830,9 @@ class PieChartRenderer extends DataRenderer {
 
       c.save();
 
-      _centerTextPaint = PainterUtils.create(_centerTextPaint, centerText,
+      _centerTextPaint = PainterUtils.create(
+          _centerTextPaint,
+          centerText,
           _painter.centerTextColor ?? ColorUtils.BLACK,
           _painter.centerTextSize ?? Utils.convertDpToPixel(12),
           fontFamily: _painter.centerTextTypeface?.fontFamily,
@@ -884,8 +885,9 @@ class PieChartRenderer extends DataRenderer {
 
       if (index >= drawAngles.length) continue;
 
-      IPieDataSet set =
-          _painter.getData().getDataSetByIndex(indices[i].dataSetIndex);
+      IPieDataSet set = _painter
+          .getData()
+          .getDataSetByIndex(indices[i].dataSetIndex) as IPieDataSet;
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
@@ -1131,7 +1133,7 @@ class PieChartRenderer extends DataRenderer {
   /// @param color
   void setTransparentCircleColor(Color color) {
     Paint p = transparentCirclePaint;
-    p.color = Color.fromARGB(p.color?.alpha == null ? 255 : p.color?.alpha,
+    p.color = Color.fromARGB(p.color.alpha == null ? 255 : p.color.alpha,
         color.red, color.green, color.blue);
   }
 
@@ -1157,7 +1159,7 @@ class PieChartRenderer extends DataRenderer {
   ///
   /// @param size
   void setEntryLabelTextSize(double size) {
-    var style = entryLabelsPaint.text.style;
+    var style = entryLabelsPaint.text?.style;
     entryLabelsPaint = PainterUtils.create(
         entryLabelsPaint,
         null,

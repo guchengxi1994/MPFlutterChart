@@ -129,6 +129,6 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
 
   @override
   ScatterData getScatterData() {
-    return getData();
+    return getData() as ScatterData;
   }
 }

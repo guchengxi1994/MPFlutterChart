@@ -11,18 +11,18 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 
 class LineChartMarker implements IMarker {
-  Entry _entry;
+  late Entry _entry;
   // ignore: unused_field
-  Highlight _highlight;
+  late Highlight _highlight;
   double _dx = 0.0;
   double _dy = 0.0;
 
-  DefaultValueFormatter _formatter;
-  Color _textColor;
-  Color _backColor;
-  double _fontSize;
+  late DefaultValueFormatter _formatter;
+  late Color? _textColor;
+  late Color? _backColor;
+  late double? _fontSize;
 
-  LineChartMarker({Color textColor, Color backColor, double fontSize})
+  LineChartMarker({Color? textColor, Color? backColor, double? fontSize})
       : _textColor = textColor,
         _backColor = backColor,
         _fontSize = fontSize {
@@ -42,7 +42,7 @@ class LineChartMarker implements IMarker {
         _textColor,
         _fontSize);
     Paint paint = Paint()
-      ..color = _backColor
+      ..color = _backColor!
       ..strokeWidth = 2
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;

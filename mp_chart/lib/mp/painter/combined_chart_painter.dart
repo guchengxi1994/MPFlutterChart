@@ -1,4 +1,3 @@
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
@@ -43,7 +42,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// maximum value
   bool _drawBarShadow = false;
 
-  List<DrawOrder> _drawOrder;
+  List<DrawOrder>? _drawOrder;
 
   CombinedChartPainter(
       CombinedData data,
@@ -154,7 +153,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             chartTransListener);
 
   List<DrawOrder> initDrawOrder() {
-    return List()
+    return []
       ..add(DrawOrder.BAR)
       ..add(DrawOrder.BUBBLE)
       ..add(DrawOrder.LINE)
@@ -174,7 +173,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
 
   @override
   CombinedData getCombinedData() {
-    return getData();
+    return getData() as CombinedData;
   }
 
   /// Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
@@ -185,53 +184,49 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// @param y
   /// @return
   @override
-  Highlight getHighlightByTouchPoint(double x, double y) {
-    if (getCombinedData() == null) {
-      return null;
-    } else {
-      Highlight h = highlighter.getHighlight(x, y);
-      if (h == null || !isHighlightFullBarEnabled()) return h;
+  Highlight? getHighlightByTouchPoint(double x, double y) {
+    Highlight? h = highlighter.getHighlight(x, y);
+    if (h == null || !isHighlightFullBarEnabled()) return h;
 
-      // For isHighlightFullBarEnabled, remove stackIndex
-      return Highlight(
-          x: h.x,
-          y: h.y,
-          xPx: h.xPx,
-          yPx: h.yPx,
-          dataSetIndex: h.dataSetIndex,
-          stackIndex: h.stackIndex,
-          axis: h.axis)
-        ..dataIndex = h.dataIndex;
-    }
+    // For isHighlightFullBarEnabled, remove stackIndex
+    return Highlight(
+        x: h.x,
+        y: h.y,
+        xPx: h.xPx,
+        yPx: h.yPx,
+        dataSetIndex: h.dataSetIndex,
+        stackIndex: h.stackIndex,
+        axis: h.axis)
+      ..dataIndex = h.dataIndex;
   }
 
   @override
-  LineData getLineData() {
-    if (getCombinedData() == null) return null;
+  LineData? getLineData() {
+    // if (getCombinedData() == null) return null;
     return getCombinedData().getLineData();
   }
 
   @override
-  BarData getBarData() {
-    if (getCombinedData() == null) return null;
+  BarData? getBarData() {
+    // if (getCombinedData() == null) return null;
     return getCombinedData().getBarData();
   }
 
   @override
-  ScatterData getScatterData() {
-    if (getCombinedData() == null) return null;
+  ScatterData? getScatterData() {
+    // if (getCombinedData() == null) return null;
     return getCombinedData().getScatterData();
   }
 
   @override
-  CandleData getCandleData() {
-    if (getCombinedData() == null) return null;
+  CandleData? getCandleData() {
+    // if (getCombinedData() == null) return null;
     return getCombinedData().getCandleData();
   }
 
   @override
-  BubbleData getBubbleData() {
-    if (getCombinedData() == null) return null;
+  BubbleData? getBubbleData() {
+    // if (getCombinedData() == null) return null;
     return getCombinedData().getBubbleData();
   }
 
@@ -279,7 +274,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   ///
   /// @return
   List<DrawOrder> getDrawOrder() {
-    return _drawOrder;
+    return _drawOrder!;
   }
 
   /// Sets the order in which the provided data objects should be drawn. The
@@ -298,12 +293,14 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     // if there is no marker view or drawing marker is disabled
     if (marker == null || !isDrawMarkers || !valuesToHighlight()) return;
 
-    for (int i = 0; i < indicesToHighlight.length; i++) {
-      Highlight highlight = indicesToHighlight[i];
+    for (int i = 0; i < indicesToHighlight!.length; i++) {
+      Highlight highlight = indicesToHighlight![i];
 
-      IDataSet set = getCombinedData().getDataSetByHighlight(highlight);
+      IDataSet? set = getCombinedData().getDataSetByHighlight(highlight);
 
-      Entry e = getCombinedData().getEntryForHighlight(highlight);
+      if (set == null) continue;
+
+      Entry? e = getCombinedData().getEntryForHighlight(highlight);
       if (e == null) continue;
 
       int entryIndex = set.getEntryIndex2(e);

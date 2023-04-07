@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -66,10 +65,10 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   Rect _circleBox = Rect.zero;
 
   /// array that holds the width of each pie-slice in degrees
-  List<double> _drawAngles = List(1);
+  List<double> _drawAngles = []..length = 1;
 
   /// array that holds the absolute angle in degrees of each slice
-  List<double> _absoluteAngles = List(1);
+  List<double> _absoluteAngles = []..length = 1;
 
   /// Hole color
   Color _holeColor;
@@ -194,7 +193,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     renderer.drawData(canvas);
 
     if (valuesToHighlight()) {
-      renderer.drawHighlighted(canvas, indicesToHighlight);
+      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
     }
 
     renderer.drawExtras(canvas);
@@ -269,7 +268,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         center.y);
 
     MPPointF.recycleInstance(center);
-    return List()..add(x)..add(y);
+    return []
+      ..add(x)
+      ..add(y);
   }
 
   /// calculates the needed angles for the chart slices
@@ -277,14 +278,14 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     int entryCount = getData().getEntryCount();
 
     if (_drawAngles.length != entryCount) {
-      _drawAngles = List(entryCount);
+      _drawAngles = []..length = entryCount;
     } else {
       for (int i = 0; i < entryCount; i++) {
         _drawAngles[i] = 0;
       }
     }
     if (_absoluteAngles.length != entryCount) {
-      _absoluteAngles = List(entryCount);
+      _absoluteAngles = []..length = entryCount;
     } else {
       for (int i = 0; i < entryCount; i++) {
         _absoluteAngles[i] = 0;
@@ -293,11 +294,11 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
     double yValueSum = (getData() as PieData).getYValueSum();
 
-    List<IPieDataSet> dataSets = getData().dataSets;
+    List<IPieDataSet> dataSets = getData().dataSets as List<IPieDataSet>;
 
     bool hasMinAngle =
         _minAngleForSlices != 0 && entryCount * _minAngleForSlices <= _maxAngle;
-    List<double> minAngles = List(entryCount);
+    List<double> minAngles = []..length = entryCount;
 
     int cnt = 0;
     double offset = 0;
@@ -356,10 +357,10 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   bool needsHighlight(int index) {
     // no highlight
     if (!valuesToHighlight()) return false;
-    for (int i = 0; i < indicesToHighlight.length; i++)
+    for (int i = 0; i < indicesToHighlight!.length; i++)
 
       // check if the xvalue for the given dataset needs highlight
-      if (indicesToHighlight[i].x.toInt() == index) return true;
+      if (indicesToHighlight![i].x.toInt() == index) return true;
 
     return false;
   }
@@ -398,7 +399,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// @param xIndex
   /// @return
   int getDataSetIndexForIndex(int xIndex) {
-    List<IPieDataSet> dataSets = getData().dataSets;
+    List<IPieDataSet> dataSets = getData().dataSets as List<IPieDataSet>;
 
     for (int i = 0; i < dataSets.length; i++) {
       if (dataSets[i].getEntryForXValue2(xIndex.toDouble(), double.nan) != null)
@@ -458,7 +459,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   @override
   double getRequiredLegendOffset() {
     // ignore: null_aware_before_operator
-    var offset = legendRenderer.legendLabelPaint.text?.style?.fontSize * 2.0;
+    var offset =
+        legendRenderer.legendLabelPaint.text?.style?.fontSize ?? 8 * 2.0;
     return offset == null ? Utils.convertDpToPixel(9) : offset;
   }
 

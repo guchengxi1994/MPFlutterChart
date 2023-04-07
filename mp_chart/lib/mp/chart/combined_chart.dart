@@ -22,7 +22,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     widget.controller.painter.highlightValue6(lastHighlighted, false);
   }
 
-  IDataSet _closestDataSetToTouch;
+  late IDataSet? _closestDataSetToTouch;
 
   double _curX = 0.0;
   double _curY = 0.0;
@@ -30,14 +30,14 @@ class CombinedChartState extends ChartState<CombinedChart> {
   bool _isScaleDirectionConfirm = false;
   bool _isYDirection = false;
 
-  Highlight lastHighlighted;
+  late Highlight? lastHighlighted;
 
   MPPointF _getTrans(double x, double y) {
     return Utils.local2Chart(widget.controller, x, y, inverted: _inverted());
   }
 
-  MPPointF _getTouchValue(
-      TouchValueType type, double screenX, double screenY, double localX, localY) {
+  MPPointF _getTouchValue(TouchValueType type, double screenX, double screenY,
+      double localX, localY) {
     if (type == TouchValueType.CHART) {
       return _getTrans(localX, localY);
     } else if (type == TouchValueType.SCREEN) {
@@ -52,7 +52,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
             widget.controller.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
             widget.controller.painter
-                .isInverted(_closestDataSetToTouch.getAxisDependency()));
+                .isInverted(_closestDataSetToTouch!.getAxisDependency()));
   }
 
   @override
@@ -62,7 +62,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     _curY = details.localPosition.dy;
     _closestDataSetToTouch = widget.controller.painter.getDataSetByTouchPoint(
         details.localPosition.dx, details.localPosition.dy);
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPosition.dx,
@@ -76,7 +76,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
   @override
   void onSingleTapUp(TapUpDetails details) {
     if (widget.controller.painter.highlightPerDragEnabled) {
-      Highlight h = widget.controller.painter.getHighlightByTouchPoint(
+      Highlight? h = widget.controller.painter.getHighlightByTouchPoint(
           details.localPosition.dx, details.localPosition.dy);
       lastHighlighted = HighlightUtils.performHighlight(
           widget.controller.painter, h, lastHighlighted);
@@ -84,7 +84,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     } else {
       lastHighlighted = null;
     }
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPosition.dx,
@@ -110,7 +110,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPosition.dx,
@@ -126,7 +126,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     widget.controller.stopDeceleration();
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPoint.dx,
@@ -146,7 +146,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     if (widget.controller.painter.highlightPerDragEnabled) {
       final highlighted = widget.controller.painter.getHighlightByTouchPoint(
           details.localPoint.dx, details.localPoint.dy);
-      if (highlighted?.equalTo(lastHighlighted) == false) {
+      if (highlighted?.equalTo(lastHighlighted!) == false) {
         lastHighlighted = HighlightUtils.performHighlight(
             widget.controller.painter, highlighted, lastHighlighted);
         needStateIfNotDispose = true;
@@ -173,7 +173,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       }
     }
 
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPoint.dx,
@@ -183,7 +183,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       widget.controller.touchEventListener.onMoveUpdate(point.x, point.y);
     }
 
-    if(needStateIfNotDispose){
+    if (needStateIfNotDispose) {
       setStateIfNotDispose();
     }
 
@@ -197,7 +197,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       ..stopDeceleration()
       ..setDecelerationVelocity(details.velocity.pixelsPerSecond)
       ..computeScroll();
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPoint.dx,
@@ -211,7 +211,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
   @override
   void onScaleEnd(OpsScaleEndDetails details) {
     _scale = -1.0;
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPoint.dx,
@@ -228,7 +228,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
     _isScaleDirectionConfirm = false;
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalPoint.dx,
@@ -243,7 +243,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
   void onScaleUpdate(OpsScaleUpdateDetails details) {
     var needStateIfNotDispose = false;
     var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
-    if(!_isScaleDirectionConfirm){
+    if (!_isScaleDirectionConfirm) {
       _isScaleDirectionConfirm = true;
       _isYDirection = details.mainDirection == Direction.Y;
     }
@@ -251,7 +251,8 @@ class CombinedChartState extends ChartState<CombinedChart> {
       if (pinchZoomEnabled) {
         _scale = details.scale;
       } else {
-        _scale = _isYDirection ? details.verticalScale : details.horizontalScale;
+        _scale =
+            _isYDirection ? details.verticalScale : details.horizontalScale;
       }
       return;
     }
@@ -294,7 +295,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       }
     }
 
-    if(widget.controller.touchEventListener != null){
+    if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
           details.globalFocalPoint.dx,
@@ -304,7 +305,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       widget.controller.touchEventListener.onScaleUpdate(point.x, point.y);
     }
 
-    if(needStateIfNotDispose) {
+    if (needStateIfNotDispose) {
       setStateIfNotDispose();
     }
 

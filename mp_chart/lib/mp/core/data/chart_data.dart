@@ -30,11 +30,11 @@ class ChartData<T extends IDataSet<Entry>> {
   double _rightAxisMin = double.infinity;
 
   /// array that holds all DataSets the ChartData object represents
-  List<T> _dataSets;
+  late List<T> _dataSets;
 
   /// Default constructor.
   ChartData() {
-    _dataSets = List<T>();
+    _dataSets = <T>[];
   }
 
   /// Constructor taking single or multiple DataSet objects.
@@ -85,7 +85,7 @@ class ChartData<T extends IDataSet<Entry>> {
     _rightAxisMin = double.infinity;
 
     // left axis
-    T firstLeft = getFirstLeft(_dataSets);
+    T? firstLeft = getFirstLeft(_dataSets);
 
     if (firstLeft != null) {
       _leftAxisMax = firstLeft.getYMax();
@@ -103,7 +103,7 @@ class ChartData<T extends IDataSet<Entry>> {
     }
 
     // right axis
-    T firstRight = getFirstRight(_dataSets);
+    T? firstRight = getFirstRight(_dataSets);
 
     if (firstRight != null) {
       _rightAxisMax = firstRight.getYMax();
@@ -234,7 +234,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   List<String> getDataSetLabels() {
-    List<String> types = List(_dataSets.length);
+    List<String> types = []..length = _dataSets.length;
 
     for (int i = 0; i < _dataSets.length; i++) {
       types[i] = _dataSets[i].getLabel();
@@ -247,7 +247,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param highlight
   /// @return the entry that is highlighted
-  Entry getEntryForHighlight(Highlight highlight) {
+  Entry? getEntryForHighlight(Highlight? highlight) {
     if (highlight == null || highlight.dataSetIndex >= _dataSets.length)
       return null;
     else {
@@ -263,7 +263,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param label
   /// @param ignorecase
   /// @return
-  T getDataSetByLabel(String label, bool ignorecase) {
+  T? getDataSetByLabel(String label, bool ignorecase) {
     int index = getDataSetIndexByLabel(_dataSets, label, ignorecase);
 
     if (index < 0 || index >= _dataSets.length)
@@ -272,7 +272,7 @@ class ChartData<T extends IDataSet<Entry>> {
       return _dataSets[index];
   }
 
-  T getDataSetByIndex(int index) {
+  T? getDataSetByIndex(int index) {
     if (_dataSets == null || index < 0 || index >= _dataSets.length)
       return null;
 
@@ -428,7 +428,7 @@ class ChartData<T extends IDataSet<Entry>> {
     if (dataSetIndex >= _dataSets.length) return false;
 
     IDataSet dataSet = _dataSets[dataSetIndex];
-    Entry e = dataSet.getEntryForXValue2(xValue, double.nan);
+    Entry? e = dataSet.getEntryForXValue2(xValue, double.nan);
 
     if (e == null) return false;
 
@@ -440,7 +440,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param e
   /// @return
-  T getDataSetForEntry(Entry e) {
+  T? getDataSetForEntry(Entry e) {
     if (e == null) return null;
 
     for (int i = 0; i < _dataSets.length; i++) {
@@ -458,7 +458,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// represents.
   ///
   /// @return
-  List<ui.Color> getColors() {
+  List<ui.Color>? getColors() {
     if (_dataSets == null) return null;
 
     int clrcnt = 0;
@@ -467,7 +467,7 @@ class ChartData<T extends IDataSet<Entry>> {
       clrcnt += _dataSets[i].getColors().length;
     }
 
-    List<ui.Color> colors = List(clrcnt);
+    List<ui.Color> colors = []..length = clrcnt;
     int cnt = 0;
 
     for (int i = 0; i < _dataSets.length; i++) {
@@ -494,7 +494,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// Returns null if no DataSet with left dependency could be found.
   ///
   /// @return
-  T getFirstLeft(List<T> sets) {
+  T? getFirstLeft(List<T> sets) {
     for (T dataSet in sets) {
       if (dataSet.getAxisDependency() == AxisDependency.LEFT) return dataSet;
     }
@@ -505,7 +505,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// Returns null if no DataSet with right dependency could be found.
   ///
   /// @return
-  T getFirstRight(List<T> sets) {
+  T? getFirstRight(List<T> sets) {
     for (T dataSet in sets) {
       if (dataSet.getAxisDependency() == AxisDependency.RIGHT) return dataSet;
     }
@@ -630,7 +630,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// Returns the DataSet object with the maximum number of entries or null if there are no DataSets.
   ///
   /// @return
-  T getMaxEntryCountSet() {
+  T? getMaxEntryCountSet() {
     if (_dataSets == null || _dataSets.isEmpty) return null;
     T max = _dataSets[0];
     for (T set in _dataSets) {

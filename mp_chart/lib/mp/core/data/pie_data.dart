@@ -5,7 +5,7 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/utils/dart_adapter_utils.dart';
 
 class PieData extends ChartData<IPieDataSet> {
-  PieData(IPieDataSet dataSet) : super.fromList(List()..add(dataSet));
+  PieData(IPieDataSet dataSet) : super.fromList([]..add(dataSet));
 
   /// Sets the PieDataSet this data object should represent.
   ///
@@ -29,22 +29,24 @@ class PieData extends ChartData<IPieDataSet> {
   /// @param index
   /// @return
   @override
-  IPieDataSet getDataSetByIndex(int index) {
+  IPieDataSet? getDataSetByIndex(int index) {
     return index == 0 ? getDataSet() : null;
   }
 
   @override
-  IPieDataSet getDataSetByLabel(String label, bool ignorecase) {
+  IPieDataSet? getDataSetByLabel(String label, bool ignorecase) {
     return ignorecase
         ? DartAdapterUtils.equalsIgnoreCase(label, dataSets[0].getLabel())
             ? dataSets[0]
             : null
-        : (label == dataSets[0].getLabel()) ? dataSets[0] : null;
+        : (label == dataSets[0].getLabel())
+            ? dataSets[0]
+            : null;
   }
 
   @override
-  Entry getEntryForHighlight(Highlight highlight) {
-    return getDataSet().getEntryForIndex(highlight.x.toInt());
+  Entry getEntryForHighlight(Highlight? highlight) {
+    return getDataSet().getEntryForIndex(highlight!.x.toInt());
   }
 
   /// Returns the sum of all values in this PieData object.

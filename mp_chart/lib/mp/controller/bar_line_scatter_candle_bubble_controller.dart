@@ -85,36 +85,36 @@ abstract class BarLineScatterCandleBubbleController<
       this.drawBorders = false,
       this.clipValuesToContent = false,
       this.minOffset = 30.0,
-      this.drawListener,
-      this.axisLeft,
-      this.axisRight,
-      this.axisRendererLeft,
-      this.axisRendererRight,
-      this.leftAxisTransformer,
-      this.rightAxisTransformer,
-      this.xAxisRenderer,
+      required this.drawListener,
+      required this.axisLeft,
+      required this.axisRight,
+      required this.axisRendererLeft,
+      required this.axisRendererRight,
+      required this.leftAxisTransformer,
+      required this.rightAxisTransformer,
+      required this.xAxisRenderer,
       this.customViewPortEnabled = false,
-      this.zoomMatrixBuffer,
+      required this.zoomMatrixBuffer,
       this.pinchZoomEnabled = true,
       this.keepPositionOnRotation = false,
-      this.gridBackgroundPaint,
-      this.borderPaint,
-      this.backgroundPaint,
-      this.gridBackColor,
-      this.borderColor,
-      this.backgroundColor,
+      required this.gridBackgroundPaint,
+      required this.borderPaint,
+      required this.backgroundPaint,
+      required this.gridBackColor,
+      required this.borderColor,
+      required this.backgroundColor,
       this.borderStrokeWidth = 1.0,
-      this.axisLeftSettingFunction,
-      this.axisRightSettingFunction,
-      this.touchEventListener,
-      this.chartTransListener,
-      IMarker marker,
-      Description description,
+      required this.axisLeftSettingFunction,
+      required this.axisRightSettingFunction,
+      required this.touchEventListener,
+      required this.chartTransListener,
+      required IMarker marker,
+      required Description description,
       String noDataText = "No chart data available.",
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectionListener,
+      required XAxisSettingFunction xAxisSettingFunction,
+      required LegendSettingFunction legendSettingFunction,
+      required DataRendererSettingFunction rendererSettingFunction,
+      required OnChartValueSelectedListener selectionListener,
       double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       double extraTopOffset = 0.0,
@@ -126,10 +126,16 @@ abstract class BarLineScatterCandleBubbleController<
       bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
       double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
-      Color infoBgColor})
+      required Color descTextColor,
+      required Color infoTextColor,
+      required Color infoBgColor})
       : super(
+            viewPortHandler: viewPortHandler,
+            xAxis: xAxis,
+            legend: legend,
+            legendRenderer: legendRenderer,
+            descPaint: de,
+            infoPaint: ,
             marker: marker,
             description: description,
             noDataText: noDataText,
@@ -152,7 +158,7 @@ abstract class BarLineScatterCandleBubbleController<
             infoBgColor: infoBgColor,
             infoTextColor: infoTextColor);
 
-  OnDrawListener initDrawListener() {
+  OnDrawListener? initDrawListener() {
     return null;
   }
 
@@ -236,7 +242,7 @@ abstract class BarLineScatterCandleBubbleController<
   ///
   /// @param xValue
   void moveViewToX(double xValue) {
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(xValue);
     pts.add(0.0);
 
@@ -251,7 +257,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void moveViewToY(double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(0.0);
     pts.add(yValue + yInView / 2);
 
@@ -268,7 +274,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void moveViewTo(double xValue, double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(xValue);
     pts.add(yValue + yInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -290,7 +296,7 @@ abstract class BarLineScatterCandleBubbleController<
     double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
 
     yValue = yValue + yInView / 2;
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(xValue);
     pts.add(yValue);
     double xOrigin = bounds.x;
@@ -313,7 +319,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void centerViewToY(double yValue, AxisDependency axis) {
     double valsInView = getAxisRange(axis) / viewPortHandler.getScaleY();
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(0.0);
     pts.add(yValue + valsInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -330,7 +336,7 @@ abstract class BarLineScatterCandleBubbleController<
   void centerViewTo(double xValue, double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
     double xInView = xAxis.axisRange / viewPortHandler.getScaleX();
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(xValue - xInView / 2);
     pts.add(yValue + yInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -353,7 +359,7 @@ abstract class BarLineScatterCandleBubbleController<
 
     xValue = xValue - xInView / 2;
     yValue = yValue + yInView / 2;
-    List<double> pts = List();
+    List<double> pts = [];
     pts.add(xValue);
     pts.add(yValue);
     double xOrigin = bounds.x;

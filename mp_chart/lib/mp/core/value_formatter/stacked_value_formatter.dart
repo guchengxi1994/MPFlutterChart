@@ -4,12 +4,12 @@ import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 class StackedValueFormatter extends ValueFormatter {
   /// if true, all stack values of the stacked bar entry are drawn, else only top
-  bool _drawWholeStack;
+  late bool _drawWholeStack;
 
   /// a string that should be appended behind the value
-  String _suffix;
+  late String _suffix;
 
-  NumberFormat _format;
+  late NumberFormat _format;
 
   /// Constructor.
   ///

@@ -9,7 +9,7 @@ import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 abstract class AxisBase extends ComponentBase {
   /// custom formatter that is used instead of the auto-formatter if set
-  ValueFormatter _axisValueFormatter;
+  late ValueFormatter _axisValueFormatter;
 
   Color _gridColor = ColorUtils.GRAY;
 
@@ -19,9 +19,9 @@ abstract class AxisBase extends ComponentBase {
 
   double _axisLineWidth = 1;
 
-  List<double> _entries = List();
+  List<double> _entries = [];
 
-  List<double> _centeredEntries = List();
+  List<double> _centeredEntries = [];
 
   /// the number of entries the legend contains
   int _entryCount = 0;
@@ -56,13 +56,13 @@ abstract class AxisBase extends ComponentBase {
   bool _centerAxisLabels = false;
 
   /// the path effect of the axis line that makes dashed lines possible
-  DashPathEffect _axisLineDashPathEffect;
+  late DashPathEffect? axisLineDashPathEffect = null;
 
   /// the path effect of the grid lines that makes dashed lines possible
-  DashPathEffect _gridDashPathEffect;
+  late DashPathEffect? gridDashPathEffect = null;
 
   /// array of limit lines that can be set for the axis
-  List<LimitLine> _limitLines;
+  late List<LimitLine> _limitLines;
 
   /// flag indicating the limit lines layer depth
   bool _drawLimitLineBehindData = false;
@@ -95,7 +95,7 @@ abstract class AxisBase extends ComponentBase {
     textSize = 10;
     xOffset = 5;
     yOffset = 5;
-    this._limitLines = List<LimitLine>();
+    this._limitLines = <LimitLine>[];
   }
 
   // ignore: unnecessary_getters_setters
@@ -350,27 +350,19 @@ abstract class AxisBase extends ComponentBase {
   /// @param phase       offset, in degrees (normally, use 0)
   void enableGridDashedLine(
       double lineLength, double spaceLength, double phase) {
-    _gridDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
-  }
-
-  // ignore: unnecessary_getters_setters
-  DashPathEffect get gridDashPathEffect => _gridDashPathEffect;
-
-  // ignore: unnecessary_getters_setters
-  set gridDashPathEffect(DashPathEffect value) {
-    _gridDashPathEffect = value;
+    gridDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
   /// Disables the grid line to be drawn in dashed mode.
   void disableGridDashedLine() {
-    _gridDashPathEffect = null;
+    gridDashPathEffect = null;
   }
 
   /// Returns true if the grid dashed-line effect is enabled, false if not.
   ///
   /// @return
   bool isGridDashedLineEnabled() {
-    return _gridDashPathEffect == null ? false : true;
+    return gridDashPathEffect == null ? false : true;
   }
 
   /// Enables the axis line to be drawn in dashed mode, e.g. like this
@@ -381,29 +373,20 @@ abstract class AxisBase extends ComponentBase {
   /// @param spaceLength the length of space in between the pieces
   /// @param phase       offset, in degrees (normally, use 0)
   void enableAxisLineDashedLine(
-
       double lineLength, double spaceLength, double phase) {
-    _axisLineDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
+    axisLineDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
   /// Disables the axis line to be drawn in dashed mode.
   void disableAxisLineDashedLine() {
-    _axisLineDashPathEffect = null;
+    axisLineDashPathEffect = null;
   }
 
   /// Returns true if the axis dashed-line effect is enabled, false if not.
   ///
   /// @return
   bool isAxisLineDashedLineEnabled() {
-    return _axisLineDashPathEffect == null ? false : true;
-  }
-
-  // ignore: unnecessary_getters_setters
-  DashPathEffect get axisLineDashPathEffect => _axisLineDashPathEffect;
-
-  // ignore: unnecessary_getters_setters
-  set axisLineDashPathEffect(DashPathEffect value) {
-    _axisLineDashPathEffect = value;
+    return axisLineDashPathEffect == null ? false : true;
   }
 
   /// ###### BELOW CODE RELATED TO CUSTOM AXIS VALUES ######

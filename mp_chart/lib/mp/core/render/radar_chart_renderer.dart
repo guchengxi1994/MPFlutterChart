@@ -16,11 +16,11 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class RadarChartRenderer extends LineRadarRenderer {
-  RadarChartPainter _painter;
+  late RadarChartPainter _painter;
 
   /// paint for drawing the web
-  Paint _webPaint;
-  Paint _highlightCirclePaint;
+  late Paint _webPaint;
+  late Paint _highlightCirclePaint;
 
   RadarChartRenderer(RadarChartPainter chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -51,9 +51,9 @@ class RadarChartRenderer extends LineRadarRenderer {
 
   @override
   void drawData(Canvas c) {
-    RadarData radarData = _painter.getData();
+    RadarData radarData = _painter.getData() as RadarData;
 
-    int mostEntries = radarData.getMaxEntryCountSet().getEntryCount();
+    int mostEntries = radarData.getMaxEntryCountSet()!.getEntryCount();
 
     for (IRadarDataSet set in radarData.dataSets) {
       if (set.isVisible()) {
@@ -164,7 +164,8 @@ class RadarChartRenderer extends LineRadarRenderer {
     double yoffset = Utils.convertDpToPixel(5);
 
     for (int i = 0; i < _painter.getData().getDataSetCount(); i++) {
-      IRadarDataSet dataSet = _painter.getData().getDataSetByIndex(i);
+      IRadarDataSet dataSet =
+          _painter.getData().getDataSetByIndex(i) as IRadarDataSet;
 
       if (!shouldDrawValues(dataSet)) continue;
 
@@ -251,7 +252,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
     final int xIncrements = 1 + _painter.skipWebLineCount;
     int maxEntryCount =
-        _painter.getData().getMaxEntryCountSet().getEntryCount();
+        _painter.getData().getMaxEntryCountSet()!.getEntryCount();
 
     MPPointF p = MPPointF.getInstance1(0, 0);
     for (int i = 0; i < maxEntryCount; i += xIncrements) {
@@ -301,10 +302,10 @@ class RadarChartRenderer extends LineRadarRenderer {
     MPPointF center = _painter.getCenterOffsets();
     MPPointF pOut = MPPointF.getInstance1(0, 0);
 
-    RadarData radarData = _painter.getData();
+    RadarData radarData = _painter.getData() as RadarData;
 
     for (Highlight high in indices) {
-      IRadarDataSet set = radarData.getDataSetByIndex(high.dataSetIndex);
+      IRadarDataSet? set = radarData.getDataSetByIndex(high.dataSetIndex);
 
       if (set == null || !set.isHighlightEnabled()) continue;
 

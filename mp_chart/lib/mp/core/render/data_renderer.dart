@@ -13,17 +13,17 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /// the animator object used to perform animations on the chart data
-  Animator _animator;
+  late Animator _animator;
 
   /// main paint object used for rendering
-  Paint _renderPaint;
+  late Paint _renderPaint;
 
   /// paint used for highlighting values
-  Paint _highlightPaint;
+  late Paint _highlightPaint;
 
-  Paint _drawPaint;
+  late Paint _drawPaint;
 
-  TextPainter _valuePaint;
+  late TextPainter _valuePaint;
 
   DataRenderer(Animator animator, ViewPortHandler viewPortHandler)
       : super(viewPortHandler) {
@@ -105,7 +105,8 @@ abstract class DataRenderer extends Renderer {
   /// @param x         position
   /// @param y         position
   /// @param color
-  void drawValue(Canvas c, String valueText, double x, double y, Color color, double textSize, TypeFace typeFace);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace);
 
   /// Draws any kind of additional information (e.g. line-circles).
   ///

@@ -117,7 +117,7 @@ class LineChartPerformanceState
   }
 
   void _initLineData(double range) {
-    List<Entry> values = List();
+    List<Entry> values = [];
 
     _count = (range + 1000).toInt();
 
@@ -137,7 +137,7 @@ class LineChartPerformanceState
     set1.setDrawFilled(false);
 
     // create a data object with the data sets
-    _controller.data = LineData.fromList(List()..add(set1));
+    _controller.data = LineData.fromList([]..add(set1));
 
     setState(() {});
   }

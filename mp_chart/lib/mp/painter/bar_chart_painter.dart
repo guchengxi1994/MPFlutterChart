@@ -1,4 +1,3 @@
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
@@ -149,8 +148,8 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     super.initDefaultWithData();
     highlighter = BarHighlighter(this);
     renderer = BarChartRenderer(this, animator, viewPortHandler);
-    xAxis?.spaceMin = (0.5);
-    xAxis?.spaceMax = (0.5);
+    xAxis.spaceMin = (0.5);
+    xAxis.spaceMax = (0.5);
   }
 
   @override
@@ -177,23 +176,19 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   /// @param y
   /// @return
   @override
-  Highlight getHighlightByTouchPoint(double x, double y) {
-    if (getBarData() == null) {
-      return null;
-    } else {
-      Highlight h = highlighter.getHighlight(x, y);
-      if (h == null || !isHighlightFullBarEnabled()) return h;
+  Highlight? getHighlightByTouchPoint(double x, double y) {
+    Highlight? h = highlighter.getHighlight(x, y);
+    if (h == null || !isHighlightFullBarEnabled()) return h;
 
-      // For isHighlightFullBarEnabled, remove stackIndex
-      return Highlight(
-          x: h.x,
-          y: h.y,
-          xPx: h.xPx,
-          yPx: h.yPx,
-          dataSetIndex: h.dataSetIndex,
-          stackIndex: -1,
-          axis: h.axis);
-    }
+    // For isHighlightFullBarEnabled, remove stackIndex
+    return Highlight(
+        x: h.x,
+        y: h.y,
+        xPx: h.xPx,
+        yPx: h.yPx,
+        dataSetIndex: h.dataSetIndex,
+        stackIndex: -1,
+        axis: h.axis);
   }
 
   /// The passed outputRect will be assigned the values of the bounding box of the specified Entry in the specified DataSet.
@@ -204,7 +199,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   Rect getBarBounds(BarEntry e) {
     Rect bounds = Rect.zero;
 
-    IBarDataSet set = getBarData().getDataSetForEntry(e);
+    IBarDataSet? set = getBarData().getDataSetForEntry(e);
 
     if (set == null) {
       bounds = Rect.fromLTRB(double.minPositive, double.minPositive,
@@ -278,6 +273,6 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
 
   @override
   BarData getBarData() {
-    return getData();
+    return getData() as BarData;
   }
 }

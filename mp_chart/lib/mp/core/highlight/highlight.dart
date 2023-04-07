@@ -8,10 +8,10 @@ class Highlight {
   double _y = double.nan;
 
   /// the x-pixel of the highlight
-  double _xPx;
+  late double _xPx;
 
   /// the y-pixel of the highlight
-  double _yPx;
+  late double _yPx;
 
   /// the index of the data object - in case it refers to more than one
   int _dataIndex = -1;
@@ -19,19 +19,19 @@ class Highlight {
   ///
   /// the index of the datase
   /// t the highlighted value is in
-  int _dataSetIndex;
+  late int _dataSetIndex;
 
   /// index which value of a stacked bar entry is highlighted, default -1
   int _stackIndex = -1;
 
   /// the axis the highlighted value belongs to
-  AxisDependency _axis;
+  late AxisDependency? axis;
 
   /// the x-position (pixels) on which this highlight object was last drawn
-  double _drawX;
+  late double _drawX;
 
   /// the y-position (pixels) on which this highlight object was last drawn
-  double _drawY;
+  late double _drawY;
 
   Highlight(
       {double x = double.nan,
@@ -41,13 +41,13 @@ class Highlight {
       int dataSetIndex = 0,
       int stackIndex = -1,
       // ignore: avoid_init_to_null
-      AxisDependency axis = null}) {
+      AxisDependency? axis = null}) {
     this._x = x;
     this._y = y;
     this._xPx = xPx;
     this._yPx = yPx;
     this._dataSetIndex = dataSetIndex;
-    this._axis = axis;
+    this.axis = axis;
     this._stackIndex = stackIndex;
   }
 
@@ -75,7 +75,7 @@ class Highlight {
     return _stackIndex >= 0;
   }
 
-  AxisDependency get axis => _axis;
+  // AxisDependency get axis => _axis;
 
   /// Sets the x- and y-position (pixels) where this highlight was last drawn.
   ///

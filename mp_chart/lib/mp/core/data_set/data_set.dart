@@ -4,7 +4,7 @@ import 'package:mp_chart/mp/core/enums/rounding.dart';
 
 abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   /// the entries that this DataSet represents / holds together
-  List<T> _values;
+  late List<T> _values;
 
   /// maximum y-value in the value array
   double _yMax = -double.infinity;
@@ -27,7 +27,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   DataSet(List<T> values, String label) : super.withLabel(label) {
     this._values = values;
 
-    if (_values == null) _values = List<T>();
+    if (_values == null) _values = <T>[];
 
     calcMinMax();
   }
@@ -169,7 +169,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     if (e == null) return;
 
     if (_values == null) {
-      _values = List<T>();
+      _values = <T>[];
     }
 
     calcMinMax1(e);
@@ -194,7 +194,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     List<T> valueDatas = values;
     if (valueDatas == null) {
-      valueDatas = List<T>();
+      valueDatas = <T>[];
     }
 
     calcMinMax1(e);
@@ -247,18 +247,18 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
   @override
   int getEntryIndex2(Entry e) {
-    return _values.indexOf(e);
+    return _values.indexOf(e as T);
   }
 
   @override
-  T getEntryForXValue1(double xValue, double closestToY, Rounding rounding) {
+  T? getEntryForXValue1(double xValue, double closestToY, Rounding rounding) {
     int index = getEntryIndex1(xValue, closestToY, rounding);
     if (index > -1) return _values[index];
     return null;
   }
 
   @override
-  T getEntryForXValue2(double xValue, double closestToY) {
+  T? getEntryForXValue2(double xValue, double closestToY) {
     return getEntryForXValue1(xValue, closestToY, Rounding.CLOSEST);
   }
 
@@ -352,7 +352,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
   @override
   List<T> getEntriesForXValue(double xValue) {
-    List<T> entries = List<T>();
+    List<T> entries = <T>[];
 
     int low = 0;
     int high = _values.length - 1;

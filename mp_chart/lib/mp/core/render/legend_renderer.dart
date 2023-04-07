@@ -21,13 +21,13 @@ import 'package:mp_chart/mp/core/view_port.dart';
 
 class LegendRenderer extends Renderer {
   /// paint for the legend labels
-  TextPainter _legendLabelPaint;
+  late TextPainter _legendLabelPaint;
 
   /// paint used for the legend forms
-  Paint _legendFormPaint;
+  late Paint _legendFormPaint;
 
   /// the legend object this renderer renders
-  Legend _legend;
+  late Legend _legend;
 
   LegendRenderer(ViewPortHandler viewPortHandler, Legend legend)
       : super(viewPortHandler) {
@@ -59,18 +59,20 @@ class LegendRenderer extends Renderer {
     _legendLabelPaint = value;
   }
 
-  List<LegendEntry> _computedEntries = List(16);
+  List<LegendEntry> _computedEntries = []..length = 16;
 
   /// Prepares the legend and calculates all needed forms, labels and colors.
   ///
   /// @param data
   void computeLegend(ChartData<IDataSet> data) {
     if (!_legend.isLegendCustom) {
-      _computedEntries = List();
+      _computedEntries = [];
 
       // loop for building up the colors and labels used in the legend
       for (int i = 0; i < data.getDataSetCount(); i++) {
-        IDataSet dataSet = data.getDataSetByIndex(i);
+        IDataSet? dataSet = data.getDataSetByIndex(i);
+
+        if (dataSet == null) continue;
 
         List<Color> clrs = dataSet.getColors();
         int entryCount = dataSet.getEntryCount();
@@ -146,14 +148,14 @@ class LegendRenderer extends Renderer {
           // all others
 
           for (int j = 0; j < clrs.length && j < entryCount; j++) {
-            String label;
+            String? label = null;
 
             // if multiple colors are set for a DataSet, group them
             if (j < clrs.length - 1 && j < entryCount - 1) {
               label = null;
             } else {
               // add label to the last entry
-              label = data.getDataSetByIndex(i).getLabel();
+              label = data.getDataSetByIndex(i)?.getLabel();
             }
 
             _computedEntries.add(LegendEntry(
@@ -183,7 +185,8 @@ class LegendRenderer extends Renderer {
   TextPainter getLabelPainter() {
     var fontFamily = _legend.typeface?.fontFamily;
     var fontWeight = _legend.typeface?.fontWeight;
-    return PainterUtils.create(_legendLabelPaint, null, _legend.textColor, _legend.textSize,
+    return PainterUtils.create(
+        _legendLabelPaint, null, _legend.textColor, _legend.textSize,
         fontFamily: fontFamily, fontWeight: fontWeight);
   }
 
@@ -332,7 +335,7 @@ class LegendRenderer extends Renderer {
               if (direction == LegendDirection.RIGHT_TO_LEFT)
                 posX -= calculatedLabelSizes[i].width;
 
-              drawLabel(c, posX, posY + labelLineHeight, e.label);
+              drawLabel(c, posX, posY + labelLineHeight, e.label ?? "");
 
               if (direction == LegendDirection.LEFT_TO_RIGHT)
                 posX += calculatedLabelSizes[i].width;
@@ -406,13 +409,13 @@ class LegendRenderer extends Renderer {
               else if (wasStacked) posX = originPosX;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
-                posX -= Utils.calcTextWidth(_legendLabelPaint, e.label);
+                posX -= Utils.calcTextWidth(_legendLabelPaint, e.label ?? "");
 
               if (!wasStacked) {
-                drawLabel(c, posX, posY + labelLineHeight, e.label);
+                drawLabel(c, posX, posY + labelLineHeight, e.label ?? "");
               } else {
                 posY += labelLineHeight + labelLineSpacing;
-                drawLabel(c, posX, posY + labelLineHeight, e.label);
+                drawLabel(c, posX, posY + labelLineHeight, e.label ?? "");
               }
 
               // make a step down
@@ -488,7 +491,7 @@ class LegendRenderer extends Renderer {
           final DashPathEffect formLineDashEffect =
               entry.formLineDashEffect == null
                   ? legend.getFormLineDashEffect()
-                  : entry.formLineDashEffect;
+                  : entry.formLineDashEffect!;
           _legendFormPaint = Paint()
             ..isAntiAlias = true
             ..color = entry.formColor
@@ -509,7 +512,7 @@ class LegendRenderer extends Renderer {
 
   void drawLabel(Canvas c, double x, double y, String label) {
     _legendLabelPaint.text =
-        TextSpan(text: label, style: _legendLabelPaint.text.style);
+        TextSpan(text: label, style: _legendLabelPaint.text?.style);
     _legendLabelPaint.layout();
     _legendLabelPaint.paint(c, Offset(x, y - _legendLabelPaint.height));
   }

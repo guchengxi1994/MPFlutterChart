@@ -103,8 +103,8 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     double min = 20;
     int cnt = 5;
 
-    List<RadarEntry> entries1 = List();
-    List<RadarEntry> entries2 = List();
+    List<RadarEntry> entries1 = [];
+    List<RadarEntry> entries2 = [];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -134,7 +134,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     set2.setDrawHighlightCircleEnabled(true);
     set2.setDrawHighlightIndicators(false);
 
-    List<IRadarDataSet> sets = List();
+    List<IRadarDataSet> sets = [];
     sets.add(set1);
     sets.add(set2);
 
@@ -158,7 +158,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 }
 
 class A extends ValueFormatter {
-  final List<String> mActivities = List()
+  final List<String> mActivities = []
     ..add("Burger")
     ..add("Steak")
     ..add("Salad")

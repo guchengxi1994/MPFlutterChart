@@ -5,22 +5,29 @@ import 'package:mp_chart/mp/core/range.dart';
 
 class BarEntry extends Entry {
   /// the values the stacked barchart holds
-  List<double> _yVals;
+  late List<double> _yVals;
 
   /// the ranges for the individual stack values - automatically calculated
-  List<Range> _ranges;
+  late List<Range> _ranges;
 
   /// the sum of all negative values this entry (if stacked) contains
-  double _negativeSum;
+  late double _negativeSum;
 
   /// the sum of all positive values this entry (if stacked) contains
-  double _positiveSum;
+  late double _positiveSum;
 
-  BarEntry({double x, double y, ui.Image icon, Object data})
+  BarEntry(
+      {required double x,
+      required double y,
+      required ui.Image icon,
+      required Object data})
       : super(x: x, y: y, icon: icon, data: data);
 
   BarEntry.fromListYVals(
-      {double x, List<double> vals, ui.Image icon, Object data})
+      {required double x,
+      required List<double> vals,
+      required ui.Image icon,
+      required Object data})
       : super(x: x, y: calcSum(vals), icon: icon, data: data) {
     this._yVals = vals;
     calcPosNegSum();
@@ -28,7 +35,7 @@ class BarEntry extends Entry {
   }
 
   BarEntry copy() {
-    BarEntry copied = BarEntry(x: x, y: y, data: mData);
+    BarEntry copied = BarEntry(x: x, y: y, data: mData, icon: super.mIcon);
     copied.setVals(_yVals);
     return copied;
   }
@@ -108,7 +115,7 @@ class BarEntry extends Entry {
 
     if (values == null || values.length == 0) return;
 
-    _ranges = List(values.length);
+    _ranges = []..length = values.length;
 
     double negRemain = -negativeSum;
     double posRemain = 0.0;

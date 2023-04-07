@@ -24,9 +24,9 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     // zoom / contentrect bounds)
     if (viewPortHandler.contentWidth() > 10 &&
         !viewPortHandler.isFullyZoomedOutY()) {
-      MPPointD p1 = trans.getValuesByTouchPoint1(
+      MPPointD p1 = transform!.getValuesByTouchPoint1(
           viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
-      MPPointD p2 = trans.getValuesByTouchPoint1(
+      MPPointD p2 = transform!.getValuesByTouchPoint1(
           viewPortHandler.contentLeft(), viewPortHandler.contentTop());
 
       if (inverted) {
@@ -49,9 +49,9 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     axisLabelPaint = PainterUtils.create(
         axisLabelPaint,
         null,
-        axisLabelPaint.text.style.color == null
+        axisLabelPaint.text?.style?.color == null
             ? ColorUtils.HOLO_GREEN_DARK
-            : axisLabelPaint.text.style.color,
+            : axisLabelPaint.text?.style?.color,
         xAxis.textSize,
         fontWeight: xAxis.typeface?.fontWeight,
         fontFamily: xAxis.typeface?.fontFamily);
@@ -122,7 +122,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     final double labelRotationAngleDegrees = xAxis.labelRotationAngle;
     bool centeringEnabled = xAxis.isCenterAxisLabelsEnabled();
 
-    List<double> positions = List(xAxis.entryCount * 2);
+    List<double> positions = [xAxis.entryCount * 2];
 
     for (int i = 0; i < positions.length; i += 2) {
       // only fill x values
@@ -133,7 +133,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
       }
     }
 
-    trans.pointValuesToPixel(positions);
+    transform!.pointValuesToPixel(positions);
 
     for (int i = 0; i < positions.length; i += 2) {
       double y = positions[i + 1];
@@ -238,13 +238,13 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
       pts[1] = l.limit;
 
-      trans.pointValuesToPixel(pts);
+      transform!.pointValuesToPixel(pts);
 
       limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
       limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
-      if (l.dashPathEffect != null) {
-        limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
+      if (l.dashpathEffect != null) {
+        limitLinePath = l.dashpathEffect!.convert2DashPath(limitLinePath);
       }
       c.drawPath(limitLinePath, limitLinePaint);
       limitLinePath.reset();

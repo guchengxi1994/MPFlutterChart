@@ -5,17 +5,17 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class PieEntry extends Entry {
-  String _label;
-  double _labelTextSize;
-  ui.Color _labelColor;
+  late String _label;
+  late double? _labelTextSize;
+  late ui.Color _labelColor;
 
   PieEntry(
-      {double value,
-      String label,
-      ui.Image icon,
-      Object data,
-      double labelTextSize,
-      ui.Color labelColor})
+      {required double value,
+      required String label,
+      required ui.Image icon,
+      required Object data,
+      required double labelTextSize,
+      required ui.Color labelColor})
       : super(x: 0, y: value, icon: icon, data: data) {
     this._label = label;
     this._labelTextSize = labelTextSize ?? Utils.convertDpToPixel(10);
@@ -27,14 +27,20 @@ class PieEntry extends Entry {
   }
 
   PieEntry copy() {
-    PieEntry e = PieEntry(value: getValue(), label: _label, data: mData);
+    PieEntry e = PieEntry(
+        value: getValue(),
+        label: _label,
+        data: mData,
+        icon: super.mIcon,
+        labelColor: ColorUtils.WHITE,
+        labelTextSize: Utils.convertDpToPixel(10));
     return e;
   }
 
   // ignore: unnecessary_getters_setters
   String get label => _label;
 
-  double get labelTextSize => _labelTextSize;
+  double get labelTextSize => _labelTextSize!;
 
   ui.Color get labelColor => _labelColor;
 

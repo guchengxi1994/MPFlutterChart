@@ -4,12 +4,16 @@ import 'dart:ui' as ui;
 class Entry extends BaseEntry {
   double _x = 0;
 
-  Entry({double x, double y, ui.Image icon, Object data})
+  Entry(
+      {required double x,
+      required double y,
+      required ui.Image icon,
+      required Object data})
       : this._x = x,
         super(y: y, icon: icon, data: data);
 
   Entry copy() {
-    Entry e = Entry(x: _x, y: y, data: mData);
+    Entry e = Entry(x: _x, y: y, data: mData, icon: super.mIcon);
     return e;
   }
 

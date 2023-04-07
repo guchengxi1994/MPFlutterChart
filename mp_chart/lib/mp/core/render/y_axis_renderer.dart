@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
@@ -16,11 +14,12 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 
 class YAxisRenderer extends AxisRenderer {
-  YAxis _yAxis;
+  late YAxis _yAxis;
 
-  Paint _zeroLinePaint;
+  late Paint _zeroLinePaint;
 
-  YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans)
+  YAxisRenderer(
+      ViewPortHandler viewPortHandler, YAxis yAxis, Transformer? trans)
       : super(viewPortHandler, trans, yAxis) {
     this._yAxis = yAxis;
 
@@ -94,7 +93,7 @@ class YAxisRenderer extends AxisRenderer {
       _renderGridLinesPath.lineTo(
           viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
       if (_yAxis.axisLineDashPathEffect != null) {
-        _renderGridLinesPath = _yAxis.axisLineDashPathEffect
+        _renderGridLinesPath = _yAxis.axisLineDashPathEffect!
             .convert2DashPath(_renderGridLinesPath);
       }
       c.drawPath(_renderGridLinesPath, axisLinePaint);
@@ -104,7 +103,7 @@ class YAxisRenderer extends AxisRenderer {
       _renderGridLinesPath.lineTo(
           viewPortHandler.contentRight(), viewPortHandler.contentBottom());
       if (_yAxis.axisLineDashPathEffect != null) {
-        _renderGridLinesPath = _yAxis.axisLineDashPathEffect
+        _renderGridLinesPath = _yAxis.axisLineDashPathEffect!
             .convert2DashPath(_renderGridLinesPath);
       }
       c.drawPath(_renderGridLinesPath, axisLinePaint);
@@ -131,7 +130,7 @@ class YAxisRenderer extends AxisRenderer {
       String text = _yAxis.getFormattedLabel(i);
 
       axisLabelPaint.text =
-          TextSpan(text: text, style: axisLabelPaint.text.style);
+          TextSpan(text: text, style: axisLabelPaint.text?.style);
       axisLabelPaint.layout();
       if (axisDependency == AxisDependency.LEFT) {
         if (position == YAxisLabelPosition.OUTSIDE_CHART) {
@@ -186,7 +185,7 @@ class YAxisRenderer extends AxisRenderer {
         // draw a path because lines don't support dashing on lower android versions
         if (yAxis.gridDashPathEffect != null) {
           c.drawPath(
-              yAxis.gridDashPathEffect
+              yAxis.gridDashPathEffect!
                   .convert2DashPath(linePath(gridLinePath, i, positions)),
               gridPaint);
         } else {
@@ -227,7 +226,7 @@ class YAxisRenderer extends AxisRenderer {
     return p;
   }
 
-  List<double> mGetTransformedPositionsBuffer = List(2);
+  List<double> mGetTransformedPositionsBuffer = []..length = 2;
 
   /// Transforms the values contained in the axis entries to screen pixels and returns them in form of a double array
   /// of x- and y-coordinates.
@@ -235,7 +234,7 @@ class YAxisRenderer extends AxisRenderer {
   /// @return
   List<double> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != _yAxis.entryCount * 2) {
-      mGetTransformedPositionsBuffer = List(_yAxis.entryCount * 2);
+      mGetTransformedPositionsBuffer = [_yAxis.entryCount * 2];
     }
     List<double> positions = mGetTransformedPositionsBuffer;
 
@@ -245,7 +244,7 @@ class YAxisRenderer extends AxisRenderer {
       positions[i + 1] = _yAxis.entries[i ~/ 2];
     }
 
-    trans.pointValuesToPixel(positions);
+    transform!.pointValuesToPixel(positions);
     return positions;
   }
 
@@ -263,7 +262,7 @@ class YAxisRenderer extends AxisRenderer {
     c.clipRect(_zeroLineClippingRect);
 
     // draw zero line
-    MPPointD pos = trans.getPixelForValues(0, 0);
+    MPPointD pos = transform!.getPixelForValues(0, 0);
 
     _zeroLinePaint
       ..style = PaintingStyle.stroke
@@ -283,7 +282,7 @@ class YAxisRenderer extends AxisRenderer {
   }
 
   Path _renderLimitLines = Path();
-  List<double> _renderLimitLinesBuffer = List(2);
+  List<double> _renderLimitLinesBuffer = []..length = 2;
   Rect _limitLineClippingRect = Rect.zero;
 
   // ignore: unnecessary_getters_setters
@@ -329,13 +328,13 @@ class YAxisRenderer extends AxisRenderer {
 
       pts[1] = l.limit;
 
-      trans.pointValuesToPixel(pts);
+      transform!.pointValuesToPixel(pts);
 
       limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
       limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
-      if (l.dashPathEffect != null) {
-        limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
+      if (l.dashpathEffect != null) {
+        limitLinePath = l.dashpathEffect!.convert2DashPath(limitLinePath);
       }
       c.drawPath(limitLinePath, limitLinePaint);
       limitLinePath.reset();

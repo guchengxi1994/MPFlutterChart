@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
@@ -11,18 +9,18 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 
 class RadarChartMarker implements IMarker {
-  Entry _entry;
+  late Entry _entry;
   // ignore: unused_field
-  Highlight _highlight;
+  late Highlight _highlight;
   double _dx = 0.0;
   double _dy = 0.0;
 
-  DefaultValueFormatter _formatter;
-  Color _textColor;
-  Color _backColor;
-  double _fontSize;
+  late DefaultValueFormatter _formatter;
+  late Color? _textColor;
+  late Color? _backColor;
+  late double? _fontSize;
 
-  RadarChartMarker({Color textColor, Color backColor, double fontSize})
+  RadarChartMarker({Color? textColor, Color? backColor, double? fontSize})
       : _textColor = textColor,
         _backColor = backColor,
         _fontSize = fontSize {
@@ -37,7 +35,7 @@ class RadarChartMarker implements IMarker {
     TextPainter painter = PainterUtils.create(null,
         "${_formatter.getFormattedValue1(_entry.y)}", _textColor, _fontSize);
     Paint paint = Paint()
-      ..color = _backColor
+      ..color = _backColor!
       ..strokeWidth = 2
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;
