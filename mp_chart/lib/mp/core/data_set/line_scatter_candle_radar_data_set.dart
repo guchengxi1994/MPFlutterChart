@@ -20,9 +20,9 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
 
-  LineScatterCandleRadarDataSet(List<T> yVals, String label)
+  LineScatterCandleRadarDataSet(List<T>? yVals, String label)
       : super(yVals, label) {
-    _highlightLineWidth = Utils.convertDpToPixel(0.5);
+    _highlightLineWidth = 0.5;
   }
 
   /// Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
@@ -57,7 +57,7 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   /// Sets the width of the highlight line in dp.
   /// @param width
   void setHighlightLineWidth(double width) {
-    _highlightLineWidth = Utils.convertDpToPixel(width);
+    _highlightLineWidth = width;
   }
 
   @override

@@ -8,7 +8,7 @@ class BarEntry extends Entry {
   late List<double> _yVals;
 
   /// the ranges for the individual stack values - automatically calculated
-  late List<Range> _ranges;
+  late List<Range?> _ranges = [];
 
   /// the sum of all negative values this entry (if stacked) contains
   late double _negativeSum;
@@ -16,18 +16,14 @@ class BarEntry extends Entry {
   /// the sum of all positive values this entry (if stacked) contains
   late double _positiveSum;
 
-  BarEntry(
-      {required double x,
-      required double y,
-      required ui.Image icon,
-      required Object data})
+  BarEntry({required double x, required double y, ui.Image? icon, Object? data})
       : super(x: x, y: y, icon: icon, data: data);
 
   BarEntry.fromListYVals(
       {required double x,
       required List<double> vals,
-      required ui.Image icon,
-      required Object data})
+      ui.Image? icon,
+      Object? data})
       : super(x: x, y: calcSum(vals), icon: icon, data: data) {
     this._yVals = vals;
     calcPosNegSum();
@@ -35,7 +31,7 @@ class BarEntry extends Entry {
   }
 
   BarEntry copy() {
-    BarEntry copied = BarEntry(x: x, y: y, data: mData, icon: super.mIcon);
+    BarEntry copied = BarEntry(x: x, y: y, data: mData, icon: mIcon);
     copied.setVals(_yVals);
     return copied;
   }
@@ -52,7 +48,7 @@ class BarEntry extends Entry {
     calcRanges();
   }
 
-  List<Range> get ranges => _ranges;
+  List<Range> get ranges => _ranges as List<Range>;
 
   /// Returns true if this BarEntry is stacked (has a values array), false if not.
   ///
@@ -115,7 +111,8 @@ class BarEntry extends Entry {
 
     if (values == null || values.length == 0) return;
 
-    _ranges = []..length = values.length;
+    // _ranges = []..length = values.length;
+    _ranges = List.filled(values.length, null);
 
     double negRemain = -negativeSum;
     double posRemain = 0.0;

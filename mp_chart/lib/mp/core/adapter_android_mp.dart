@@ -33,8 +33,7 @@ class TypeFace {
   late String _fontFamily;
   late FontWeight _fontWeight;
 
-  TypeFace(
-      {required String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+  TypeFace({String fontFamily = "", FontWeight fontWeight = FontWeight.w400}) {
     _fontFamily = fontFamily;
     _fontWeight = fontWeight;
   }

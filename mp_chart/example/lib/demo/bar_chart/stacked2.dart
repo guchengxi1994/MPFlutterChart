@@ -58,37 +58,37 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     List<BarEntry> values = [];
     values.add(BarEntry.fromListYVals(
         x: 5,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-10)
           ..add(10),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 15,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-12)
           ..add(13),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 25,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-15)
           ..add(15),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 35,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-17)
           ..add(17),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 45,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-19)
           ..add(20),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 45,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-19)
           ..add(20),
         icon: img
@@ -96,37 +96,37 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
         ));
     values.add(BarEntry.fromListYVals(
         x: 55,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-19)
           ..add(19),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 65,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-16)
           ..add(16),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 75,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-13)
           ..add(14),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 85,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-10)
           ..add(11),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 95,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-5)
           ..add(6),
         icon: img));
     values.add(BarEntry.fromListYVals(
         x: 105,
-        vals: List<double>()
+        vals: <double>[]
           ..add(-1)
           ..add(2),
         icon: img));
@@ -205,11 +205,11 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }
 
 class A extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   A() {
     mFormat = NumberFormat("###");
@@ -222,7 +222,7 @@ class A extends ValueFormatter {
 }
 
 class B extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   B() {
     mFormat = NumberFormat("###");

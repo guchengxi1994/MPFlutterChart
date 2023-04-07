@@ -42,11 +42,11 @@ class ScrollingChartViewPager extends StatefulWidget {
 
 class ScrollingChartViewPagerState
     extends SimpleActionState<ScrollingChartViewPager> {
-  LineChartController _lineChartController1;
-  LineChartController _lineChartController2;
-  BarChartController _barChartController;
-  ScatterChartController _scatterChartController;
-  PieChartController _pieChartController;
+  late LineChartController _lineChartController1;
+  late LineChartController _lineChartController2;
+  late BarChartController _barChartController;
+  late ScatterChartController _scatterChartController;
+  late PieChartController _pieChartController;
   var random = Random(1);
 
   @override
@@ -393,7 +393,10 @@ class ScrollingChartViewPagerState
 
       for (int j = 0; j < 12; j++) {
         entries.add(BarEntry(
-            x: j.toDouble(), y: (random.nextDouble() * range) + range / 4));
+            x: j.toDouble(),
+            y: (random.nextDouble() * range) + range / 4,
+            data: null,
+            icon: null));
       }
 
       BarDataSet ds = BarDataSet(entries, _labels[i]);
@@ -440,7 +443,12 @@ class ScrollingChartViewPagerState
 
     for (int i = 0; i < count; i++) {
       entries1.add(PieEntry(
-          value: (random.nextDouble() * 60) + 40, label: "Quarter ${i + 1}"));
+          value: (random.nextDouble() * 60) + 40,
+          label: "Quarter ${i + 1}",
+          data: null,
+          icon: null,
+          labelColor: null,
+          labelTextSize: null));
     }
 
     PieDataSet ds1 = PieDataSet(entries1, "Quarterly Revenues 2015");

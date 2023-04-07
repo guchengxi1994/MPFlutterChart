@@ -320,7 +320,8 @@ class LineChartRenderer extends LineRadarRenderer {
 //    }
   }
 
-  List<double> mLineBuffer = []..length = 4;
+  // List<double> mLineBuffer = []..length = 4;
+  List<double> mLineBuffer = List.filled(4, 0);
 
   /// Draws a normal line.
   ///
@@ -408,10 +409,10 @@ class LineChartRenderer extends LineRadarRenderer {
       // only one color per dataset
 
       if (mLineBuffer.length <
-          max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2)
-        mLineBuffer = [
-          max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 4
-        ];
+          max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2) {
+        mLineBuffer = List.filled(
+            max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 4, 0);
+      }
 
       Entry e1, e2;
 
@@ -599,8 +600,8 @@ class LineChartRenderer extends LineRadarRenderer {
         ValueFormatter formatter = dataSet.getValueFormatter();
 
         MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+        iconsOffset.x = (iconsOffset.x);
+        iconsOffset.y = (iconsOffset.y);
 
         for (int j = 0; j < positions.length; j += 2) {
           double x = positions[j];
@@ -644,9 +645,9 @@ class LineChartRenderer extends LineRadarRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override
@@ -660,7 +661,8 @@ class LineChartRenderer extends LineRadarRenderer {
 //   HashMap<IDataSet, DataSetImageCache> mImageCaches =  HashMap<>();
 
   /// buffer for drawing the circles
-  List<double> mCirclesBuffer = []..length = 2;
+  // List<double> mCirclesBuffer = []..length = 2;
+  List<double> mCirclesBuffer = List.filled(2, 0);
   Map<IDataSet, DataSetImageCache> mImageCaches = Map();
 
   void drawCircles(Canvas c) {

@@ -20,7 +20,7 @@ class LineChartPerformance extends StatefulWidget {
 
 class LineChartPerformanceState
     extends SimpleActionState<LineChartPerformance> {
-  LineChartController _controller;
+  late LineChartController _controller;
   var random = Random(1);
   double _range = 100.0;
   int _count = 0;

@@ -23,12 +23,12 @@ import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/scatter_data_set.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
-import 'package:mp_chart/mp/core/platform_utils.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/util.dart';
+import 'package:mp_chart/mp/core/utils/platform_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-PopupMenuItem item(String text, String id) {
+PopupMenuItem<String> item(String text, String id) {
   return PopupMenuItem<String>(
       value: id,
       child: Container(
@@ -112,7 +112,7 @@ abstract class SimpleActionState<T extends StatefulWidget>
 
 abstract class LineActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  LineChartController controller;
+  late LineChartController controller;
 
   @override
   getBuilder() {
@@ -146,23 +146,23 @@ abstract class LineActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -171,10 +171,10 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'E':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -183,10 +183,10 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawCircles(true);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'F':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -194,20 +194,20 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.CUBIC_BEZIER);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'G':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setMode(
               set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'H':
-        List<ILineDataSet> sets = controller.data.dataSets;
+        List<ILineDataSet> sets = controller.data!.dataSets;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -215,21 +215,21 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.HORIZONTAL_BEZIER);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'K':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'L':
@@ -249,7 +249,7 @@ abstract class LineActionState<T extends StatefulWidget>
         break;
       case 'O':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }
@@ -257,7 +257,7 @@ abstract class LineActionState<T extends StatefulWidget>
 }
 
 abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
-  BarChartController controller;
+  late BarChartController controller;
 
   @override
   getBuilder() {
@@ -346,7 +346,7 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
 
 abstract class HorizontalBarActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  HorizontalBarChartController controller;
+  late HorizontalBarChartController controller;
 
   @override
   getBuilder() {
@@ -434,7 +434,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 }
 
 abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
-  PieChartController controller;
+  late PieChartController controller;
 
   @override
   getBuilder() {
@@ -543,7 +543,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
 
 abstract class CombinedActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  CombinedChartController controller;
+  late CombinedChartController controller;
 
   @override
   getBuilder() {
@@ -583,7 +583,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
           int rnd = _getRandom(controller.data.getDataSetCount().toDouble(), 0)
               .toInt();
           controller.data
-              .removeDataSet1(controller.data.getDataSetByIndex(rnd));
+              .removeDataSet1(controller.data.getDataSetByIndex(rnd)!);
           controller.data.notifyDataChanged();
           controller.state.setStateIfNotDispose();
         }
@@ -602,7 +602,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
 
 abstract class ScatterActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  ScatterChartController controller;
+  late ScatterChartController controller;
 
   @override
   getBuilder() {
@@ -684,7 +684,7 @@ abstract class ScatterActionState<T extends StatefulWidget>
 
 abstract class BubbleActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  BubbleChartController controller;
+  late BubbleChartController controller;
 
   @override
   getBuilder() {
@@ -763,7 +763,7 @@ abstract class BubbleActionState<T extends StatefulWidget>
 
 abstract class CandlestickActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  CandlestickChartController controller;
+  late CandlestickChartController controller;
 
   @override
   getBuilder() {
@@ -850,7 +850,7 @@ abstract class CandlestickActionState<T extends StatefulWidget>
 
 abstract class RadarActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  RadarChartController controller;
+  late RadarChartController controller;
 
   @override
   getBuilder() {
@@ -922,11 +922,11 @@ abstract class RadarActionState<T extends StatefulWidget>
         controller.state.setStateIfNotDispose();
         break;
       case 'H':
-        controller.yAxis.enabled = !controller.yAxis.enabled;
+        controller.yAxis!.enabled = !controller.yAxis!.enabled;
         controller.state.setStateIfNotDispose();
         break;
       case 'I':
-        controller.xAxis.enabled = !controller.xAxis.enabled;
+        controller.xAxis!.enabled = !controller.xAxis!.enabled;
         controller.state.setStateIfNotDispose();
         break;
       case 'J':

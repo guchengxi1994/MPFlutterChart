@@ -234,15 +234,15 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
   @override
   double getRequiredLegendOffset() {
-    var size = legendRenderer.legendLabelPaint.text?.style?.fontSize;
-    return (size == null ? Utils.convertDpToPixel(9) : size) * 4.0;
+    var size = legendRenderer.legendLabelPaint!.text?.style?.fontSize;
+    return (size == null ? 9 : size) * 4.0;
   }
 
   @override
   double getRequiredBaseOffset() {
     return xAxis.enabled && xAxis.drawLabels
         ? xAxis.labelRotatedWidth.toDouble()
-        : Utils.convertDpToPixel(10);
+        : 10;
   }
 
   @override

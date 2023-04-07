@@ -213,15 +213,17 @@ abstract class AxisRenderer extends Renderer {
 
       if (_axis.entries.length < num) {
         // Ensure stops contains at least numStops elements.
-        _axis.entries = [num * 1.0];
+        _axis.entries = List.filled(num, 0);
       }
+
+      // print("[flutter] : ${_axis.entries}");
 
       i = 0;
       for (f = first; i < num; f += interval, ++i) {
         if (f ==
             0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
           f = 0.0;
-
+        // print("[flutter -- i] : ${i}");
         _axis.entries[i] = f;
       }
     }

@@ -126,7 +126,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 
   void _initController() {
     var desc = Description()..enabled = false;

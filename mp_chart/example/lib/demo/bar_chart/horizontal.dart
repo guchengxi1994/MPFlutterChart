@@ -166,28 +166,28 @@ class BarChartHorizontalState
     ll1.setLineWidth(1);
     ll1.enableDashedLine(10, 10, 0);
     ll1.labelPosition = (LimitLabelPosition.CENTER_TOP);
-    ll1.textSize = (10);
+    ll1.textSize = 10;
     ll1.typeface = Util.EXTRA_BOLD;
     var desc = Description()..enabled = false;
     LimitLine ll2 = LimitLine(10, "Lower Limit");
     ll2.setLineWidth(1);
     ll2.enableDashedLine(10, 10, 0);
     ll2.labelPosition = (LimitLabelPosition.CENTER_BOTTOM);
-    ll2.textSize = (10);
+    ll2.textSize = 10;
     ll2.typeface = Util.EXTRA_BOLD;
     LimitLine ll3 = LimitLine(47, "Upper Limit");
     ll3.setLineWidth(1);
     ll3.drawBackground = true;
     ll3.enableDashedLine(10, 10, 0);
     ll3.labelPosition = (LimitLabelPosition.LEFT_CENTER);
-    ll3.textSize = (10);
+    ll3.textSize = 10;
     ll3.typeface = Util.EXTRA_BOLD;
     LimitLine ll4 = LimitLine(10, "Lower Limit");
     ll4.drawBackground = true;
     ll4.setLineWidth(1);
     ll4.enableDashedLine(10, 10, 0);
     ll4.labelPosition = (LimitLabelPosition.RIGHT_CENTER);
-    ll4.textSize = (10);
+    ll4.textSize = 10;
     ll4.typeface = Util.EXTRA_BOLD;
     controller = HorizontalBarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
@@ -251,7 +251,7 @@ class BarChartHorizontalState
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //

@@ -27,7 +27,7 @@ class RadarChartMarker implements IMarker {
     _formatter = DefaultValueFormatter(0);
     this._textColor ??= ColorUtils.PURPLE;
     this._backColor ??= ColorUtils.WHITE;
-    this._fontSize ??= Utils.convertDpToPixel(10);
+    this._fontSize ??= 10;
   }
 
   @override

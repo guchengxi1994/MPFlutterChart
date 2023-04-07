@@ -24,8 +24,8 @@ class YAxisRenderer extends AxisRenderer {
     this._yAxis = yAxis;
 
     if (viewPortHandler != null) {
-      axisLabelPaint = PainterUtils.create(
-          axisLabelPaint, null, ColorUtils.BLACK, Utils.convertDpToPixel(10));
+      axisLabelPaint =
+          PainterUtils.create(axisLabelPaint, null, ColorUtils.BLACK, (10));
 
       _zeroLinePaint = Paint()
         ..color = ColorUtils.GRAY
@@ -226,7 +226,9 @@ class YAxisRenderer extends AxisRenderer {
     return p;
   }
 
-  List<double> mGetTransformedPositionsBuffer = []..length = 2;
+  // List<double> mGetTransformedPositionsBuffer = []..length = 2;
+
+  List<double> mGetTransformedPositionsBuffer = List.filled(2, 0);
 
   /// Transforms the values contained in the axis entries to screen pixels and returns them in form of a double array
   /// of x- and y-coordinates.
@@ -234,7 +236,8 @@ class YAxisRenderer extends AxisRenderer {
   /// @return
   List<double> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != _yAxis.entryCount * 2) {
-      mGetTransformedPositionsBuffer = [_yAxis.entryCount * 2];
+      // mGetTransformedPositionsBuffer = [_yAxis.entryCount * 2];
+      mGetTransformedPositionsBuffer = List.filled(_yAxis.entryCount * 2, 0);
     }
     List<double> positions = mGetTransformedPositionsBuffer;
 
@@ -282,7 +285,8 @@ class YAxisRenderer extends AxisRenderer {
   }
 
   Path _renderLimitLines = Path();
-  List<double> _renderLimitLinesBuffer = []..length = 2;
+  // List<double> _renderLimitLinesBuffer = []..length = 2;
+  List<double> _renderLimitLinesBuffer = List.filled(2, 0);
   Rect _limitLineClippingRect = Rect.zero;
 
   // ignore: unnecessary_getters_setters
@@ -349,7 +353,7 @@ class YAxisRenderer extends AxisRenderer {
             fontFamily: l.typeface?.fontFamily);
         final double labelLineHeight =
             Utils.calcTextHeight(painter, label).toDouble();
-        double xOffset = Utils.convertDpToPixel(4) + l.xOffset;
+        double xOffset = (4) + l.xOffset;
         double yOffset = l.lineWidth + labelLineHeight + l.yOffset;
         painter.layout();
         final LimitLabelPosition position = l.labelPosition;

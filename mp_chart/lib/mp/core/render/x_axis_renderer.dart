@@ -21,8 +21,7 @@ class XAxisRenderer extends AxisRenderer {
       : super(viewPortHandler, trans, xAxis) {
     this._xAxis = xAxis;
 
-    axisLabelPaint = PainterUtils.create(
-        null, null, ColorUtils.BLACK, Utils.convertDpToPixel(10));
+    axisLabelPaint = PainterUtils.create(null, null, ColorUtils.BLACK, (10));
   }
 
   void setupGridPaint() {
@@ -185,7 +184,8 @@ class XAxisRenderer extends AxisRenderer {
     final double labelRotationAngleDegrees = _xAxis.labelRotationAngle;
     bool centeringEnabled = _xAxis.isCenterAxisLabelsEnabled();
 
-    List<double> positions = [_xAxis.entryCount * 2];
+    // List<double> positions = [_xAxis.entryCount * 2];
+    List<double> positions = List.filled(_xAxis.entryCount * 2, 0);
 
     for (int i = 0; i < positions.length; i += 2) {
       // only fill x values
@@ -237,7 +237,9 @@ class XAxisRenderer extends AxisRenderer {
   }
 
   Path mRenderGridLinesPath = Path();
-  List<double> mRenderGridLinesBuffer = []..length = 2;
+  // List<double> mRenderGridLinesBuffer = []..length = 2;
+
+  List<double> mRenderGridLinesBuffer = List.filled(2, 0);
 
   @override
   void renderGridLines(Canvas c) {
@@ -247,9 +249,14 @@ class XAxisRenderer extends AxisRenderer {
     c.clipRect(getGridClippingRect());
 
     if (mRenderGridLinesBuffer.length != axis.entryCount * 2) {
-      mRenderGridLinesBuffer = [_xAxis.entryCount * 2];
+      // mRenderGridLinesBuffer = [_xAxis.entryCount * 2];
+      mRenderGridLinesBuffer = List.filled(_xAxis.entryCount * 2, 0);
     }
     List<double> positions = mRenderGridLinesBuffer;
+
+    // print("[flutter -- positions] : ${positions}");
+    // print("[flutter -- positions length] : ${positions.length}");
+    // print("[flutter -- _xAxis.entries] : ${_xAxis.entries}");
 
     for (int i = 0; i < positions.length; i += 2) {
       positions[i] = _xAxis.entries[i ~/ 2];
@@ -300,7 +307,9 @@ class XAxisRenderer extends AxisRenderer {
     path.reset();
   }
 
-  List<double> mRenderLimitLinesBuffer = []..length = 2;
+  // List<double> mRenderLimitLinesBuffer = []..length = 2;
+
+  List<double> mRenderLimitLinesBuffer = List.filled(2, 0);
   Rect mLimitLineClippingRect = Rect.zero;
 
   /// Draws the LimitLines associated with this axis to the screen.
@@ -341,7 +350,8 @@ class XAxisRenderer extends AxisRenderer {
     }
   }
 
-  List<double> _limitLineSegmentsBuffer = []..length = 4;
+  // List<double> _limitLineSegmentsBuffer = []..length = 4;
+  List<double> _limitLineSegmentsBuffer = List.filled(4, 0);
   Path _limitLinePath = Path();
 
   void renderLimitLineLine(

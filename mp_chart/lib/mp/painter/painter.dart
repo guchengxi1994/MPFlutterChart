@@ -71,9 +71,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   final Legend _legend;
   final LegendRenderer _legendRenderer;
 
-  final OnChartValueSelectedListener _selectionListener;
+  final OnChartValueSelectedListener? _selectionListener;
 
-  final DataRendererSettingFunction _rendererSettingFunction;
+  final DataRendererSettingFunction? _rendererSettingFunction;
 
   ///////////////////////////////////////////////////
   /// object responsible for rendering the data
@@ -141,8 +141,8 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener)
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener)
       : _data = data,
         _viewPortHandler = viewPortHandler,
         _animator = animator,
@@ -373,17 +373,17 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
     if (callListener && _selectionListener != null) {
       if (!valuesToHighlight())
-        _selectionListener.onNothingSelected();
+        _selectionListener!.onNothingSelected();
       else {
         // notify the listener
-        _selectionListener.onValueSelected(e, high!);
+        _selectionListener!.onValueSelected(e, high!);
       }
     }
   }
 
   void selectedValue(Highlight high) {
     Entry? e = _data.getEntryForHighlight(high);
-    _selectionListener.onValueSelected(e, null);
+    _selectionListener!.onValueSelected(e, null);
   }
 
   /// Returns the Highlight object (contains x-index and DataSet index) of the

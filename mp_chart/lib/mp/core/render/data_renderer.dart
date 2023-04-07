@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
@@ -9,7 +7,6 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/render/renderer.dart';
 import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
-import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /// the animator object used to perform animations on the chart data
@@ -23,7 +20,7 @@ abstract class DataRenderer extends Renderer {
 
   late Paint _drawPaint;
 
-  late TextPainter _valuePaint;
+  late TextPainter? valuePaint = null;
 
   DataRenderer(Animator animator, ViewPortHandler viewPortHandler)
       : super(viewPortHandler) {
@@ -35,8 +32,8 @@ abstract class DataRenderer extends Renderer {
 
     _drawPaint = Paint();
 
-    _valuePaint = PainterUtils.create(_valuePaint, null,
-        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
+    valuePaint = PainterUtils.create(
+        valuePaint, null, Color.fromARGB(255, 63, 63, 63), (9));
 
     _highlightPaint = Paint()
       ..isAntiAlias = true
@@ -50,13 +47,13 @@ abstract class DataRenderer extends Renderer {
         chart.getMaxVisibleCount() * viewPortHandler.getScaleX();
   }
 
-  // ignore: unnecessary_getters_setters
-  TextPainter get valuePaint => _valuePaint;
+  // // ignore: unnecessary_getters_setters
+  // TextPainter get valuePaint => _valuePaint;
 
-  // ignore: unnecessary_getters_setters
-  set valuePaint(TextPainter value) {
-    _valuePaint = value;
-  }
+  // // ignore: unnecessary_getters_setters
+  // set valuePaint(TextPainter value) {
+  //   _valuePaint = value;
+  // }
 
   // ignore: unnecessary_getters_setters
   Paint get highlightPaint => _highlightPaint;
@@ -77,8 +74,8 @@ abstract class DataRenderer extends Renderer {
   ///
   /// @param set
   void applyValueTextStyle(IDataSet set) {
-    _valuePaint = PainterUtils.create(_valuePaint, null,
-        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9),
+    valuePaint = PainterUtils.create(
+        valuePaint, null, Color.fromARGB(255, 63, 63, 63), (9),
         fontFamily: set?.getValueTypeface()?.fontFamily,
         fontWeight: set?.getValueTypeface()?.fontWeight);
   }

@@ -14,8 +14,8 @@ class BubbleEntry extends Entry {
       {required double x,
       required double y,
       required double size,
-      required Object data,
-      required ui.Image icon})
+      Object? data,
+      ui.Image? icon})
       : super(x: x, y: y, data: data, icon: icon) {
     this._size = size;
   }

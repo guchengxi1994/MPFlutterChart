@@ -20,8 +20,8 @@ class CandleEntry extends Entry {
       required double shadowL,
       required double open,
       required double close,
-      required ui.Image icon,
-      required Object data})
+      ui.Image? icon,
+      Object? data})
       : super(x: x, y: (shadowH + shadowL) / 2, icon: icon, data: data) {
     this._shadowHigh = shadowH;
     this._shadowLow = shadowL;
@@ -52,7 +52,7 @@ class CandleEntry extends Entry {
         open: _open,
         close: _close,
         data: mData,
-        icon: super.mIcon);
+        icon: mIcon);
     return c;
   }
 

@@ -28,97 +28,109 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
   var random = Random(1);
   int _count = 45;
   double _range = 180.0;
+  var future;
 
   @override
   void initState() {
     _initController();
-    _initLineData(_count, _range);
+    future = _initLineData(_count, _range);
     super.initState();
   }
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: _initLineChart(),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder(
+      builder: (c, s) {
+        if (s.connectionState == ConnectionState.done) {
+          return Stack(
             children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initLineData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
+              Positioned(
+                right: 0,
+                left: 0,
+                top: 0,
+                bottom: 100,
+                child: _initLineChart(),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 180,
-                            onChanged: (value) {
-                              _range = value;
-                              _initLineData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Center(
+                              child: Slider(
+                                  value: _count.toDouble(),
+                                  min: 0,
+                                  max: 500,
+                                  onChanged: (value) async {
+                                    _count = value.toInt();
+                                    await _initLineData(_count, _range);
+                                  })),
+                        ),
+                        Container(
+                            constraints:
+                                BoxConstraints.expand(height: 50, width: 60),
+                            padding: EdgeInsets.only(right: 15.0),
+                            child: Center(
+                                child: Text(
+                              "$_count",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ))),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Center(
+                              child: Slider(
+                                  value: _range,
+                                  min: 0,
+                                  max: 180,
+                                  onChanged: (value) async {
+                                    _range = value;
+                                    await _initLineData(_count, _range);
+                                  })),
+                        ),
+                        Container(
+                            constraints:
+                                BoxConstraints.expand(height: 50, width: 60),
+                            padding: EdgeInsets.only(right: 15.0),
+                            child: Center(
+                                child: Text(
+                              "${_range.toInt()}",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ))),
+                      ],
+                    )
+                  ],
+                ),
               )
             ],
-          ),
-        )
-      ],
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+      future: future,
     );
   }
 
@@ -196,7 +208,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         description: desc);
   }
 
-  void _initLineData(int count, double range) async {
+  Future _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = [];
 

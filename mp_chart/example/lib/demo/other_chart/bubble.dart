@@ -168,7 +168,8 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   }
 
   void _initBubbleData(int count, double range) async {
-    List<ui.Image> imgs = List(3);
+    // List<ui.Image> imgs = []..length = 3;
+    List<ui.Image?> imgs = List.filled(3, null);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
@@ -231,5 +232,5 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }

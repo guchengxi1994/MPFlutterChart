@@ -39,8 +39,8 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -58,7 +58,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
+      OnDrawListener? drawListener,
       YAxis axisLeft,
       YAxis axisRight,
       YAxisRenderer axisRendererLeft,
@@ -68,7 +68,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : super(
             data,
             animator,

@@ -23,7 +23,7 @@ class BarChartSine extends StatefulWidget {
 }
 
 class BarChartSineState extends BarActionState<BarChartSine> {
-  List<BarEntry> _data;
+  late List<BarEntry> _data;
   var random = Random(1);
   int _count = 150;
 

@@ -104,13 +104,13 @@ class ScrollingChartMultipleState
   }
 
   Widget _renderItem(int index) {
-    Chart chart;
+    late Chart chart;
     if (_controllers[index] is LineChartController) {
-      chart = _getLineChart(_controllers[index]);
+      chart = _getLineChart(_controllers[index] as LineChartController);
     } else if (_controllers[index] is BarChartController) {
-      chart = _getBarChart(_controllers[index]);
+      chart = _getBarChart(_controllers[index] as BarChartController);
     } else if (_controllers[index] is PieChartController) {
-      chart = _getPieChart(_controllers[index]);
+      chart = _getPieChart(_controllers[index] as PieChartController);
     }
 
     return Container(height: 200, child: chart);

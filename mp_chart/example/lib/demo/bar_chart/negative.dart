@@ -22,7 +22,7 @@ class BarChartNegative extends StatefulWidget {
 }
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
-  BarChartController _controller;
+  late BarChartController _controller;
   List<Data> _data = [];
 
   @override
@@ -159,7 +159,7 @@ class Data {
 }
 
 class Formatter extends ValueFormatter {
-  NumberFormat _format;
+  late NumberFormat _format;
 
   Formatter() : super() {
     _format = NumberFormat("######.0");

@@ -17,8 +17,7 @@ class CircleShapeRenderer implements IShapeRenderer {
       Paint renderPaint) {
     final double shapeSize = dataSet.getScatterShapeSize();
     final double shapeHalf = shapeSize / 2;
-    final double shapeHoleSizeHalf =
-        Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+    final double shapeHoleSizeHalf = (dataSet.getScatterShapeHoleRadius());
     final double shapeHoleSize = shapeHoleSizeHalf * 2.0;
     final double shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.0;
     final double shapeStrokeSizeHalf = shapeStrokeSize / 2.0;

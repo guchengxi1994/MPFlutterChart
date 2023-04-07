@@ -65,10 +65,10 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   Rect _circleBox = Rect.zero;
 
   /// array that holds the width of each pie-slice in degrees
-  List<double> _drawAngles = []..length = 1;
+  List<double> _drawAngles = [0];
 
   /// array that holds the absolute angle in degrees of each slice
-  List<double> _absoluteAngles = []..length = 1;
+  List<double> _absoluteAngles = [0];
 
   /// Hole color
   Color _holeColor;
@@ -278,14 +278,16 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     int entryCount = getData().getEntryCount();
 
     if (_drawAngles.length != entryCount) {
-      _drawAngles = []..length = entryCount;
+      // _drawAngles = []..length = entryCount;
+      _drawAngles = List.filled(entryCount, 0);
     } else {
       for (int i = 0; i < entryCount; i++) {
         _drawAngles[i] = 0;
       }
     }
     if (_absoluteAngles.length != entryCount) {
-      _absoluteAngles = []..length = entryCount;
+      // _absoluteAngles = []..length = entryCount;
+      _absoluteAngles = List.filled(entryCount, 0);
     } else {
       for (int i = 0; i < entryCount; i++) {
         _absoluteAngles[i] = 0;
@@ -298,7 +300,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
     bool hasMinAngle =
         _minAngleForSlices != 0 && entryCount * _minAngleForSlices <= _maxAngle;
-    List<double> minAngles = []..length = entryCount;
+    // List<double> minAngles = []..length = entryCount;
+
+    List<double> minAngles = List.filled(entryCount, 0);
 
     int cnt = 0;
     double offset = 0;
@@ -460,8 +464,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   double getRequiredLegendOffset() {
     // ignore: null_aware_before_operator
     var offset =
-        legendRenderer.legendLabelPaint.text?.style?.fontSize ?? 8 * 2.0;
-    return offset == null ? Utils.convertDpToPixel(9) : offset;
+        legendRenderer.legendLabelPaint!.text?.style?.fontSize ?? 8 * 2.0;
+    return offset == null ? 9 : offset;
   }
 
   @override

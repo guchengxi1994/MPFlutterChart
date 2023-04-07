@@ -129,12 +129,12 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
                 legend.horizontalAlignment == LegendHorizontalAlignment.RIGHT) {
               if (legend.verticalAlignment == LegendVerticalAlignment.CENTER) {
                 // this is the space between the legend and the chart
-                final double spacing = Utils.convertDpToPixel(13);
+                final double spacing = 13;
 
                 xLegendOffset = fullLegendWidth + spacing;
               } else {
                 // this is the space between the legend and the chart
-                double spacing = Utils.convertDpToPixel(8);
+                double spacing = 8;
 
                 double legendWidth = fullLegendWidth + spacing;
                 double legendHeight =
@@ -154,7 +154,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
 
                 double distReference =
                     distanceToCenter(reference.x, reference.y);
-                double minOffset = Utils.convertDpToPixel(5);
+                double minOffset = 5;
 
                 if (bottomY >= center.y &&
                     size.height - legendWidth > size.width) {
@@ -235,7 +235,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
       legendBottom += getRequiredBaseOffset();
     }
 
-    double minOffset = Utils.convertDpToPixel(_minOffset);
+    double minOffset = _minOffset;
 
     if (this is RadarChartPainter) {
       XAxis x = this.xAxis;

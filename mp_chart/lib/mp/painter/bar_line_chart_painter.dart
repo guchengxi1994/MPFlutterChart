@@ -35,7 +35,7 @@ abstract class BarLineChartBasePainter<
         T extends BarLineScatterCandleBubbleData<
             IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
     implements BarLineScatterCandleBubbleDataProvider {
-  final ChartTransListener _chartTransListener;
+  final ChartTransListener? _chartTransListener;
 
   /// the maximum number of entries to which values will be drawn
   /// (entry numbers greater than this value will cause value-labels to disappear)
@@ -87,7 +87,7 @@ abstract class BarLineChartBasePainter<
 
   /// the listener for user drawing on the chart
   // ignore: unused_field
-  final OnDrawListener _drawListener;
+  final OnDrawListener? _drawListener;
 
   /// the object representing the labels on the left y-axis
   final YAxis _axisLeft;
@@ -159,8 +159,8 @@ abstract class BarLineChartBasePainter<
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -177,7 +177,7 @@ abstract class BarLineChartBasePainter<
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
+      OnDrawListener? drawListener,
       YAxis axisLeft,
       YAxis axisRight,
       YAxisRenderer axisRendererLeft,
@@ -188,7 +188,7 @@ abstract class BarLineChartBasePainter<
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
       Paint backgroundPaint,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
@@ -546,7 +546,7 @@ abstract class BarLineChartBasePainter<
       offsetBottom += extraBottomOffset;
       offsetLeft += extraLeftOffset;
 
-      double minOffset = Utils.convertDpToPixel(_minOffset);
+      double minOffset = _minOffset;
 
       viewPortHandler.restrainViewPort(
           max(minOffset, offsetLeft),
@@ -601,7 +601,7 @@ abstract class BarLineChartBasePainter<
     viewPortHandler.zoom4(scaleX, scaleY, x, -y, _zoomMatrixBuffer);
     viewPortHandler.refresh(_zoomMatrixBuffer);
     if (_chartTransListener != null) {
-      _chartTransListener.scale(scaleX, scaleY, x, y);
+      _chartTransListener!.scale(scaleX, scaleY, x, y);
     }
   }
 
@@ -610,7 +610,7 @@ abstract class BarLineChartBasePainter<
     viewPortHandler.limitTransAndScale(
         viewPortHandler.matrixTouch, viewPortHandler.contentRect);
     if (_chartTransListener != null) {
-      _chartTransListener.translate(dx, dy);
+      _chartTransListener!.translate(dx, dy);
     }
   }
 
@@ -661,7 +661,8 @@ abstract class BarLineChartBasePainter<
       return _axisRight.axisRange;
   }
 
-  List<double> mGetPositionBuffer = []..length = 2;
+  // List<double> mGetPositionBuffer = []..length = 2;
+  List<double> mGetPositionBuffer = List.filled(2, 0);
 
   /// Returns a recyclable MPPointF instance.
   /// Returns the position (in pixels) the provided Entry has inside the chart
@@ -692,7 +693,7 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param width
   void setBorderWidth(double width) {
-    _borderPaint..strokeWidth = Utils.convertDpToPixel(width);
+    _borderPaint..strokeWidth = width;
   }
 
   /// Sets the color of the chart border lines.
@@ -754,11 +755,12 @@ abstract class BarLineChartBasePainter<
   /// @return
   IBarLineScatterCandleBubbleDataSet? getDataSetByTouchPoint(
       double x, double y) {
-    Highlight h = getHighlightByTouchPoint(x, y)!;
+    Highlight? h = getHighlightByTouchPoint(x, y);
     // if (h != null) {
     //   return getData().getDataSetByIndex(h.dataSetIndex);
     // }
     // return null;
+    if (h == null) return null;
     return getData().getDataSetByIndex(h.dataSetIndex);
   }
 

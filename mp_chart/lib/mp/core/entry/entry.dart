@@ -4,11 +4,7 @@ import 'dart:ui' as ui;
 class Entry extends BaseEntry {
   double _x = 0;
 
-  Entry(
-      {required double x,
-      required double y,
-      required ui.Image icon,
-      required Object data})
+  Entry({required double x, required double y, ui.Image? icon, Object? data})
       : this._x = x,
         super(y: y, icon: icon, data: data);
 

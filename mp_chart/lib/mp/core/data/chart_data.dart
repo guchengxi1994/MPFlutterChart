@@ -30,7 +30,7 @@ class ChartData<T extends IDataSet<Entry>> {
   double _rightAxisMin = double.infinity;
 
   /// array that holds all DataSets the ChartData object represents
-  late List<T> _dataSets;
+  late List<T> _dataSets = [];
 
   /// Default constructor.
   ChartData() {
@@ -234,7 +234,8 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   List<String> getDataSetLabels() {
-    List<String> types = []..length = _dataSets.length;
+    // List<String> types = []..length = _dataSets.length;
+    List<String> types = List.filled(_dataSets.length, '');
 
     for (int i = 0; i < _dataSets.length; i++) {
       types[i] = _dataSets[i].getLabel();
@@ -467,7 +468,7 @@ class ChartData<T extends IDataSet<Entry>> {
       clrcnt += _dataSets[i].getColors().length;
     }
 
-    List<ui.Color> colors = []..length = clrcnt;
+    List<ui.Color?> colors = List.filled(clrcnt, null);
     int cnt = 0;
 
     for (int i = 0; i < _dataSets.length; i++) {
@@ -479,7 +480,7 @@ class ChartData<T extends IDataSet<Entry>> {
       }
     }
 
-    return colors;
+    return colors as List<ui.Color>;
   }
 
   /// Returns the index of the provided DataSet in the DataSet array of this data object, or -1 if it does not exist.

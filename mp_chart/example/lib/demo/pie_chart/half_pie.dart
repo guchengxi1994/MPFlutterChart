@@ -26,7 +26,7 @@ class PieChartHalfPie extends StatefulWidget {
 }
 
 class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
-  PieChartController _controller;
+  late PieChartController _controller;
   var random = Random(1);
 
   @override
@@ -81,7 +81,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     var desc = Description()..enabled = false;
     _controller = PieChartController(
         legendSettingFunction: (legend, controller) {
-          _formatter.setPieChartPainter(controller);
+          _formatter.setPieChartPainter(controller as PieChartController);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)

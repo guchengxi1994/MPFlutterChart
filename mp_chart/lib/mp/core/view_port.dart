@@ -255,7 +255,8 @@ class ViewPortHandler {
     return save;
   }
 
-  List<double> valsBufferForFitScreen = []..length = 16;
+  // List<double> valsBufferForFitScreen = []..length = 16;
+  List<double> valsBufferForFitScreen = List.filled(16, 0, growable: true);
 
   /// Resets all zooming and dragging and makes the chart fit exactly it's
   /// bounds.
@@ -326,7 +327,8 @@ class ViewPortHandler {
     refresh(save);
   }
 
-  List<double> matrixBuffer = []..length = 16;
+  // List<double> matrixBuffer = []..length = 16;
+  List<double> matrixBuffer = List.filled(16, 0, growable: true);
 
   /// call this method to refresh the graph with a given matrix
   ///
@@ -559,7 +561,7 @@ class ViewPortHandler {
   ///
   /// @param offset
   void setDragOffsetX(double offset) {
-    _transOffsetX = Utils.convertDpToPixel(offset);
+    _transOffsetX = offset;
   }
 
   /// Set an offset in dp that allows the user to drag the chart over it's
@@ -567,7 +569,7 @@ class ViewPortHandler {
   ///
   /// @param offset
   void setDragOffsetY(double offset) {
-    _transOffsetY = Utils.convertDpToPixel(offset);
+    _transOffsetY = offset;
   }
 
   /// Returns true if both drag offsets (x and y) are zero or smaller.

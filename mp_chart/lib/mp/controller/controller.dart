@@ -18,19 +18,19 @@ import 'package:optimized_gesture_detector/gesture_dectetor.dart';
 
 abstract class Controller<P extends ChartPainter>
     implements AnimatorUpdateListener {
-  ChartState state;
-  ChartData data;
-  Animator animator;
-  P _painter;
+  late ChartState? state = null;
+  late ChartData? data = null;
+  late Animator animator;
+  late P _painter;
 
   ////// needed
-  IMarker marker;
-  Description description;
-  ViewPortHandler viewPortHandler;
-  XAxis xAxis;
-  Legend legend;
-  LegendRenderer legendRenderer;
-  OnChartValueSelectedListener selectionListener;
+  IMarker? marker;
+  Description? description;
+  ViewPortHandler? viewPortHandler;
+  XAxis? xAxis;
+  Legend? legend;
+  LegendRenderer? legendRenderer;
+  OnChartValueSelectedListener? selectionListener;
 
   ////// option
   double maxHighlightDistance;
@@ -39,16 +39,16 @@ abstract class Controller<P extends ChartPainter>
   bool drawMarkers;
 
   ////// split child property
-  Color infoBgColor;
-  TextPainter descPaint;
-  TextPainter infoPaint;
+  Color? infoBgColor;
+  TextPainter? descPaint;
+  TextPainter? infoPaint;
 
-  XAxisSettingFunction xAxisSettingFunction;
-  LegendSettingFunction legendSettingFunction;
-  DataRendererSettingFunction rendererSettingFunction;
+  XAxisSettingFunction? xAxisSettingFunction;
+  LegendSettingFunction? legendSettingFunction;
+  DataRendererSettingFunction? rendererSettingFunction;
 
-  CanDragDownFunction horizontalConflictResolveFunc;
-  CanDragDownFunction verticalConflictResolveFunc;
+  late CanDragDownFunction horizontalConflictResolveFunc = () => false;
+  late CanDragDownFunction verticalConflictResolveFunc = () => false;
 
   Controller(
       {this.marker,
@@ -69,8 +69,8 @@ abstract class Controller<P extends ChartPainter>
       bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
       double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
+      Color? descTextColor,
+      Color? infoTextColor,
       this.infoBgColor,
       this.descPaint,
       this.infoPaint,
@@ -93,7 +93,7 @@ abstract class Controller<P extends ChartPainter>
     infoBgColor ??= ColorUtils.WHITE;
 
     if (maxHighlightDistance == 0.0) {
-      maxHighlightDistance = Utils.convertDpToPixel(500);
+      maxHighlightDistance = 500;
     }
 
     this.viewPortHandler ??= initViewPortHandler();
@@ -110,7 +110,7 @@ abstract class Controller<P extends ChartPainter>
     }
   }
 
-  IMarker initMarker() => null;
+  IMarker? initMarker() => null;
 
   Description initDescription() => Description();
 
@@ -121,13 +121,13 @@ abstract class Controller<P extends ChartPainter>
   Legend initLegend() => Legend();
 
   LegendRenderer initLegendRenderer() =>
-      LegendRenderer(viewPortHandler, legend);
+      LegendRenderer(viewPortHandler!, legend!);
 
-  OnChartValueSelectedListener initSelectionListener() => null;
+  OnChartValueSelectedListener? initSelectionListener() => null;
 
   ChartState createChartState() {
     state = createRealState();
-    return state;
+    return state!;
   }
 
   ChartState createRealState();
@@ -139,10 +139,10 @@ abstract class Controller<P extends ChartPainter>
       xAxis = initXAxis();
     }
     if (legendSettingFunction != null) {
-      legendSettingFunction(legend, this);
+      legendSettingFunction!(legend!, this);
     }
     if (xAxisSettingFunction != null) {
-      xAxisSettingFunction(xAxis, this);
+      xAxisSettingFunction!(xAxis!, this);
     }
   }
 

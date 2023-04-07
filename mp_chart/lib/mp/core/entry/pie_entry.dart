@@ -12,13 +12,13 @@ class PieEntry extends Entry {
   PieEntry(
       {required double value,
       required String label,
-      required ui.Image icon,
-      required Object data,
-      required double labelTextSize,
-      required ui.Color labelColor})
+      ui.Image? icon,
+      Object? data,
+      double? labelTextSize,
+      ui.Color? labelColor})
       : super(x: 0, y: value, icon: icon, data: data) {
     this._label = label;
-    this._labelTextSize = labelTextSize ?? Utils.convertDpToPixel(10);
+    this._labelTextSize = labelTextSize ?? 10;
     this._labelColor = labelColor ?? ColorUtils.WHITE;
   }
 
@@ -33,7 +33,7 @@ class PieEntry extends Entry {
         data: mData,
         icon: super.mIcon,
         labelColor: ColorUtils.WHITE,
-        labelTextSize: Utils.convertDpToPixel(10));
+        labelTextSize: 10);
     return e;
   }
 

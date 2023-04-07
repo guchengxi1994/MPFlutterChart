@@ -29,7 +29,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     highlightPaint
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(1.5);
+      ..strokeWidth = (1.5);
   }
 
   BubbleDataProvider get provider => _provider;
@@ -48,8 +48,10 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     }
   }
 
-  List<double> sizeBuffer = []..length = 4;
-  List<double> pointBuffer = []..length = 2;
+  // List<double> sizeBuffer = []..length = 4;
+  // List<double> pointBuffer = []..length = 2;
+  List<double> sizeBuffer = List.filled(4, 0);
+  List<double> pointBuffer = List.filled(2, 0);
 
   double getShapeSize(
       double entrySize, double maxSize, double reference, bool normalizeSize) {
@@ -121,7 +123,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     if (isDrawingValuesAllowed(_provider)) {
       final List<IBubbleDataSet> dataSets = bubbleData.dataSets;
 
-      double lineHeight = Utils.calcTextHeight(valuePaint, "1").toDouble();
+      double lineHeight = Utils.calcTextHeight(valuePaint!, "1").toDouble();
 
       for (int i = 0; i < dataSets.length; i++) {
         IBubbleDataSet dataSet = dataSets[i];
@@ -146,8 +148,8 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         ValueFormatter formatter = dataSet.getValueFormatter();
 
         MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+        iconsOffset.x = (iconsOffset.x);
+        iconsOffset.y = (iconsOffset.y);
 
         for (int j = 0; j < positions.length; j += 2) {
           Color valueTextColor =
@@ -196,9 +198,9 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override

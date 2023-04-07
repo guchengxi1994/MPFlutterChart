@@ -7,7 +7,6 @@ import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/poolable/size.dart';
 import 'package:mp_chart/mp/core/utils/painter_utils.dart';
-import 'package:mp_chart/mp/core/utils/screen_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
@@ -303,10 +302,6 @@ abstract class Utils {
 
   static ValueFormatter getDefaultValueFormatter() {
     return mDefaultValueFormatter;
-  }
-
-  static double convertDpToPixel(double dp) {
-    return ScreenUtils.getInstance().getSp(dp);
   }
 
   static int calcTextWidth(TextPainter p, String demoText) {

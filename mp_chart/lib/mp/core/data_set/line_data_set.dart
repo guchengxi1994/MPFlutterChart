@@ -17,7 +17,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   Mode _mode = Mode.LINEAR;
 
   /// List representing all colors that are used for the circles
-  late List<Color> _circleColors;
+  late List<Color> _circleColors = [];
 
   /// the color of the inner circles
   Color _circleHoleColor = ColorUtils.WHITE;
@@ -42,9 +42,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 
   bool mDrawCircleHole = true;
 
-  LineDataSet(List<Entry> yVals, String label) : super(yVals, label) {
-    // _circleRadius = Utils.convertDpToPixel(4f);
-    // mLineWidth = Utils.convertDpToPixel(1f);
+  LineDataSet(List<Entry>? yVals, String label) : super(yVals, label) {
+    // _circleRadius = (4f);
+    // mLineWidth = (1f);
 
     if (_circleColors == null) {
       _circleColors = [];
@@ -112,7 +112,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// @param radius
   void setCircleRadius(double radius) {
     if (radius >= 1) {
-      _circleRadius = Utils.convertDpToPixel(radius);
+      _circleRadius = radius;
     }
   }
 
@@ -127,7 +127,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// @param holeRadius
   void setCircleHoleRadius(double holeRadius) {
     if (holeRadius >= 0.5) {
-      _circleHoleRadius = Utils.convertDpToPixel(holeRadius);
+      _circleHoleRadius = holeRadius;
     }
   }
 

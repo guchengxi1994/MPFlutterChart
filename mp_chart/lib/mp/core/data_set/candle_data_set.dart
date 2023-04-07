@@ -118,7 +118,7 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
   ///
   /// @param width
   void setShadowWidth(double width) {
-    _shadowWidth = Utils.convertDpToPixel(width);
+    _shadowWidth = width;
   }
 
   @override

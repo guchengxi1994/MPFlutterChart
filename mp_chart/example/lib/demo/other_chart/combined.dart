@@ -94,7 +94,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
             ..setGranularity(1)
             ..setValueFormatter(A())
             ..setAxisMaximum(
-                controller.data == null ? 0 : controller.data.xMax + 0.25);
+                controller.data == null ? 0 : controller.data!.xMax + 0.25);
         },
         drawGridBackground: false,
         drawBarShadow: false,
@@ -164,9 +164,11 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
       // stacked
       entries2.add(BarEntry.fromListYVals(
           x: 0,
-          vals: List<double>()
+          vals: <double>[]
             ..add(getRandom(13, 12))
-            ..add(getRandom(13, 12))));
+            ..add(getRandom(13, 12)),
+          data: null,
+          icon: null));
     }
 
     BarDataSet set1 = BarDataSet(entries1, "Bar 1");
@@ -176,10 +178,10 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     set1.setAxisDependency(AxisDependency.LEFT);
 
     BarDataSet set2 = BarDataSet(entries2, "");
-    set2.setStackLabels(List<String>()
+    set2.setStackLabels(<String>[]
       ..add("Stack 1")
       ..add("Stack 2"));
-    set2.setColors1(List<Color>()
+    set2.setColors1(<Color>[]
       ..add(Color.fromARGB(255, 61, 165, 255))
       ..add(Color.fromARGB(255, 23, 197, 255)));
     set2.setValueTextColor(Color.fromARGB(255, 61, 165, 255));

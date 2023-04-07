@@ -31,7 +31,7 @@ class LineChartMarker implements IMarker {
 //    _backColor ??= Color.fromARGB((_textColor.alpha * 0.5).toInt(),
 //        _textColor.red, _textColor.green, _textColor.blue);
     this._backColor ??= ColorUtils.WHITE;
-    this._fontSize ??= Utils.convertDpToPixel(10);
+    this._fontSize ??= 10;
   }
 
   @override

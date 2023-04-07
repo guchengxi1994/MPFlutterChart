@@ -6,6 +6,7 @@ import 'package:example/demo/util.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/color/gradient_color.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
@@ -178,7 +179,8 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..drawGridLines = false
             ..setGranularity(1.0)
             ..setLabelCount1(7)
-            ..setValueFormatter(DayAxisValueFormatter(controller));
+            ..setValueFormatter(DayAxisValueFormatter(
+                controller as BarLineScatterCandleBubbleController));
         },
         selectionListener: this,
         drawBarShadow: false,
@@ -257,7 +259,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //

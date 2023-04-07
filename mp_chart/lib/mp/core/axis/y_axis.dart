@@ -178,9 +178,8 @@ class YAxis extends AxisBase {
     p = PainterUtils.create(p, null, null, textSize);
     String label = getLongestLabel();
     double width = Utils.calcTextWidth(p, label) + xOffset * 2;
-    if (minWidth > 0) minWidth = Utils.convertDpToPixel(minWidth);
-    if (maxWidth > 0 && maxWidth != double.infinity)
-      maxWidth = Utils.convertDpToPixel(maxWidth);
+    if (minWidth > 0) minWidth = minWidth;
+    if (maxWidth > 0 && maxWidth != double.infinity) maxWidth = maxWidth;
     width = max(minWidth, min(width, maxWidth > 0.0 ? maxWidth : width));
     return width;
   }

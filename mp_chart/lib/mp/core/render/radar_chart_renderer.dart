@@ -30,7 +30,7 @@ class RadarChartRenderer extends LineRadarRenderer {
     _highlightCirclePaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(2)
+      ..strokeWidth = (2)
       ..color = Color.fromARGB(255, 255, 187, 115);
 
     _webPaint = Paint()
@@ -161,7 +161,7 @@ class RadarChartRenderer extends LineRadarRenderer {
     MPPointF pOut = MPPointF.getInstance1(0, 0);
     MPPointF pIcon = MPPointF.getInstance1(0, 0);
 
-    double yoffset = Utils.convertDpToPixel(5);
+    double yoffset = (5);
 
     for (int i = 0; i < _painter.getData().getDataSetCount(); i++) {
       IRadarDataSet dataSet =
@@ -175,8 +175,8 @@ class RadarChartRenderer extends LineRadarRenderer {
       ValueFormatter formatter = dataSet.getValueFormatter();
 
       MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-      iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-      iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+      iconsOffset.x = (iconsOffset.x);
+      iconsOffset.y = (iconsOffset.y);
 
       for (int j = 0; j < dataSet.getEntryCount(); j++) {
         RadarEntry entry = dataSet.getEntryForIndex(j);
@@ -223,9 +223,9 @@ class RadarChartRenderer extends LineRadarRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override
@@ -367,8 +367,8 @@ class RadarChartRenderer extends LineRadarRenderer {
       double strokeWidth) {
     c.save();
 
-    outerRadius = Utils.convertDpToPixel(outerRadius);
-    innerRadius = Utils.convertDpToPixel(innerRadius);
+    outerRadius = (outerRadius);
+    innerRadius = (innerRadius);
 
     if (fillColor != ColorUtils.COLOR_NONE) {
       Path p = mDrawHighlightCirclePathBuffer;
@@ -391,7 +391,7 @@ class RadarChartRenderer extends LineRadarRenderer {
       _highlightCirclePaint
         ..color = strokeColor
         ..style = PaintingStyle.stroke
-        ..strokeWidth = Utils.convertDpToPixel(strokeWidth);
+        ..strokeWidth = (strokeWidth);
       c.drawCircle(
           Offset(point.x, point.y), outerRadius, _highlightCirclePaint);
     }

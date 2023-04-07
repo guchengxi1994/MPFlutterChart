@@ -33,10 +33,10 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   bool _highlightEnabled = true;
 
   /// custom formatter that is used instead of the auto-formatter if set
-  late ValueFormatter _valueFormatter;
+  late ValueFormatter? _valueFormatter = null;
 
   /// the typeface used for the value text
-  late TypeFace _valueTypeface;
+  late TypeFace _valueTypeface = TypeFace();
 
   LegendForm _form = LegendForm.DEFAULT;
   double _formSize = double.nan;
@@ -234,7 +234,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   @override
   ValueFormatter getValueFormatter() {
     if (needsFormatter()) return Utils.getDefaultValueFormatter();
-    return _valueFormatter;
+    return _valueFormatter!;
   }
 
   @override
@@ -260,7 +260,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   @override
   void setValueTextSize(double size) {
-    _valueTextSize = Utils.convertDpToPixel(size);
+    _valueTextSize = size;
   }
 
   @override

@@ -14,16 +14,21 @@ import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
-import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   late CandleDataProvider _porvider;
 
-  List<double> _shadowBuffers = []..length = 8;
-  List<double> _bodyBuffers = []..length = 4;
-  List<double> _rangeBuffers = []..length = 4;
-  List<double> _openBuffers = []..length = 4;
-  List<double> _closeBuffers = []..length = 4;
+  // List<double> _shadowBuffers = []..length = 8;
+  // List<double> _bodyBuffers = []..length = 4;
+  // List<double> _rangeBuffers = []..length = 4;
+  // List<double> _openBuffers = []..length = 4;
+  // List<double> _closeBuffers = []..length = 4;
+
+  List<double> _shadowBuffers = List.filled(8, 0);
+  List<double> _bodyBuffers = List.filled(8, 4);
+  List<double> _rangeBuffers = List.filled(8, 4);
+  List<double> _openBuffers = List.filled(8, 4);
+  List<double> _closeBuffers = List.filled(8, 4);
 
   CandleStickChartRenderer(CandleDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
@@ -251,13 +256,13 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             xBounds.min,
             xBounds.max);
 
-        double yOffset = Utils.convertDpToPixel(5);
+        double yOffset = (5);
 
         ValueFormatter formatter = dataSet.getValueFormatter();
 
         MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+        iconsOffset.x = (iconsOffset.x);
+        iconsOffset.y = (iconsOffset.y);
 
         for (int j = 0; j < positions.length; j += 2) {
           double x = positions[j];
@@ -301,9 +306,9 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override

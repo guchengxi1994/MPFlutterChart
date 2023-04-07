@@ -43,7 +43,9 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     }
   }
 
-  List<double> mPixelBuffer = []..length = 2;
+  // List<double> mPixelBuffer = []..length = 2;
+
+  List<double> mPixelBuffer = List.filled(2, 0);
 
   void drawDataSet(Canvas c, IScatterDataSet dataSet) {
     if (dataSet.getEntryCount() < 1) return;
@@ -100,14 +102,13 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             .generateTransformedValuesScatter(dataSet, animator.getPhaseX(),
                 animator.getPhaseY(), xBounds.min, xBounds.max);
 
-        double shapeSize =
-            Utils.convertDpToPixel(dataSet.getScatterShapeSize());
+        double shapeSize = (dataSet.getScatterShapeSize());
 
         ValueFormatter formatter = dataSet.getValueFormatter();
 
         MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+        iconsOffset.x = (iconsOffset.x);
+        iconsOffset.y = (iconsOffset.y);
 
         for (int j = 0; j < positions.length; j += 2) {
           if (!viewPortHandler.isInBoundsRight(positions[j])) break;
@@ -150,9 +151,9 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override

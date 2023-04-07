@@ -20,7 +20,7 @@ class Legend extends ComponentBase {
 
   /// Entries that will be appended to the end of the auto calculated entries after calculating the legend.
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
-  late List<LegendEntry> _extraEntries;
+  late List<LegendEntry> _extraEntries = [];
 
   /// Are the legend labels/colors a custom value or auto calculated? If false,
   /// then it's auto, if true, then custom. default false (automatic legend)
@@ -77,24 +77,28 @@ class Legend extends ComponentBase {
   /// flag that indicates if word wrapping is enabled
   bool _wordWrapEnabled = false;
 
-  List<FSize> _calculatedLabelSizes = []..length = 16;
-  List<bool> _calculatedLabelBreakPoints = []..length = 16;
-  List<FSize> _calculatedLineSizes = []..length = 16;
+  // List<FSize> _calculatedLabelSizes = []..length = 16;
+  // List<bool> _calculatedLabelBreakPoints = []..length = 16;
+  // List<FSize> _calculatedLineSizes = []..length = 16;
+
+  List<FSize?> _calculatedLabelSizes = List.filled(16, null);
+  List<bool> _calculatedLabelBreakPoints = List.filled(16, false);
+  List<FSize?> _calculatedLineSizes = List.filled(16, null);
 
   /// default constructor
   Legend() {
-    this.textSize = Utils.convertDpToPixel(10);
-    this.xOffset = Utils.convertDpToPixel(5);
-    this.yOffset = Utils.convertDpToPixel(3); // 2
+    this.textSize = 10;
+    this.xOffset = 5;
+    this.yOffset = 3; // 2
   }
 
   /// Constructor. Provide entries for the legend.
   ///
   /// @param entries
   Legend.fromList(List<LegendEntry> entries) {
-    this.textSize = Utils.convertDpToPixel(10);
-    this.xOffset = Utils.convertDpToPixel(5);
-    this.yOffset = Utils.convertDpToPixel(3);
+    this.textSize = 10;
+    this.xOffset = 5;
+    this.yOffset = 3;
     if (entries == null) {
       throw new Exception("entries array is NULL");
     }
@@ -118,10 +122,10 @@ class Legend extends ComponentBase {
   double getMaximumEntryWidth(TextPainter p) {
     double max = 0;
     double maxFormSize = 0;
-    double formToTextSpace = Utils.convertDpToPixel(_formToTextSpace);
+    double formToTextSpace = _formToTextSpace;
     for (LegendEntry entry in _entries) {
-      final double formSize = Utils.convertDpToPixel(
-          double.nan == entry.formSize ? _formSize : entry.formSize);
+      final double formSize =
+          double.nan == entry.formSize ? _formSize : entry.formSize;
       if (formSize > maxFormSize) maxFormSize = formSize;
 
       String? label = entry.label;
@@ -333,9 +337,9 @@ class Legend extends ComponentBase {
 
   double get neededHeight => _neededHeight;
 
-  List<FSize> get calculatedLineSizes => _calculatedLineSizes;
+  List<FSize?> get calculatedLineSizes => _calculatedLineSizes;
 
-  List<FSize> get calculatedLabelSizes => _calculatedLabelSizes;
+  List<FSize?> get calculatedLabelSizes => _calculatedLabelSizes;
 
   List<bool> get calculatedLabelBreakPoints => _calculatedLabelBreakPoints;
 
@@ -346,11 +350,11 @@ class Legend extends ComponentBase {
   /// @param labelpaint
   void calculateDimensions(
       TextPainter labelpainter, ViewPortHandler viewPortHandler) {
-    double defaultFormSize = Utils.convertDpToPixel(_formSize);
-    double stackSpace = Utils.convertDpToPixel(_stackSpace);
-    double formToTextSpace = Utils.convertDpToPixel(_formToTextSpace);
-    double xEntrySpace = Utils.convertDpToPixel(_xEntrySpace);
-    double yEntrySpace = Utils.convertDpToPixel(_yEntrySpace);
+    double defaultFormSize = _formSize;
+    double stackSpace = _stackSpace;
+    double formToTextSpace = _formToTextSpace;
+    double xEntrySpace = _xEntrySpace;
+    double yEntrySpace = _yEntrySpace;
     bool wordWrapEnabled = _wordWrapEnabled;
     List<LegendEntry> entries = _entries;
     int entryCount = entries.length;
@@ -368,9 +372,7 @@ class Legend extends ComponentBase {
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize.isNaN
-                ? defaultFormSize
-                : Utils.convertDpToPixel(e.formSize);
+            double formSize = e.formSize.isNaN ? defaultFormSize : e.formSize;
             String? label = e.label;
 
             if (!wasStacked) width = 0;
@@ -430,9 +432,7 @@ class Legend extends ComponentBase {
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize.isNaN
-                ? defaultFormSize
-                : Utils.convertDpToPixel(e.formSize);
+            double formSize = e.formSize.isNaN ? defaultFormSize : e.formSize;
             String? label = e.label;
 
             _calculatedLabelBreakPoints.add(false);
@@ -451,7 +451,7 @@ class Legend extends ComponentBase {
               _calculatedLabelSizes
                   .add(Utils.calcTextSize1(labelpainter, label));
               requiredWidth += drawingForm ? formToTextSpace + formSize : 0;
-              requiredWidth += _calculatedLabelSizes[i].width;
+              requiredWidth += _calculatedLabelSizes[i]!.width;
             } else {
               _calculatedLabelSizes.add(FSize.getInstance(0, 0));
               requiredWidth += drawingForm ? formSize : 0;

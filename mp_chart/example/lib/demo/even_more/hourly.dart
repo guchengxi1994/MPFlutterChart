@@ -172,7 +172,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
 
     // create a data object with the data sets
     controller.data = LineData.fromList([]..add(set1));
-    controller.data
+    controller.data!
       ..setValueTextColor(ColorUtils.getHoloBlue())
       ..setValueTextSize(9);
 

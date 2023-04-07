@@ -32,7 +32,7 @@ class XAxis extends AxisBase {
   XAxisPosition _position = XAxisPosition.TOP;
 
   XAxis() : super() {
-    yOffset = Utils.convertDpToPixel(4);
+    yOffset = 4;
   }
 
   // ignore: unnecessary_getters_setters

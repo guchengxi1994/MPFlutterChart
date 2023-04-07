@@ -56,7 +56,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     if (spaceDp > 20) spaceDp = 20;
     if (spaceDp < 0) spaceDp = 0;
 
-    _sliceSpace = Utils.convertDpToPixel(spaceDp);
+    _sliceSpace = spaceDp;
   }
 
   @override
@@ -86,7 +86,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   ///
   /// @param shift
   void setSelectionShift(double shift) {
-    _shift = Utils.convertDpToPixel(shift);
+    _shift = shift;
   }
 
   @override

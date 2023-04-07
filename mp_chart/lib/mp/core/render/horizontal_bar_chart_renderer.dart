@@ -30,7 +30,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     BarData? barData = provider.getBarData();
     if (barData == null) return;
 
-    barBuffers = []..length = barData.getDataSetCount();
+    // barBuffers = []..length = barData.getDataSetCount();
+    barBuffers = List.filled(barData.getDataSetCount(), BarBuffer(0, 0, false));
 
     for (int i = 0; i < barBuffers.length; i++) {
       IBarDataSet? set = barData.getDataSetByIndex(i);
@@ -53,7 +54,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     barBorderPaint
       ..color = dataSet.getBarBorderColor()
-      ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth());
+      ..strokeWidth = (dataSet.getBarBorderWidth());
 
     final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
 
@@ -149,7 +150,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     List<IBarDataSet> dataSets = provider.getBarData()!.dataSets;
 
-    final double valueOffsetPlus = Utils.convertDpToPixel(5);
+    final double valueOffsetPlus = (5);
     double posOffset = 0;
     double negOffset = 0;
     final bool drawValueAboveBar = provider.isDrawValueAboveBarEnabled();
@@ -172,8 +173,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       final double phaseY = animator.getPhaseY();
 
       MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-      iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-      iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+      iconsOffset.x = (iconsOffset.x);
+      iconsOffset.y = (iconsOffset.y);
 
       // if only single values are drawn (sum)
       if (!dataSet.isStacked()) {
@@ -194,7 +195,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
           // calculate the correct offset depending on the draw position of the value
           double valueTextWidth =
-              Utils.calcTextWidth(valuePaint, formattedValue).toDouble();
+              Utils.calcTextWidth(valuePaint!, formattedValue).toDouble();
           posOffset = (drawValueAboveBar
               ? valueOffsetPlus
               : -(valueTextWidth + valueOffsetPlus));
@@ -261,7 +262,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
             // calculate the correct offset depending on the draw position of the value
             double valueTextWidth =
-                Utils.calcTextWidth(valuePaint, formattedValue).toDouble();
+                Utils.calcTextWidth(valuePaint!, formattedValue).toDouble();
             posOffset = (drawValueAboveBar
                 ? valueOffsetPlus
                 : -(valueTextWidth + valueOffsetPlus));
@@ -297,7 +298,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                   c, Offset(px, py), entry.mIcon, Size(15, 15), drawPaint);
             }
           } else {
-            List<double> transformed = []..length = vals.length * 2;
+            // List<double> transformed = []..length = vals.length * 2;
+            List<double> transformed = List.filled(vals.length * 2, 0);
 
             double posY = 0;
             double negY = -entry.negativeSum;
@@ -328,7 +330,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               // calculate the correct offset depending on the draw position of the value
               double valueTextWidth =
-                  Utils.calcTextWidth(valuePaint, formattedValue).toDouble();
+                  Utils.calcTextWidth(valuePaint!, formattedValue).toDouble();
               posOffset = (drawValueAboveBar
                   ? valueOffsetPlus
                   : -(valueTextWidth + valueOffsetPlus));
@@ -386,8 +388,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(c, Offset(x, y - valuePaint.height / 2));
+    valuePaint!.layout();
+    valuePaint!.paint(c, Offset(x, y - valuePaint!.height / 2));
   }
 
   @override

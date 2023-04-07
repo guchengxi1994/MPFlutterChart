@@ -222,5 +222,5 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }

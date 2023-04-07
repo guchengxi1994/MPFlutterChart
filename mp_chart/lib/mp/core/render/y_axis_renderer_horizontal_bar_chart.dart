@@ -59,7 +59,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         fontFamily: yAxis.typeface?.fontFamily,
         fontWeight: yAxis.typeface?.fontWeight);
 
-//    double baseYOffset = Utils.convertDpToPixel(2.5);
+//    double baseYOffset = (2.5);
 //    double textHeight = Utils.calcTextHeight(axisLabelPaint, "Q").toDouble();
 
     AxisDependency dependency = yAxis.axisDependency;
@@ -222,7 +222,9 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   }
 
   Path mRenderLimitLinesPathBuffer = Path();
-  List<double> mRenderLimitLinesBuffer = []..length = 4;
+  // List<double> mRenderLimitLinesBuffer = []..length = 4;
+
+  List<double> mRenderLimitLinesBuffer = List.filled(4, 0);
 
   /// Draws the LimitLines associated with this axis to the screen.
   /// This is the standard XAxis renderer using the YAxis limit lines.

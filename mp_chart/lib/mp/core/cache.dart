@@ -7,7 +7,7 @@ import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
 class DataSetImageCache {
   Path _circlePathBuffer = Path();
 
-  late List<ByteData> _circleBitmaps = [];
+  late List<ByteData?> _circleBitmaps = [];
 
   /// Sets up the cache, returns true if a change of cache was required.
   ///
@@ -18,10 +18,12 @@ class DataSetImageCache {
     bool changeRequired = false;
 
     if (_circleBitmaps == null) {
-      _circleBitmaps = []..length = size;
+      // _circleBitmaps = []..length = size;
+      _circleBitmaps = List.filled(size, null);
       changeRequired = true;
     } else if (_circleBitmaps.length != size) {
-      _circleBitmaps = []..length = size;
+      // _circleBitmaps = []..length = size;
+      _circleBitmaps = List.filled(size, null);
       changeRequired = true;
     }
 
@@ -100,6 +102,6 @@ class DataSetImageCache {
   }
 
   ByteData getBitmap(int index) {
-    return _circleBitmaps[index % _circleBitmaps.length];
+    return _circleBitmaps[index % _circleBitmaps.length]!;
   }
 }

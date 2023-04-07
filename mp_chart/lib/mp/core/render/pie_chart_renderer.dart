@@ -68,16 +68,13 @@ class PieChartRenderer extends DataRenderer {
           ColorUtils.WHITE.green, ColorUtils.WHITE.blue)
       ..style = PaintingStyle.fill;
 
-    _centerTextPaint = PainterUtils.create(
-        null, null, ColorUtils.BLACK, Utils.convertDpToPixel(12),
+    _centerTextPaint = PainterUtils.create(null, null, ColorUtils.BLACK, (12),
         fontFamily: centerTextTypeface?.fontFamily,
         fontWeight: centerTextTypeface?.fontWeight);
 
-    valuePaint = PainterUtils.create(
-        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(9));
+    valuePaint = PainterUtils.create(null, null, ColorUtils.WHITE, (9));
 
-    _entryLabelsPaint = PainterUtils.create(
-        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(10),
+    _entryLabelsPaint = PainterUtils.create(null, null, ColorUtils.WHITE, (10),
         fontWeight: entryLabelTypeface?.fontWeight,
         fontFamily: entryLabelTypeface?.fontFamily);
 
@@ -454,7 +451,7 @@ class PieChartRenderer extends DataRenderer {
 
     c.save();
 
-    double offset = Utils.convertDpToPixel(5.0);
+    double offset = (5.0);
 
     for (int i = 0; i < dataSets.length; i++) {
       IPieDataSet dataSet = dataSets[i];
@@ -469,8 +466,7 @@ class PieChartRenderer extends DataRenderer {
       // apply the text-styling defined by the DataSet
       applyValueTextStyle(dataSet);
 
-      double lineHeight =
-          Utils.calcTextHeight(valuePaint, "Q") + Utils.convertDpToPixel(4);
+      double lineHeight = Utils.calcTextHeight(valuePaint!, "Q") + (4);
 
       ValueFormatter formatter = dataSet.getValueFormatter();
 
@@ -478,13 +474,13 @@ class PieChartRenderer extends DataRenderer {
 
       _valueLinePaint
         ..color = dataSet.getValueLineColor()
-        ..strokeWidth = Utils.convertDpToPixel(dataSet.getValueLineWidth());
+        ..strokeWidth = (dataSet.getValueLineWidth());
 
       final double sliceSpace = getSliceSpace(dataSet);
 
       MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-      iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-      iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+      iconsOffset.x = (iconsOffset.x);
+      iconsOffset.y = (iconsOffset.y);
 
       for (int j = 0; j < entryCount; j++) {
         PieEntry entry = dataSet.getEntryForIndex(j);
@@ -680,11 +676,11 @@ class PieChartRenderer extends DataRenderer {
       Color color, bool useHeight, double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
+    valuePaint!.layout();
+    valuePaint!.paint(
         c,
         Offset(
-            x - valuePaint.width / 2, useHeight ? y - valuePaint.height : y));
+            x - valuePaint!.width / 2, useHeight ? y - valuePaint!.height : y));
   }
 
   @override
@@ -692,9 +688,9 @@ class PieChartRenderer extends DataRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   /// Draws an entry label at the specified position.
@@ -705,11 +701,8 @@ class PieChartRenderer extends DataRenderer {
   /// @param y
   void drawEntryLabel(Canvas c, String label, double x, double y,
       {double? labelTextSize, Color? labelColor}) {
-    _entryLabelsPaint = PainterUtils.create(
-        _entryLabelsPaint,
-        label,
-        labelColor ?? ColorUtils.WHITE,
-        labelTextSize ?? Utils.convertDpToPixel(10));
+    _entryLabelsPaint = PainterUtils.create(_entryLabelsPaint, label,
+        labelColor ?? ColorUtils.WHITE, labelTextSize ?? (10));
     _entryLabelsPaint.layout();
     _entryLabelsPaint.paint(c,
         Offset(x - _entryLabelsPaint.width / 2, y - _entryLabelsPaint.height));
@@ -834,7 +827,7 @@ class PieChartRenderer extends DataRenderer {
           _centerTextPaint,
           centerText,
           _painter.centerTextColor ?? ColorUtils.BLACK,
-          _painter.centerTextSize ?? Utils.convertDpToPixel(12),
+          _painter.centerTextSize ?? (12),
           fontFamily: _painter.centerTextTypeface?.fontFamily,
           fontWeight: _painter.centerTextTypeface?.fontWeight);
       _centerTextPaint.layout();
@@ -1160,10 +1153,7 @@ class PieChartRenderer extends DataRenderer {
   /// @param size
   void setEntryLabelTextSize(double size) {
     var style = entryLabelsPaint.text?.style;
-    entryLabelsPaint = PainterUtils.create(
-        entryLabelsPaint,
-        null,
-        style?.color == null ? ColorUtils.WHITE : style?.color,
-        Utils.convertDpToPixel(size));
+    entryLabelsPaint = PainterUtils.create(entryLabelsPaint, null,
+        style?.color == null ? ColorUtils.WHITE : style?.color, (size));
   }
 }

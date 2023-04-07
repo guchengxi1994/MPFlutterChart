@@ -19,9 +19,9 @@ abstract class PieRadarController<P extends PieRadarChartPainter>
       this.rawRotationAngle = 270,
       this.rotateEnabled = true,
       this.minOffset = 30,
-      IMarker marker,
-      Description description,
-      OnChartValueSelectedListener selectionListener,
+      IMarker? marker,
+      Description? description,
+      OnChartValueSelectedListener? selectionListener,
       double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       double extraTopOffset = 0.0,
@@ -33,13 +33,13 @@ abstract class PieRadarController<P extends PieRadarChartPainter>
       bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
       double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
-      Color infoBgColor,
+      Color? descTextColor,
+      Color? infoTextColor,
+      Color? infoBgColor,
       String noDataText = "No chart data available.",
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction})
+      XAxisSettingFunction? xAxisSettingFunction,
+      LegendSettingFunction? legendSettingFunction,
+      DataRendererSettingFunction? rendererSettingFunction})
       : super(
             marker: marker,
             noDataText: noDataText,
@@ -67,7 +67,7 @@ abstract class PieRadarController<P extends PieRadarChartPainter>
   void onRotateUpdate(double angle) {
     rawRotationAngle = angle;
     rotationAngle = Utils.getNormalizedAngle(rawRotationAngle);
-    state.setStateIfNotDispose();
+    state!.setStateIfNotDispose();
   }
 
   P get painter => super.painter;

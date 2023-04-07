@@ -41,7 +41,7 @@ class LimitLine extends ComponentBase {
   void setLineWidth(double width) {
     if (width < 0.2) width = 0.2;
     if (width > 12.0) width = 12.0;
-    _lineWidth = Utils.convertDpToPixel(width);
+    _lineWidth = width;
   }
 
   double get lineWidth => _lineWidth;

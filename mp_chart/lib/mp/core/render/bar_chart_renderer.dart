@@ -84,7 +84,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     BarData? barData = _provider.getBarData();
     if (barData == null) return;
 
-    _barBuffers = []..length = barData.getDataSetCount();
+    // _barBuffers = []..length = barData.getDataSetCount();
+    _barBuffers = List.filled(barData.getDataSetCount(), BarBuffer(0, 0, true));
 
     for (int i = 0; i < _barBuffers.length; i++) {
       IBarDataSet? set_ = barData.getDataSetByIndex(i);
@@ -124,8 +125,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     Transformer trans = _provider.getTransformer(dataSet.getAxisDependency());
 
     _barBorderPaint..color = dataSet.getBarBorderColor();
-    _barBorderPaint
-      ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth());
+    _barBorderPaint..strokeWidth = (dataSet.getBarBorderWidth());
 
     final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
 
@@ -264,7 +264,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     if (isDrawingValuesAllowed(_provider)) {
       List<IBarDataSet> dataSets = _provider.getBarData()!.dataSets;
 
-      final double valueOffsetPlus = Utils.convertDpToPixel(4.5);
+      final double valueOffsetPlus = (4.5);
       double posOffset = 0.0;
       double negOffset = 0.0;
       bool drawValueAboveBar = _provider.isDrawValueAboveBarEnabled();
@@ -282,7 +282,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // calculate the correct offset depending on the draw position of
         // the value
         double valueTextHeight =
-            Utils.calcTextHeight(valuePaint, "8").toDouble();
+            Utils.calcTextHeight(valuePaint!, "8").toDouble();
         posOffset = (drawValueAboveBar
             ? -valueOffsetPlus
             : valueTextHeight + valueOffsetPlus);
@@ -303,8 +303,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         ValueFormatter formatter = dataSet.getValueFormatter();
 
         MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
-        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+        iconsOffset.x = (iconsOffset.x);
+        iconsOffset.y = (iconsOffset.y);
 
         // if only single values are drawn (sum)
         if (!dataSet.isStacked()) {
@@ -405,7 +405,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
               // draw stack values
             } else {
-              List<double> transformed = []..length = vals.length * 2;
+              // List<double> transformed = []..length = vals.length * 2;
+              List<double> transformed = List.filled(vals.length * 2, 0);
 
               double posY = 0.0;
               double negY = -entry.negativeSum;
@@ -480,9 +481,9 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
-    valuePaint.layout();
-    valuePaint.paint(
-        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
+    valuePaint!.layout();
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override

@@ -25,8 +25,10 @@ abstract class CanvasUtils {
     }
   }
 
-  static void drawImage(ui.Canvas canvas, Offset position, ui.Image img,
+  static void drawImage(ui.Canvas canvas, Offset position, ui.Image? img,
       ui.Size dstSize, ui.Paint paint) {
+    if (img == null) return;
+
     var imgSize = ui.Size(img.width.toDouble(), img.height.toDouble());
 
     FittedSizes sizes = applyBoxFit(BoxFit.contain, imgSize, dstSize);

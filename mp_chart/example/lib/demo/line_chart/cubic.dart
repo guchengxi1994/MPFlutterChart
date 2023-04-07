@@ -145,7 +145,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
           legend.enabled = (false);
           var data = (controller as LineChartController).data;
           if (data != null) {
-            var formatter = data.getDataSetByIndex(0).getFillFormatter();
+            var formatter = data.getDataSetByIndex(0)!.getFillFormatter();
             if (formatter is A) {
               formatter.setPainter(controller);
             }
@@ -211,7 +211,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 }
 
 class A implements IFillFormatter {
-  LineChartController _controller;
+  late LineChartController _controller;
 
   void setPainter(LineChartController controller) {
     _controller = controller;
@@ -220,6 +220,6 @@ class A implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMinimum;
+    return _controller?.painter?.axisLeft?.axisMinimum ?? 0;
   }
 }

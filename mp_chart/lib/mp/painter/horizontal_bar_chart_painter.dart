@@ -190,7 +190,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
     offsetBottom += extraBottomOffset;
     offsetLeft += extraLeftOffset;
 
-    double offset = Utils.convertDpToPixel(minOffset);
+    double offset = minOffset;
 
     viewPortHandler.restrainViewPort(
         max(offset, offsetLeft),
@@ -243,7 +243,8 @@ class HorizontalBarChartPainter extends BarChartPainter {
     return getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
   }
 
-  List<double> mGetPositionBuffer = []..length = 2;
+  // List<double> mGetPositionBuffer = []..length = 2;
+  List<double> mGetPositionBuffer = List.filled(2, 0);
 
   /// Returns a recyclable MPPointF instance.
   ///

@@ -16,8 +16,7 @@ abstract class PainterUtils {
       var preColor = painter.text?.style?.color;
       preColor = preColor == null ? ColorUtils.BLACK : preColor;
       var preFontSize = painter.text?.style?.fontSize;
-      preFontSize =
-          preFontSize == null ? Utils.convertDpToPixel(13) : preFontSize;
+      preFontSize = preFontSize == null ? 13 : preFontSize;
       return _create(
           text == null ? preText : text,
           color == null ? preColor : color,

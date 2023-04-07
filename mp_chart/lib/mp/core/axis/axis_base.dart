@@ -9,7 +9,7 @@ import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 abstract class AxisBase extends ComponentBase {
   /// custom formatter that is used instead of the auto-formatter if set
-  late ValueFormatter _axisValueFormatter;
+  late ValueFormatter? axisValueFormatter = null;
 
   Color _gridColor = ColorUtils.GRAY;
 
@@ -98,13 +98,13 @@ abstract class AxisBase extends ComponentBase {
     this._limitLines = <LimitLine>[];
   }
 
-  // ignore: unnecessary_getters_setters
-  ValueFormatter get axisValueFormatter => _axisValueFormatter;
+  // // ignore: unnecessary_getters_setters
+  // ValueFormatter get axisValueFormatter => _axisValueFormatter;
 
-  // ignore: unnecessary_getters_setters
-  set axisValueFormatter(ValueFormatter value) {
-    _axisValueFormatter = value;
-  }
+  // // ignore: unnecessary_getters_setters
+  // set axisValueFormatter(ValueFormatter value) {
+  //   _axisValueFormatter = value;
+  // }
 
   // ignore: unnecessary_getters_setters
   double get axisRange => _axisRange;
@@ -323,22 +323,22 @@ abstract class AxisBase extends ComponentBase {
   /// @param f
   void setValueFormatter(ValueFormatter f) {
     if (f == null)
-      _axisValueFormatter = DefaultAxisValueFormatter(_decimals);
+      axisValueFormatter = DefaultAxisValueFormatter(_decimals);
     else
-      _axisValueFormatter = f;
+      axisValueFormatter = f;
   }
 
   /// Returns the formatter used for formatting the axis labels.
   ///
   /// @return
   ValueFormatter getValueFormatter() {
-    if (_axisValueFormatter == null ||
-        (_axisValueFormatter is DefaultAxisValueFormatter &&
-            (_axisValueFormatter as DefaultAxisValueFormatter).digits !=
+    if (axisValueFormatter == null ||
+        (axisValueFormatter is DefaultAxisValueFormatter &&
+            (axisValueFormatter as DefaultAxisValueFormatter).digits !=
                 _decimals))
-      _axisValueFormatter = DefaultAxisValueFormatter(_decimals);
+      axisValueFormatter = DefaultAxisValueFormatter(_decimals);
 
-    return _axisValueFormatter;
+    return axisValueFormatter!;
   }
 
   /// Enables the grid line to be drawn in dashed mode, e.g. like this

@@ -21,7 +21,7 @@ import 'package:mp_chart/mp/core/view_port.dart';
 
 class LegendRenderer extends Renderer {
   /// paint for the legend labels
-  late TextPainter _legendLabelPaint;
+  late TextPainter? legendLabelPaint = null;
 
   /// paint used for the legend forms
   late Paint _legendFormPaint;
@@ -33,8 +33,8 @@ class LegendRenderer extends Renderer {
       : super(viewPortHandler) {
     this._legend = legend;
 
-    _legendLabelPaint = PainterUtils.create(
-        _legendLabelPaint, null, ColorUtils.BLACK, Utils.convertDpToPixel(9));
+    legendLabelPaint =
+        PainterUtils.create(legendLabelPaint, null, ColorUtils.BLACK, (9));
 
     _legendFormPaint = Paint()
       ..isAntiAlias = true
@@ -51,15 +51,7 @@ class LegendRenderer extends Renderer {
 
   Legend get legend => _legend;
 
-  // ignore: unnecessary_getters_setters
-  TextPainter get legendLabelPaint => _legendLabelPaint;
-
-  // ignore: unnecessary_getters_setters
-  set legendLabelPaint(TextPainter value) {
-    _legendLabelPaint = value;
-  }
-
-  List<LegendEntry> _computedEntries = []..length = 16;
+  List<LegendEntry> _computedEntries = List.filled(16, LegendEntry.empty());
 
   /// Prepares the legend and calculates all needed forms, labels and colors.
   ///
@@ -176,43 +168,43 @@ class LegendRenderer extends Renderer {
       _legend.entries = (_computedEntries);
     }
 
-    _legendLabelPaint = getLabelPainter();
+    legendLabelPaint = getLabelPainter();
 
     // calculate all dimensions of the _legend
-    _legend.calculateDimensions(_legendLabelPaint, viewPortHandler);
+    _legend.calculateDimensions(legendLabelPaint!, viewPortHandler);
   }
 
   TextPainter getLabelPainter() {
     var fontFamily = _legend.typeface?.fontFamily;
     var fontWeight = _legend.typeface?.fontWeight;
     return PainterUtils.create(
-        _legendLabelPaint, null, _legend.textColor, _legend.textSize,
+        legendLabelPaint, null, _legend.textColor, _legend.textSize,
         fontFamily: fontFamily, fontWeight: fontWeight);
   }
 
   void renderLegend(Canvas c) {
     if (!_legend.enabled) return;
 
-    _legendLabelPaint = getLabelPainter();
+    legendLabelPaint = getLabelPainter();
 
-    double labelLineHeight = Utils.getLineHeight1(_legendLabelPaint);
-    double labelLineSpacing = Utils.getLineSpacing1(_legendLabelPaint) +
-        Utils.convertDpToPixel(_legend.yEntrySpace);
+    double labelLineHeight = Utils.getLineHeight1(legendLabelPaint!);
+    double labelLineSpacing =
+        Utils.getLineSpacing1(legendLabelPaint!) + (_legend.yEntrySpace);
     double formYOffset =
-        labelLineHeight - Utils.calcTextHeight(_legendLabelPaint, "ABC") / 2;
+        labelLineHeight - Utils.calcTextHeight(legendLabelPaint!, "ABC") / 2;
 
     List<LegendEntry> entries = _legend.entries;
 
-    double formToTextSpace = Utils.convertDpToPixel(_legend.formToTextSpace);
-    double xEntrySpace = Utils.convertDpToPixel(_legend.xEntrySpace);
+    double formToTextSpace = (_legend.formToTextSpace);
+    double xEntrySpace = (_legend.xEntrySpace);
     LegendOrientation orientation = _legend.orientation;
     LegendHorizontalAlignment horizontalAlignment = _legend.horizontalAlignment;
     LegendVerticalAlignment verticalAlignment = _legend.verticalAlignment;
     LegendDirection direction = _legend.direction;
-    double defaultFormSize = Utils.convertDpToPixel(_legend.formSize);
+    double defaultFormSize = (_legend.formSize);
 
     // space between the entries
-    double stackSpace = Utils.convertDpToPixel(_legend.stackSpace);
+    double stackSpace = (_legend.stackSpace);
 
     double yoffset = _legend.yOffset;
     double xoffset = _legend.xOffset;
@@ -265,8 +257,8 @@ class LegendRenderer extends Renderer {
     switch (orientation) {
       case LegendOrientation.HORIZONTAL:
         {
-          List<FSize> calculatedLineSizes = _legend.calculatedLineSizes;
-          List<FSize> calculatedLabelSizes = _legend.calculatedLabelSizes;
+          List<FSize?> calculatedLineSizes = _legend.calculatedLineSizes;
+          List<FSize?> calculatedLabelSizes = _legend.calculatedLabelSizes;
           List<bool> calculatedLabelBreakPoints =
               _legend.calculatedLabelBreakPoints;
 
@@ -296,9 +288,7 @@ class LegendRenderer extends Renderer {
           for (int i = 0, count = entries.length; i < count; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize.isNaN
-                ? defaultFormSize
-                : Utils.convertDpToPixel(e.formSize);
+            double formSize = e.formSize.isNaN ? defaultFormSize : (e.formSize);
 
             if (i < calculatedLabelBreakPoints.length &&
                 calculatedLabelBreakPoints[i]) {
@@ -310,8 +300,8 @@ class LegendRenderer extends Renderer {
                 horizontalAlignment == LegendHorizontalAlignment.CENTER &&
                 lineIndex < calculatedLineSizes.length) {
               posX += (direction == LegendDirection.RIGHT_TO_LEFT
-                      ? calculatedLineSizes[lineIndex].width
-                      : -calculatedLineSizes[lineIndex].width) /
+                      ? calculatedLineSizes[lineIndex]!.width
+                      : -calculatedLineSizes[lineIndex]!.width) /
                   2;
               lineIndex++;
             }
@@ -333,12 +323,12 @@ class LegendRenderer extends Renderer {
                     : formToTextSpace;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
-                posX -= calculatedLabelSizes[i].width;
+                posX -= calculatedLabelSizes[i]!.width;
 
               drawLabel(c, posX, posY + labelLineHeight, e.label ?? "");
 
               if (direction == LegendDirection.LEFT_TO_RIGHT)
-                posX += calculatedLabelSizes[i].width;
+                posX += calculatedLabelSizes[i]!.width;
 
               posX += direction == LegendDirection.RIGHT_TO_LEFT
                   ? -xEntrySpace
@@ -384,9 +374,7 @@ class LegendRenderer extends Renderer {
           for (int i = 0; i < entries.length; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize.isNaN
-                ? defaultFormSize
-                : Utils.convertDpToPixel(e.formSize);
+            double formSize = e.formSize.isNaN ? defaultFormSize : (e.formSize);
 
             double posX = originPosX;
 
@@ -409,7 +397,7 @@ class LegendRenderer extends Renderer {
               else if (wasStacked) posX = originPosX;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
-                posX -= Utils.calcTextWidth(_legendLabelPaint, e.label ?? "");
+                posX -= Utils.calcTextWidth(legendLabelPaint!, e.label ?? "");
 
               if (!wasStacked) {
                 drawLabel(c, posX, posY + labelLineHeight, e.label ?? "");
@@ -451,8 +439,8 @@ class LegendRenderer extends Renderer {
     LegendForm form = entry.form;
     if (form == LegendForm.DEFAULT) form = legend.shape;
 
-    final double formSize = Utils.convertDpToPixel(
-        entry.formSize.isNaN ? legend.formSize : entry.formSize);
+    final double formSize =
+        (entry.formSize.isNaN ? legend.formSize : entry.formSize);
     final double half = formSize / 2;
 
     switch (form) {
@@ -484,10 +472,9 @@ class LegendRenderer extends Renderer {
 
       case LegendForm.LINE:
         {
-          final double formLineWidth = Utils.convertDpToPixel(
-              entry.formLineWidth.isNaN
-                  ? legend.formLineWidth
-                  : entry.formLineWidth);
+          final double formLineWidth = (entry.formLineWidth.isNaN
+              ? legend.formLineWidth
+              : entry.formLineWidth);
           final DashPathEffect formLineDashEffect =
               entry.formLineDashEffect == null
                   ? legend.getFormLineDashEffect()
@@ -511,9 +498,9 @@ class LegendRenderer extends Renderer {
   }
 
   void drawLabel(Canvas c, double x, double y, String label) {
-    _legendLabelPaint.text =
-        TextSpan(text: label, style: _legendLabelPaint.text?.style);
-    _legendLabelPaint.layout();
-    _legendLabelPaint.paint(c, Offset(x, y - _legendLabelPaint.height));
+    legendLabelPaint!.text =
+        TextSpan(text: label, style: legendLabelPaint!.text?.style);
+    legendLabelPaint!.layout();
+    legendLabelPaint!.paint(c, Offset(x, y - legendLabelPaint!.height));
   }
 }
