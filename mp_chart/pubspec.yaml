@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
       sdk: flutter
-  image_gallery_saver: ^1.6.9
+  # image_gallery_saver: ^1.6.9
   intl: ^0.18.0
   optimized_gesture_detector: 
     path: D:/github_repo/OptimizedGestureDetector/

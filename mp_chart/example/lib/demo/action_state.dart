@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/controller/bubble_chart_controller.dart';
 import 'package:mp_chart/mp/controller/candlestick_chart_controller.dart';
@@ -25,6 +23,7 @@ import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/scatter_data_set.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
+import 'package:mp_chart/mp/core/platform_utils.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/util.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -74,26 +73,24 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
   PopupMenuItemBuilder<String> getBuilder();
 
   void captureImg(CaptureCallback callback) {
-    PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage)
-        .then((permission) {
-      if (permission.value != PermissionStatus.granted.value) {
-        PermissionHandler()
-            .requestPermissions([PermissionGroup.storage]).then((permissions) {
-          if (permissions.containsKey(PermissionGroup.storage)) {
-            if (permissions[PermissionGroup.storage] ==
-                    PermissionStatus.granted ||
-                ((permissions[PermissionGroup.storage] ==
-                        PermissionStatus.unknown) &&
-                    Platform.isIOS)) {
-              callback();
-            }
-          }
-        });
-      } else {
-        callback();
-      }
-    });
+    if (PlatformUtils.isAndroid ||
+        PlatformUtils.isWindows ||
+        PlatformUtils.isIOS) {
+      Permission p = Permission.storage;
+
+      Future.delayed(Duration.zero).then((v) async {
+        final status = await p.status;
+        if (!status.isGranted) {
+          await p.request();
+        }
+
+        if (status.isGranted) {
+          callback();
+        }
+      });
+    } else {
+      callback();
+    }
   }
 }
 
