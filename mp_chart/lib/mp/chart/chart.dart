@@ -33,6 +33,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
     isCapturing = true;
 
     _screenshotController.capture(pixelRatio: 3.0).then((imgFile) {
+      /// FIXME
       ImageGallerySaver.saveImage(imgFile);
       isCapturing = false;
     }).catchError((error) {
