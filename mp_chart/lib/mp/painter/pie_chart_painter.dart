@@ -75,17 +75,17 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
   MPPointF _centerTextOffset;
 
-  TypeFace _centerTextTypeface;
-  TypeFace get centerTextTypeface => _centerTextTypeface;
+  TypeFace? _centerTextTypeface;
+  TypeFace? get centerTextTypeface => _centerTextTypeface;
 
   /// Center text color
-  final Color _centerTextColor;
-  Color get centerTextColor => _centerTextColor;
+  final Color? _centerTextColor;
+  Color? get centerTextColor => _centerTextColor;
 
   /// Center text font size
-  final double _centerTextSize;
-  double get centerTextSize => _centerTextSize;
-  TypeFace _entryLabelTypeface;
+  final double? _centerTextSize;
+  double? get centerTextSize => _centerTextSize;
+  TypeFace? _entryLabelTypeface;
 
   PieChartPainter(
       PieData data,
@@ -107,7 +107,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
       Legend legend,
       LegendRenderer legendRenderer,
       DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      OnChartValueSelectedListener? selectedListener,
       double rotationAngle,
       double rawRotationAngle,
       bool rotateEnabled,
@@ -120,18 +120,18 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
       String centerText,
       double centerTextOffsetX,
       double centerTextOffsetY,
-      TypeFace entryLabelTypeface,
-      TypeFace centerTextTypeface,
+      TypeFace? entryLabelTypeface,
+      TypeFace? centerTextTypeface,
       double holeRadiusPercent,
       double transparentCircleRadiusPercent,
       bool drawCenterText,
       double centerTextRadiusPercent,
       double maxAngle,
       double minAngleForSlices,
-      Color backgroundColor,
+      Color? backgroundColor,
       Color holeColor,
-      Color centerTextColor,
-      double centerTextSize)
+      Color? centerTextColor,
+      double? centerTextSize)
       : _drawEntryLabels = drawEntryLabels,
         _drawHole = drawHole,
         _drawSlicesUnderHole = drawSlicesUnderHole,

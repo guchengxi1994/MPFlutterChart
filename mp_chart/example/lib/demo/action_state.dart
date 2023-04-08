@@ -467,22 +467,24 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets) {
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
         controller.drawEntryLabels = !controller.drawEntryLabels;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'E':
         controller.usePercentValues = !controller.usePercentValues;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'F':
         if (controller.minAngleForSlices == 0) {
@@ -490,11 +492,11 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         } else {
           controller.minAngleForSlices = 0;
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'G':
         controller.drawHole = !controller.drawHole;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'H':
         bool toSet = !controller.drawRoundedSlices || !controller.drawHole;
@@ -505,11 +507,11 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         if (toSet && controller.drawSlicesUnderHole) {
           controller.drawSlicesUnderHole = false;
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.drawCenterText = !controller.drawCenterText;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         controller.animator
@@ -534,7 +536,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         break;
       case 'N':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }

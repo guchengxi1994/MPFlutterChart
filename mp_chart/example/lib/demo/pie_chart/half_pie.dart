@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
@@ -19,6 +20,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class PieChartHalfPie extends StatefulWidget {
+  const PieChartHalfPie({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return PieChartHalfPieState();
@@ -28,11 +31,12 @@ class PieChartHalfPie extends StatefulWidget {
 class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   late PieChartController _controller;
   var random = Random(1);
+  var future;
 
   @override
   void initState() {
     _initController();
-    _initPieData();
+    future = _initPieData();
     super.initState();
   }
 
@@ -41,11 +45,14 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(right: 0, left: 0, top: 0, bottom: 0, child: _initPieChart())
-      ],
-    );
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+                right: 0, left: 0, top: 0, bottom: 0, child: _initPieChart())
+          ],
+        ),
+        future);
   }
 
   // ignore: non_constant_identifier_names
@@ -119,7 +126,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   PercentFormatter _formatter = PercentFormatter();
 
-  void _initPieData() async {
+  Future _initPieData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     var count = 4;
     var range = 100;

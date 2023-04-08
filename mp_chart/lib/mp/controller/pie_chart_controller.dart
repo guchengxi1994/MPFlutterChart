@@ -109,16 +109,16 @@ class PieChartController extends PieRadarController<PieChartPainter> {
   @override
   IMarker initMarker() => BarChartMarker();
 
-  PieData get data => super.data as PieData;
+  PieData? get data => super.data as PieData?;
 
   PieChartPainter get painter => super.painter;
 
-  PieChartState get state => super.state as PieChartState;
+  PieChartState? get state => super.state as PieChartState?;
 
   @override
   void initialPainter() {
     painter = PieChartPainter(
-      data,
+      data!,
       animator,
       viewPortHandler!,
       maxHighlightDistance,
@@ -137,7 +137,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
       legend!,
       legendRenderer!,
       rendererSettingFunction!,
-      selectionListener!,
+      selectionListener,
       rotationAngle,
       rawRotationAngle,
       rotateEnabled,
@@ -150,18 +150,18 @@ class PieChartController extends PieRadarController<PieChartPainter> {
       centerText,
       centerTextOffsetX,
       centerTextOffsetY,
-      entryLabelTypeface!,
-      centerTextTypeface!,
+      entryLabelTypeface,
+      centerTextTypeface,
       holeRadiusPercent,
       transparentCircleRadiusPercent,
       drawCenterText,
       centerTextRadiusPercent,
       maxAngle,
       minAngleForSlices,
-      backgroundColor!,
+      backgroundColor,
       holeColor,
-      centerTextColor!,
-      centerTextSize!,
+      centerTextColor,
+      centerTextSize,
     );
   }
 

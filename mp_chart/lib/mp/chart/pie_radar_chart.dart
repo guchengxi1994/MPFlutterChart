@@ -13,7 +13,7 @@ abstract class PieRadarChart<C extends PieRadarController> extends Chart<C> {
 
 abstract class PieRadarChartState<T extends PieRadarChart>
     extends ChartState<T> {
-  late Highlight? lastHighlighted;
+  late Highlight? lastHighlighted = null;
   MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
   double _startAngle = 0.0;
 

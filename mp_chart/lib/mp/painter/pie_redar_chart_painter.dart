@@ -36,7 +36,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// Sets the minimum offset (padding) around the chart, defaults to 0.f
   final double _minOffset; //0.0
 
-  Color _backgroundColor;
+  Color? _backgroundColor;
 
   PieRadarChartPainter(
       T data,
@@ -58,12 +58,12 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
       Legend legend,
       LegendRenderer legendRenderer,
       DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      OnChartValueSelectedListener? selectedListener,
       double rotationAngle,
       double rawRotationAngle,
       bool rotateEnabled,
       double minOffset,
-      Color backgroundColor)
+      Color? backgroundColor)
       : _rotationAngle = rotationAngle,
         _rawRotationAngle = rawRotationAngle,
         _rotateEnabled = rotateEnabled,
@@ -104,7 +104,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   @override
   void onPaint(Canvas canvas, Size size) {
     if (_backgroundColor != null) {
-      canvas.drawColor(_backgroundColor, BlendMode.src);
+      canvas.drawColor(_backgroundColor!, BlendMode.src);
     }
   }
 
