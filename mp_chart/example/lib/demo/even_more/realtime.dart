@@ -19,6 +19,8 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 
 class EvenMoreRealtime extends StatefulWidget {
+  const EvenMoreRealtime({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return EvenMoreRealtimeState();
@@ -39,6 +41,10 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
   @override
   Widget getBody() {
+    if (controller.data == null) {
+      return CircularProgressIndicator();
+    }
+
     return Stack(
       children: <Widget>[
         Positioned(

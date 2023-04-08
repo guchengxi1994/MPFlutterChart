@@ -34,6 +34,10 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
   @override
   Widget getBody() {
+    if (controller.data == null) {
+      return CircularProgressIndicator();
+    }
+
     return Stack(
       children: <Widget>[
         Positioned(
@@ -180,7 +184,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _removeLastEntry() {
-    LineData? data = controller?.data;
+    LineData? data = controller.data;
     if (data != null) {
       ILineDataSet? set = data.getDataSetByIndex(0);
       if (set != null) {
@@ -193,7 +197,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _addDataSet() {
-    LineData? data = controller?.data;
+    LineData? data = controller.data;
     if (data == null) {
       controller.data = LineData();
     } else {

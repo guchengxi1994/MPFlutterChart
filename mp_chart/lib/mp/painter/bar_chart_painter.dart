@@ -177,7 +177,9 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   /// @return
   @override
   Highlight? getHighlightByTouchPoint(double x, double y) {
-    Highlight? h = highlighter.getHighlight(x, y);
+    if (highlighter == null) return null;
+
+    Highlight? h = highlighter!.getHighlight(x, y);
     if (h == null || !isHighlightFullBarEnabled()) return h;
 
     // For isHighlightFullBarEnabled, remove stackIndex

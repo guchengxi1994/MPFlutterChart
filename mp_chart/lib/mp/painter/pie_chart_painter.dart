@@ -106,7 +106,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
+      DataRendererSettingFunction? rendererSettingFunction,
       OnChartValueSelectedListener? selectedListener,
       double rotationAngle,
       double rawRotationAngle,
@@ -190,15 +190,15 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   @override
   void onPaint(Canvas canvas, Size size) {
     super.onPaint(canvas, size);
-    renderer.drawData(canvas);
+    renderer!.drawData(canvas);
 
     if (valuesToHighlight()) {
-      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
+      renderer!.drawHighlighted(canvas, indicesToHighlight ?? []);
     }
 
-    renderer.drawExtras(canvas);
+    renderer!.drawExtras(canvas);
 
-    renderer.drawValues(canvas);
+    renderer!.drawValues(canvas);
 
     legendRenderer.renderLegend(canvas);
 

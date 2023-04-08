@@ -111,7 +111,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getData());
-    renderer.initBuffers();
+    renderer!.initBuffers();
     calcMinMax();
 
     double legendLeft = 0, legendRight = 0, legendBottom = 0, legendTop = 0;

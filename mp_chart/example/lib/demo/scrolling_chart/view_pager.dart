@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
@@ -34,6 +35,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class ScrollingChartViewPager extends StatefulWidget {
+  const ScrollingChartViewPager({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return ScrollingChartViewPagerState();
@@ -49,15 +52,20 @@ class ScrollingChartViewPagerState
   late PieChartController _pieChartController;
   var random = Random(1);
 
+  var future;
+
   @override
   void initState() {
     _initController();
-    _initLineData1();
-    _initLineData2();
+
     _initBarData();
     _initScatterData();
     _initPieData();
     super.initState();
+
+    future = Future.delayed(Duration.zero)
+        .then((value) async => {await _initLineData1()})
+        .then((value) async => {await _initLineData2()});
   }
 
   @override
@@ -65,52 +73,54 @@ class ScrollingChartViewPagerState
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: PageView.builder(
-            physics: PageScrollPhysics(),
-            itemBuilder: (context, index) {
-              switch (index) {
-                case 0:
-                  {
-                    _initLineChart1();
-                    return getChildWidget(LineChart(_lineChartController1));
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: PageView.builder(
+                physics: PageScrollPhysics(),
+                itemBuilder: (context, index) {
+                  switch (index) {
+                    case 0:
+                      {
+                        _initLineChart1();
+                        return getChildWidget(LineChart(_lineChartController1));
+                      }
+                    case 1:
+                      {
+                        _initLineChart2();
+                        return getChildWidget(LineChart(_lineChartController2),
+                            showText:
+                                "this chart's controller not set resolveGestureHorizontalConflict, so chart move horizontal conflict with page view");
+                      }
+                    case 2:
+                      {
+                        _initBarChart();
+                        return getChildWidget(BarChart(_barChartController));
+                      }
+                    case 3:
+                      {
+                        _initScatterChart();
+                        return getChildWidget(
+                            ScatterChart(_scatterChartController));
+                      }
+                    default:
+                      {
+                        _initPieChart();
+                        return getChildWidget(PieChart(_pieChartController));
+                      }
                   }
-                case 1:
-                  {
-                    _initLineChart2();
-                    return getChildWidget(LineChart(_lineChartController2),
-                        showText:
-                            "this chart's controller not set resolveGestureHorizontalConflict, so chart move horizontal conflict with page view");
-                  }
-                case 2:
-                  {
-                    _initBarChart();
-                    return getChildWidget(BarChart(_barChartController));
-                  }
-                case 3:
-                  {
-                    _initScatterChart();
-                    return getChildWidget(
-                        ScatterChart(_scatterChartController));
-                  }
-                default:
-                  {
-                    _initPieChart();
-                    return getChildWidget(PieChart(_pieChartController));
-                  }
-              }
-            },
-            itemCount: 5,
-          ),
+                },
+                itemCount: 5,
+              ),
+            ),
+          ],
         ),
-      ],
-    );
+        future);
   }
 
   Widget getChildWidget(Widget child,
@@ -234,10 +244,10 @@ class ScrollingChartViewPagerState
         description: desc);
   }
 
-  void _initLineData1() {
+  Future _initLineData1() async {
     List<ILineDataSet> sets = [];
 
-    Util.loadAsset("sine.txt").then((value) {
+    await Util.loadAsset("sine.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -258,7 +268,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    Util.loadAsset("cosine.txt").then((value) {
+    await Util.loadAsset("cosine.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -280,10 +290,10 @@ class ScrollingChartViewPagerState
     });
   }
 
-  void _initLineData2() {
+  Future _initLineData2() async {
     List<ILineDataSet> sets = [];
 
-    Util.loadAsset("n.txt").then((value) {
+    await Util.loadAsset("n.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -306,7 +316,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    Util.loadAsset("nlogn.txt").then((value) {
+    await Util.loadAsset("nlogn.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -329,7 +339,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    Util.loadAsset("square.txt").then((value) {
+    await Util.loadAsset("square.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -352,7 +362,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    Util.loadAsset("three.txt").then((value) {
+    await Util.loadAsset("three.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {

@@ -168,7 +168,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     highlighter = CombinedHighlighter(this, this);
     renderer = CombinedChartRenderer(this, animator, viewPortHandler);
     (renderer as CombinedChartRenderer).createRenderers();
-    renderer.initBuffers();
+    renderer!.initBuffers();
   }
 
   @override
@@ -185,7 +185,9 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// @return
   @override
   Highlight? getHighlightByTouchPoint(double x, double y) {
-    Highlight? h = highlighter.getHighlight(x, y);
+    if (highlighter == null) return null;
+
+    Highlight? h = highlighter!.getHighlight(x, y);
     if (h == null || !isHighlightFullBarEnabled()) return h;
 
     // For isHighlightFullBarEnabled, remove stackIndex

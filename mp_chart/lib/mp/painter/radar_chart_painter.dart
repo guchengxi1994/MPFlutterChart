@@ -170,22 +170,22 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
     _xAxisRenderer.renderAxisLabels(canvas);
 
-    if (_drawWeb) renderer.drawExtras(canvas);
+    if (_drawWeb) renderer!.drawExtras(canvas);
 
     if (_yAxis.enabled && _yAxis.drawLimitLineBehindData)
       _yAxisRenderer.renderLimitLines(canvas);
 
-    renderer.drawData(canvas);
+    renderer!.drawData(canvas);
 
     if (valuesToHighlight())
-      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
+      renderer!.drawHighlighted(canvas, indicesToHighlight ?? []);
 
     if (_yAxis.enabled && !_yAxis.drawLimitLineBehindData)
       _yAxisRenderer.renderLimitLines(canvas);
 
     _yAxisRenderer.renderAxisLabels(canvas);
 
-    renderer.drawValues(canvas);
+    renderer!.drawValues(canvas);
 
     legendRenderer.renderLegend(canvas);
 

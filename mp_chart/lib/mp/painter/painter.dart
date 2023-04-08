@@ -77,8 +77,8 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   ///////////////////////////////////////////////////
   /// object responsible for rendering the data
-  late DataRenderer renderer;
-  late IHighlighter highlighter;
+  late DataRenderer? renderer = null;
+  late IHighlighter? highlighter = null;
 
   /// array of Highlight objects that reference the highlighted slices in the
   /// chart
@@ -397,7 +397,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     if (_data == null || highlighter == null) {
       return null;
     } else {
-      return highlighter.getHighlight(x, y);
+      return highlighter!.getHighlight(x, y);
     }
   }
 

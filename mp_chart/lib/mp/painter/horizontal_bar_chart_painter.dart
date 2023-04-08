@@ -148,7 +148,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getBarData());
-    renderer.initBuffers();
+    renderer!.initBuffers();
     calcMinMax();
 
     double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
@@ -273,7 +273,8 @@ class HorizontalBarChartPainter extends BarChartPainter {
   @override
   Highlight? getHighlightByTouchPoint(double x, double y) {
     if (getBarData() != null) {
-      return highlighter.getHighlight(y, x); // switch x and y
+      if (highlighter == null) return null;
+      return highlighter!.getHighlight(y, x); // switch x and y
     }
     return null;
     // return highlighter.getHighlight(y, x);

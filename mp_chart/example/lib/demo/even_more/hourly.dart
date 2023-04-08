@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:mp_chart/mp/chart/line_chart.dart';
@@ -18,6 +19,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class EvenMoreHourly extends StatefulWidget {
+  const EvenMoreHourly({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return EvenMoreHourlyState();
@@ -27,11 +30,12 @@ class EvenMoreHourly extends StatefulWidget {
 class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   var random = Random(1);
   int _count = 100;
+  var future;
 
   @override
   void initState() {
     _initController();
-    _initLineData(_count.toDouble());
+    future = _initLineData(_count.toDouble());
     super.initState();
   }
 
@@ -40,58 +44,61 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: LineChart(controller),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 100,
+              child: LineChart(controller),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 1500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initLineData(_count.toDouble());
-                            })),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _count.toDouble(),
+                                min: 0,
+                                max: 1500,
+                                onChanged: (value) {
+                                  _count = value.toInt();
+                                  _initLineData(_count.toDouble());
+                                })),
+                      ),
+                      Container(
+                          constraints:
+                              BoxConstraints.expand(height: 50, width: 60),
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Center(
+                              child: Text(
+                            "$_count",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ],
                   ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
                 ],
               ),
-            ],
-          ),
-        )
-      ],
-    );
+            )
+          ],
+        ),
+        future);
   }
 
   void _initController() {
@@ -140,7 +147,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         description: desc);
   }
 
-  void _initLineData(double count) async {
+  Future _initLineData(double count) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double range = 50;
     // now in hours

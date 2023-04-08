@@ -30,6 +30,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class ScrollingChartMultiple extends StatefulWidget {
+  const ScrollingChartMultiple({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return ScrollingChartMultipleState();

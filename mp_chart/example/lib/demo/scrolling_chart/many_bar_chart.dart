@@ -14,6 +14,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class ScrollingChartManyBar extends StatefulWidget {
+  const ScrollingChartManyBar({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return ScrollingChartManyBarState();

@@ -282,7 +282,7 @@ abstract class BarLineChartBasePainter<
     canvas.save();
     canvas.clipRect(viewPortHandler.getContentRect());
 
-    renderer.drawData(canvas);
+    renderer!.drawData(canvas);
 
     if (!xAxis.drawGridLinesBehindData) _xAxisRenderer.renderGridLines(canvas);
 
@@ -294,12 +294,12 @@ abstract class BarLineChartBasePainter<
 
     // if highlighting is enabled
     if (valuesToHighlight())
-      renderer.drawHighlighted(canvas, indicesToHighlight ?? []);
+      renderer!.drawHighlighted(canvas, indicesToHighlight ?? []);
 
     // Removes clipping rectangle
     canvas.restore();
 
-    renderer.drawExtras(canvas);
+    renderer!.drawExtras(canvas);
 
     if (xAxis.enabled && !xAxis.drawLimitLineBehindData)
       _xAxisRenderer.renderLimitLines(canvas);
@@ -318,11 +318,11 @@ abstract class BarLineChartBasePainter<
       canvas.save();
       canvas.clipRect(viewPortHandler.getContentRect());
 
-      renderer.drawValues(canvas);
+      renderer!.drawValues(canvas);
 
       canvas.restore();
     } else {
-      renderer.drawValues(canvas);
+      renderer!.drawValues(canvas);
     }
 
     legendRenderer.renderLegend(canvas);
@@ -501,7 +501,7 @@ abstract class BarLineChartBasePainter<
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getData());
-    renderer.initBuffers();
+    renderer!.initBuffers();
     calcMinMax();
 
     if (!_customViewPortEnabled) {

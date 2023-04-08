@@ -136,7 +136,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
       xAxis!,
       legend!,
       legendRenderer!,
-      rendererSettingFunction!,
+      rendererSettingFunction,
       selectionListener,
       rotationAngle,
       rawRotationAngle,
