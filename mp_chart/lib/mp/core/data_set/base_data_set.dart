@@ -17,10 +17,9 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   late List<ui.Color> _colors = [];
 
   late GradientColor _gradientColor = GradientColor(
-      ui.Color.fromARGB(255, 140, 234, 255),
-      ui.Color.fromARGB(255, 140, 234, 255));
+      ui.Color.fromARGB(255, 140, 234, 255), Color.fromARGB(255, 62, 167, 86));
 
-  late List<GradientColor> _gradientColors = [];
+  late List<GradientColor> _gradientColors = [_gradientColor];
 
   /// List representing all colors that are used for drawing the actual values for this DataSet
   late List<ui.Color> _valueColors = [];

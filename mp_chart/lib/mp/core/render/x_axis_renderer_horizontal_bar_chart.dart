@@ -122,7 +122,8 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     final double labelRotationAngleDegrees = xAxis.labelRotationAngle;
     bool centeringEnabled = xAxis.isCenterAxisLabelsEnabled();
 
-    List<double> positions = [xAxis.entryCount * 2];
+    // List<double> positions = [xAxis.entryCount * 2];
+    List<double> positions = List.filled(xAxis.entryCount * 2, 0);
 
     for (int i = 0; i < positions.length; i += 2) {
       // only fill x values

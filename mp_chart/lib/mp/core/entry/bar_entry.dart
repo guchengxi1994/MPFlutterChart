@@ -48,7 +48,7 @@ class BarEntry extends Entry {
     calcRanges();
   }
 
-  List<Range> get ranges => _ranges as List<Range>;
+  List<Range?> get ranges => _ranges;
 
   /// Returns true if this BarEntry is stacked (has a values array), false if not.
   ///

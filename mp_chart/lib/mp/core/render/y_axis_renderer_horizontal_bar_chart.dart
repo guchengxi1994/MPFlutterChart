@@ -160,7 +160,8 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   @override
   List<double> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != yAxis.entryCount * 2) {
-      mGetTransformedPositionsBuffer = [yAxis.entryCount * 2];
+      // mGetTransformedPositionsBuffer = [yAxis.entryCount * 2];
+      mGetTransformedPositionsBuffer = List.filled(yAxis.entryCount * 2, 0);
     }
     List<double> positions = mGetTransformedPositionsBuffer;
 

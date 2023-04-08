@@ -48,8 +48,8 @@ class HorizontalBarChartPainter extends BarChartPainter {
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -67,7 +67,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
+      OnDrawListener? drawListener,
       YAxis axisLeft,
       YAxis axisRight,
       YAxisRenderer axisRendererLeft,
@@ -81,7 +81,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : super(
             data,
             animator,

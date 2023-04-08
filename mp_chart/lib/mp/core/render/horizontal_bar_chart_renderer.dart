@@ -110,6 +110,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     buffer.feed(dataSet);
 
+    // print("[lllllll] ${buffer.buffer}");
+
     trans.pointValuesToPixel(buffer.buffer);
 
     final bool isSingleColor = dataSet.getColors().length == 1;
@@ -321,6 +323,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               transformed[k] = y * phaseY;
             }
+            // print("[transformed] ${transformed}");
 
             trans.pointValuesToPixel(transformed);
 

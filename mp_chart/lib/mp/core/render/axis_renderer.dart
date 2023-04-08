@@ -237,7 +237,7 @@ abstract class AxisRenderer extends Renderer {
 
     if (_axis.isCenterAxisLabelsEnabled()) {
       if (_axis.centeredEntries.length < num) {
-        _axis.centeredEntries = [num * 1.0];
+        _axis.centeredEntries = List.filled(num, 0);
       }
 
       int offset = interval ~/ 2;

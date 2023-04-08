@@ -162,7 +162,7 @@ class BarChartController
         legend!,
         legendRenderer!,
         rendererSettingFunction,
-        selectionListener!,
+        selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
         pinchZoomEnabled,
@@ -194,12 +194,12 @@ class BarChartController
         drawValueAboveBar,
         drawBarShadow,
         fitBars,
-        chartTransListener!);
+        chartTransListener);
   }
 
   BarChartPainter get painter => super.painter;
 
-  BarChartState get state => super.state as BarChartState;
+  BarChartState? get state => super.state as BarChartState?;
 
   @override
   IMarker initMarker() => BarChartMarker();

@@ -290,12 +290,12 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         for (IBarDataSet set in controller.data!.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data!.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = controller.data!.dataSets;
@@ -303,22 +303,22 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data!
               .setHighlightEnabled(!controller.data!.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'F':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'G':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'H':
         controller.animator
@@ -337,7 +337,7 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         break;
       case 'K':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }
@@ -379,12 +379,12 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         for (IBarDataSet set in controller.data!.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data!.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = controller.data!.dataSets;
@@ -392,22 +392,22 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data!
               .setHighlightEnabled(!controller.data!.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'F':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'G':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'H':
         controller.animator
@@ -426,7 +426,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         break;
       case 'K':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }

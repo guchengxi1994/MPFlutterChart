@@ -164,7 +164,7 @@ class HorizontalBarChartController extends BarChartController {
         xAxis!,
         legend!,
         legendRenderer!,
-        rendererSettingFunction!,
+        rendererSettingFunction,
         selectionListener!,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
@@ -183,7 +183,7 @@ class HorizontalBarChartController extends BarChartController {
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
-        drawListener!,
+        drawListener,
         axisLeft!,
         axisRight!,
         axisRendererLeft!,
@@ -197,7 +197,7 @@ class HorizontalBarChartController extends BarChartController {
         drawValueAboveBar,
         drawBarShadow,
         fitBars,
-        chartTransListener!);
+        chartTransListener);
   }
 
   @override

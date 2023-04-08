@@ -56,7 +56,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       Legend legend,
       LegendRenderer legendRenderer,
       DataRendererSettingFunction? rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -88,7 +88,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : _highlightFullBarEnabled = highlightFullBarEnabled,
         _drawValueAboveBar = drawValueAboveBar,
         _drawBarShadow = drawBarShadow,

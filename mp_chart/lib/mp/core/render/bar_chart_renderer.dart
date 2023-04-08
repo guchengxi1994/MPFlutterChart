@@ -480,7 +480,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   void drawValue(Canvas c, String valueText, double x, double y, Color color,
       double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
-        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
+        fontFamily: typeFace.fontFamily, fontWeight: typeFace.fontWeight);
     valuePaint!.layout();
     valuePaint!
         .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
@@ -513,18 +513,20 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
       bool isStack = (high.stackIndex >= 0 && e.isStacked()) ? true : false;
 
-      double y1;
-      double y2;
+      double y1 = 0;
+      double y2 = 0;
 
       if (isStack) {
         if (_provider.isHighlightFullBarEnabled()) {
           y1 = e.positiveSum;
           y2 = -e.negativeSum;
         } else {
-          Range range = e.ranges[high.stackIndex];
+          Range? range = e.ranges[high.stackIndex];
 
-          y1 = range.from;
-          y2 = range.to;
+          if (range != null) {
+            y1 = range.from;
+            y2 = range.to;
+          }
         }
       } else {
         y1 = e.y;
