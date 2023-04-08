@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/radar_chart.dart';
 import 'package:mp_chart/mp/controller/radar_chart_controller.dart';
@@ -31,12 +30,11 @@ class OtherChartRadar extends StatefulWidget {
 
 class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   var random = Random(1);
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initRadarData();
+    _initRadarData();
     super.initState();
   }
 
@@ -45,27 +43,25 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Container(
-            color: Color.fromARGB(255, 60, 65, 82),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                    right: 0,
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: _initCandleChart()),
-              ],
-            )),
-        future);
+    return Container(
+        color: const Color.fromARGB(255, 60, 65, 82),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+                right: 0,
+                left: 0,
+                top: 0,
+                bottom: 0,
+                child: _initCandleChart()),
+          ],
+        ));
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     controller = RadarChartController(
         yAxisSettingFunction: (yAxis, controller) {
-          yAxis
+          yAxis!
             ..typeface = Util.LIGHT
             ..setLabelCount2(5, false)
             ..textSize = (9)
@@ -74,7 +70,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..drawLabels = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -82,11 +78,11 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..typeface = Util.LIGHT
             ..xEntrySpace = (7)
             ..yEntrySpace = (5)
-            ..formSize = 25
+            ..formSize = Utils.convertDpToPixel(25)!
             ..textColor = (ColorUtils.RED);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..textSize = (9)
             ..typeface = Util.LIGHT
             ..yOffset = (0)
@@ -103,7 +99,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
         description: desc);
   }
 
-  Future _initRadarData() async {
+  void _initRadarData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double mul = 80;
     double min = 20;
@@ -123,8 +119,8 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     }
 
     RadarDataSet set1 = RadarDataSet(entries1, "Last Week");
-    set1.setColor1(Color.fromARGB(255, 103, 110, 129));
-    set1.setFillColor(Color.fromARGB(255, 103, 110, 129));
+    set1.setColor1(const Color.fromARGB(255, 103, 110, 129));
+    set1.setFillColor(const Color.fromARGB(255, 103, 110, 129));
     set1.setDrawFilled(true);
     set1.setFillAlpha(180);
     set1.setLineWidth(2);
@@ -132,7 +128,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     set1.setDrawHighlightIndicators(false);
 
     RadarDataSet set2 = RadarDataSet(entries2, "This Week");
-    set2.setColor1(Color.fromARGB(255, 121, 162, 175));
+    set2.setColor1(const Color.fromARGB(255, 121, 162, 175));
     set2.setGradientColor(ColorUtils.BLUE, ColorUtils.YELLOW);
     set2.setDrawFilled(true);
     set2.setFillAlpha(180);
@@ -145,7 +141,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     sets.add(set2);
 
     controller.data = RadarData.fromList(sets);
-    controller.data
+    controller.data!
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(8)
       ..setDrawValues(false)
@@ -156,7 +152,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
   Widget _initCandleChart() {
     var radarChart = RadarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateXY2(1400, 1400, Easing.EaseInOutQuad);
     return radarChart;
@@ -164,15 +160,16 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 }
 
 class A extends ValueFormatter {
-  final List<String> mActivities = []
-    ..add("Burger")
-    ..add("Steak")
-    ..add("Salad")
-    ..add("Pasta")
-    ..add("Pizza");
+  final List<String> mActivities = <String>[
+    "Burger",
+    "Steak",
+    "Salad",
+    "Pasta",
+    "Pizza"
+  ];
 
   @override
-  String getFormattedValue1(double value) {
-    return mActivities[value.toInt() % mActivities.length];
+  String getFormattedValue1(double? value) {
+    return mActivities[value!.toInt() % mActivities.length];
   }
 }

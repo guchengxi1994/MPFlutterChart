@@ -160,18 +160,18 @@ abstract class BarLineScatterCandleBubbleController<
 
   YAxis initAxisRight() => YAxis(position: AxisDependency.RIGHT);
 
-  Transformer initLeftAxisTransformer() => Transformer(viewPortHandler!);
+  Transformer initLeftAxisTransformer() => Transformer(viewPortHandler);
 
-  Transformer initRightAxisTransformer() => Transformer(viewPortHandler!);
+  Transformer initRightAxisTransformer() => Transformer(viewPortHandler);
 
   YAxisRenderer initAxisRendererLeft() =>
-      YAxisRenderer(viewPortHandler!, axisLeft!, leftAxisTransformer);
+      YAxisRenderer(viewPortHandler, axisLeft, leftAxisTransformer);
 
   YAxisRenderer initAxisRendererRight() =>
-      YAxisRenderer(viewPortHandler!, axisRight!, rightAxisTransformer);
+      YAxisRenderer(viewPortHandler, axisRight, rightAxisTransformer);
 
   XAxisRenderer initXAxisRenderer() =>
-      XAxisRenderer(viewPortHandler!, xAxis!, leftAxisTransformer);
+      XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
 
   @override
   void doneBeforePainterInit() {
@@ -185,7 +185,7 @@ abstract class BarLineScatterCandleBubbleController<
     borderPaint = Paint()
       ..color = borderColor == null ? ColorUtils.BLACK : borderColor!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = borderStrokeWidth;
+      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth)!;
 
     backgroundPaint = Paint()
       ..color = backgroundColor == null ? ColorUtils.WHITE : backgroundColor!;
@@ -204,14 +204,14 @@ abstract class BarLineScatterCandleBubbleController<
     axisRendererRight = initAxisRendererRight();
     xAxisRenderer = initXAxisRenderer();
     if (axisLeftSettingFunction != null) {
-      axisLeftSettingFunction!(axisLeft!, this);
+      axisLeftSettingFunction!(axisLeft, this);
     }
     if (axisRightSettingFunction != null) {
-      axisRightSettingFunction!(axisRight!, this);
+      axisRightSettingFunction!(axisRight, this);
     }
   }
 
-  P get painter => super.painter;
+  P? get painter => super.painter;
 
   void setViewPortOffsets(final double left, final double top,
       final double right, final double bottom) {
@@ -293,11 +293,11 @@ abstract class BarLineScatterCandleBubbleController<
     List<double> pts = [];
     pts.add(xValue);
     pts.add(yValue);
-    double xOrigin = bounds.x;
-    double yOrigin = bounds.y;
+    double? xOrigin = bounds.x;
+    double? yOrigin = bounds.y;
     ChartAnimator(UpdateListener((x, y) {
-      pts[0] = xOrigin + (xValue - xOrigin) * x;
-      pts[1] = yOrigin + (yValue - yOrigin) * y;
+      pts[0] = xOrigin! + (xValue - xOrigin) * x;
+      pts[1] = yOrigin! + (yValue - yOrigin) * y;
       painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler!.centerViewPort(pts);
       state?.setStateIfNotDispose();
@@ -356,11 +356,11 @@ abstract class BarLineScatterCandleBubbleController<
     List<double> pts = [];
     pts.add(xValue);
     pts.add(yValue);
-    double xOrigin = bounds.x;
-    double yOrigin = bounds.y;
+    double? xOrigin = bounds.x;
+    double? yOrigin = bounds.y;
     ChartAnimator(UpdateListener((x, y) {
-      pts[0] = xOrigin + (xValue - xOrigin) * x;
-      pts[1] = yOrigin + (yValue - yOrigin) * y;
+      pts[0] = xOrigin! + (xValue - xOrigin) * x;
+      pts[1] = yOrigin! + (yValue - yOrigin) * y;
       painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler!.centerViewPort(pts);
       state?.setStateIfNotDispose();
@@ -473,30 +473,30 @@ abstract class BarLineScatterCandleBubbleController<
     if (_decelerationLastTime == 0) {
       _decelerationLastTime = currentTime;
     } else {
-      _decelerationVelocity.x *= _dragDecelerationFrictionCoef;
-      _decelerationVelocity.y *= _dragDecelerationFrictionCoef;
+      _decelerationVelocity.x = _decelerationVelocity.x! * _dragDecelerationFrictionCoef;
+      _decelerationVelocity.y = _decelerationVelocity.y! * _dragDecelerationFrictionCoef;
 
       double timeInterval = (currentTime - _decelerationLastTime) / 1000;
 
-      double distanceX = _decelerationVelocity.x * timeInterval;
-      double distanceY = _decelerationVelocity.y * timeInterval;
+      double distanceX = _decelerationVelocity.x! * timeInterval;
+      double distanceY = _decelerationVelocity.y! * timeInterval;
 
       double dragDistanceX = dragXEnabled ? distanceX : 0;
       double dragDistanceY = dragYEnabled ? distanceY : 0;
 
-      painter.translate(dragDistanceX, dragDistanceY);
+      painter!.translate(dragDistanceX, dragDistanceY);
 
       _decelerationLastTime = currentTime;
     }
 
-    if (_decelerationVelocity.x.abs() >= 20 ||
-        _decelerationVelocity.y.abs() >= 20) {
+    if (_decelerationVelocity.x!.abs() >= 20 ||
+        _decelerationVelocity.y!.abs() >= 20) {
       state!.setStateIfNotDispose();
       Future.delayed(Duration(milliseconds: 16), () {
         computeScroll();
       });
     } else {
-      painter.calculateOffsets();
+      painter!.calculateOffsets();
       state!.setStateIfNotDispose();
       stopDeceleration();
     }
@@ -514,7 +514,7 @@ class UpdateListener implements AnimatorUpdateListener {
   }
 
   @override
-  void onRotateUpdate(double angle) {}
+  void onRotateUpdate(double? angle) {}
 }
 
 typedef UpdateFunction = void Function(double x, double y);

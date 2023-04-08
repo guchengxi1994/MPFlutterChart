@@ -137,31 +137,29 @@ class LineChartController
 
   LineChartState? get state => super.state as LineChartState?;
 
-  LineChartPainter get painter => super.painter;
+  LineChartPainter? get painter => super.painter;
 
   @override
   void initialPainter() {
-    // print("[data == null] ${data == null}");
-
     painter = LineChartPainter(
-        data!,
+        data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
-        description!,
+        marker,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
@@ -173,23 +171,23 @@ class LineChartController
         dragYEnabled,
         scaleXEnabled,
         scaleYEnabled,
-        gridBackgroundPaint!,
-        backgroundPaint!,
-        borderPaint!,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
         drawListener,
-        axisLeft!,
-        axisRight!,
-        axisRendererLeft!,
-        axisRendererRight!,
-        leftAxisTransformer!,
-        rightAxisTransformer!,
-        xAxisRenderer!,
-        zoomMatrixBuffer!,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
         customViewPortEnabled,
         chartTransListener);
   }

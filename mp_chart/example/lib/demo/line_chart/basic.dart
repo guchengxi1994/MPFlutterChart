@@ -18,6 +18,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class LineChartBasic extends StatefulWidget {
+  const LineChartBasic({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return LineChartBasicState();
@@ -28,109 +30,99 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
   var random = Random(1);
   int _count = 45;
   double _range = 180.0;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initLineData(_count, _range);
+    _initLineData(_count, _range);
     super.initState();
   }
 
   @override
   Widget getBody() {
-    return FutureBuilder(
-      builder: (c, s) {
-        if (s.connectionState == ConnectionState.done) {
-          return Stack(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: _initLineChart(),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Positioned(
-                right: 0,
-                left: 0,
-                top: 0,
-                bottom: 100,
-                child: _initLineChart(),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Center(
-                              child: Slider(
-                                  value: _count.toDouble(),
-                                  min: 0,
-                                  max: 500,
-                                  onChanged: (value) async {
-                                    _count = value.toInt();
-                                    await _initLineData(_count, _range);
-                                  })),
-                        ),
-                        Container(
-                            constraints:
-                                BoxConstraints.expand(height: 50, width: 60),
-                            padding: EdgeInsets.only(right: 15.0),
-                            child: Center(
-                                child: Text(
-                              "$_count",
-                              textDirection: TextDirection.ltr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: ColorUtils.BLACK,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ))),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Center(
-                              child: Slider(
-                                  value: _range,
-                                  min: 0,
-                                  max: 180,
-                                  onChanged: (value) async {
-                                    _range = value;
-                                    await _initLineData(_count, _range);
-                                  })),
-                        ),
-                        Container(
-                            constraints:
-                                BoxConstraints.expand(height: 50, width: 60),
-                            padding: EdgeInsets.only(right: 15.0),
-                            child: Center(
-                                child: Text(
-                              "${_range.toInt()}",
-                              textDirection: TextDirection.ltr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: ColorUtils.BLACK,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ))),
-                      ],
-                    )
-                  ],
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 180,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
               )
             ],
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
-      future: future,
+          ),
+        )
+      ],
     );
   }
 
@@ -175,7 +167,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     ll4.typeface = Util.EXTRA_BOLD;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..drawLimitLineBehindData = true
             ..enableGridDashedLine(10, 10, 0)
             ..enableAxisLineDashedLine(5, 5, 0)
@@ -185,13 +177,13 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
             ..setAxisMinimum(-50);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.shape = (LegendForm.LINE);
+          legend!.shape = (LegendForm.LINE);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..addLimitLine(ll3)
             ..addLimitLine(ll4)
             ..drawLimitLineBehindData = true
@@ -208,7 +200,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         description: desc);
   }
 
-  Future _initLineData(int count, double range) async {
+  void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = [];
 
@@ -261,14 +253,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(dataSets);
+    controller!.data = LineData.fromList(dataSets);
 
     setState(() {});
   }
 
   Widget _initLineChart() {
-    var lineChart = LineChart(controller);
-    controller.animator
+    var lineChart = LineChart(controller!);
+    controller!.animator!
       ..reset()
       ..animateX1(1500);
     return lineChart;

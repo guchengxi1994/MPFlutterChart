@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/utils/platform_utils.dart';
 import 'package:optimized_gesture_detector/details.dart';
@@ -13,7 +14,7 @@ abstract class Chart<C extends Controller> extends StatefulWidget {
 
   @override
   State createState() {
-    return controller.createChartState();
+    return controller.createChartState()!;
   }
 
   const Chart(this.controller);

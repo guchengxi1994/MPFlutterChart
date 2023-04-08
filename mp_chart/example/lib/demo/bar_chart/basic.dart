@@ -1,13 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:example/demo/action_state.dart';
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:example/demo/util.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
-import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/color/gradient_color.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
@@ -28,6 +28,10 @@ import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/my_value_formatter.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
+import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
+import 'package:mp_chart/mp/core/data_interfaces/i_bar_line_scatter_candle_bubble_data_set.dart';
+import 'package:mp_chart/mp/core/data/bar_line_scatter_candle_bubble_data.dart';
 
 class BarChartBasic extends StatefulWidget {
   const BarChartBasic({Key? key}) : super(key: key);
@@ -43,103 +47,100 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   var random = Random(1);
   int _count = 12;
   double _range = 50.0;
-  var future;
 
   @override
   void initState() {
     _initController();
+    _initBarData(_count, _range);
     super.initState();
-    future = _initBarData(_count, _range);
   }
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: BarChart(controller),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: BarChart(controller),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBarData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBarData(_count, _range);
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initBarData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
-                  )
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initBarData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   @override
@@ -152,7 +153,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     controller = BarChartController(
         chartTransListener: MyChartTransListener(),
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(8, false)
             ..typeface = Util.LIGHT
             ..setValueFormatter(MyValueFormatter("\$"))
@@ -161,7 +162,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = false
             ..typeface = Util.LIGHT
             ..setLabelCount2(8, false)
@@ -170,7 +171,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = LegendVerticalAlignment.BOTTOM
             ..orientation = LegendOrientation.HORIZONTAL
             ..drawInside = false
@@ -181,14 +182,17 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..xEntrySpace = 4;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..position = XAxisPosition.BOTTOM
             ..drawGridLines = false
             ..setGranularity(1.0)
             ..setLabelCount1(7)
-            ..setValueFormatter(DayAxisValueFormatter(
-                controller as BarLineScatterCandleBubbleController));
+            ..setValueFormatter(DayAxisValueFormatter(controller
+                as BarLineScatterCandleBubbleController<
+                    BarLineChartBasePainter<
+                        BarLineScatterCandleBubbleData<
+                            IBarLineScatterCandleBubbleDataSet<Entry?>>?>>));
         },
         selectionListener: this,
         drawBarShadow: false,
@@ -251,17 +255,15 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-
     controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..barWidth = 0.9;
   }
 
-  Future _initBarData(int count, double range) async {
+  void _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     _initData(count, range, img);
-
     setState(() {});
   }
 
@@ -290,7 +292,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
 class MyChartTransListener with ChartTransListener {
   @override
-  void scale(double scaleX, double scaleY, double x, double y) {
+  void scale(double scaleX, double scaleY, double? x, double? y) {
     print("scale scaleX: $scaleX, scaleY: $scaleY, x: $x, y: $y");
   }
 
@@ -302,47 +304,47 @@ class MyChartTransListener with ChartTransListener {
 
 class MyTouchEventListener with OnTouchEventListener {
   @override
-  void onDoubleTapUp(double x, double y) {
+  void onDoubleTapUp(double? x, double? y) {
     print("onDoubleTapUp x: $x, y: $y");
   }
 
   @override
-  void onMoveEnd(double x, double y) {
+  void onMoveEnd(double? x, double? y) {
     print("onMoveEnd x: $x, y: $y");
   }
 
   @override
-  void onMoveStart(double x, double y) {
+  void onMoveStart(double? x, double? y) {
     print("onMoveStart x: $x, y: $y");
   }
 
   @override
-  void onMoveUpdate(double x, double y) {
+  void onMoveUpdate(double? x, double? y) {
     print("onMoveUpdate x: $x, y: $y");
   }
 
   @override
-  void onScaleEnd(double x, double y) {
+  void onScaleEnd(double? x, double? y) {
     print("onScaleEnd x: $x, y: $y");
   }
 
   @override
-  void onScaleStart(double x, double y) {
+  void onScaleStart(double? x, double? y) {
     print("onScaleStart x: $x, y: $y");
   }
 
   @override
-  void onScaleUpdate(double x, double y) {
+  void onScaleUpdate(double? x, double? y) {
     print("onScaleUpdate x: $x, y: $y");
   }
 
   @override
-  void onSingleTapUp(double x, double y) {
+  void onSingleTapUp(double? x, double? y) {
     print("onSingleTapUp x: $x, y: $y");
   }
 
   @override
-  void onTapDown(double x, double y) {
+  void onTapDown(double? x, double? y) {
     print("onTapDown x: $x, y: $y");
   }
 
@@ -352,17 +354,17 @@ class MyTouchEventListener with OnTouchEventListener {
   }
 
   @override
-  void onDragEnd(double x, double y) {
+  void onDragEnd(double? x, double? y) {
     print("onDragEnd x: $x, y: $y");
   }
 
   @override
-  void onDragStart(double x, double y) {
+  void onDragStart(double? x, double? y) {
     print("onDragStart x: $x, y: $y");
   }
 
   @override
-  void onDragUpdate(double x, double y) {
+  void onDragUpdate(double? x, double? y) {
     print("onDragUpdate x: $x, y: $y");
   }
 }

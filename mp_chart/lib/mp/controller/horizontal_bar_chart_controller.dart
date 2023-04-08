@@ -140,32 +140,31 @@ class HorizontalBarChartController extends BarChartController {
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  HorizontalBarChartPainter get painter =>
-      super.painter as HorizontalBarChartPainter;
+  HorizontalBarChartPainter? get painter => super.painter as HorizontalBarChartPainter?;
 
   @override
   void initialPainter() {
     painter = HorizontalBarChartPainter(
-        data!,
+        data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
-        description!,
+        marker,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
-        selectionListener!,
+        selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
         pinchZoomEnabled,
@@ -175,23 +174,23 @@ class HorizontalBarChartController extends BarChartController {
         dragYEnabled,
         scaleXEnabled,
         scaleYEnabled,
-        gridBackgroundPaint!,
-        backgroundPaint!,
-        borderPaint!,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
         drawListener,
-        axisLeft!,
-        axisRight!,
-        axisRendererLeft!,
-        axisRendererRight!,
-        leftAxisTransformer!,
-        rightAxisTransformer!,
-        xAxisRenderer!,
-        zoomMatrixBuffer!,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
         customViewPortEnabled,
         highlightFullBarEnabled,
         drawValueAboveBar,
@@ -205,23 +204,23 @@ class HorizontalBarChartController extends BarChartController {
 
   @override
   Transformer initLeftAxisTransformer() =>
-      TransformerHorizontalBarChart(viewPortHandler!);
+      TransformerHorizontalBarChart(viewPortHandler);
 
   @override
   Transformer initRightAxisTransformer() =>
-      TransformerHorizontalBarChart(viewPortHandler!);
+      TransformerHorizontalBarChart(viewPortHandler);
 
   @override
   YAxisRenderer initAxisRendererLeft() => YAxisRendererHorizontalBarChart(
-      viewPortHandler!, axisLeft!, leftAxisTransformer!);
+      viewPortHandler, axisLeft, leftAxisTransformer);
 
   @override
   YAxisRenderer initAxisRendererRight() => YAxisRendererHorizontalBarChart(
-      viewPortHandler!, axisRight!, rightAxisTransformer!);
+      viewPortHandler, axisRight, rightAxisTransformer);
 
   @override
   XAxisRenderer initXAxisRenderer() => XAxisRendererHorizontalBarChart(
-      viewPortHandler!, xAxis!, leftAxisTransformer!);
+      viewPortHandler, xAxis, leftAxisTransformer);
 
   @override
   ViewPortHandler initViewPortHandler() => HorizontalViewPortHandler();

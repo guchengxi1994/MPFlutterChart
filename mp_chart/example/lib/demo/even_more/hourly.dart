@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:mp_chart/mp/chart/line_chart.dart';
@@ -30,12 +29,11 @@ class EvenMoreHourly extends StatefulWidget {
 class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   var random = Random(1);
   int _count = 100;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initLineData(_count.toDouble());
+    _initLineData(_count.toDouble());
     super.initState();
   }
 
@@ -44,94 +42,92 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: LineChart(controller),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: LineChart(controller!),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count.toDouble());
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count.toDouble());
+                            })),
                   ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..position = (YAxisLabelPosition.INSIDE_CHART)
 //      ..setTypeface(tfLight)
-            ..textColor = (Color.fromARGB(255, 51, 181, 229))
+            ..textColor = (const Color.fromARGB(255, 51, 181, 229))
             ..drawGridLines = (true)
             ..granularityEnabled = (true)
             ..setAxisMinimum(0)
             ..setAxisMaximum(170)
             ..yOffset = (-9)
-            ..textColor = (Color.fromARGB(255, 255, 192, 56));
+            ..textColor = (const Color.fromARGB(255, 255, 192, 56));
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.TOP_INSIDE)
 //        ..setTypeface(tfLight)
             ..textSize = (10)
             ..textColor = (ColorUtils.WHITE)
             ..drawAxisLine = (false)
             ..drawGridLines = (true)
-            ..textColor = (Color.fromARGB(255, 255, 192, 56))
+            ..textColor = (const Color.fromARGB(255, 255, 192, 56))
             ..centerAxisLabels = (true)
             ..setGranularity(1)
             ..setValueFormatter(A());
@@ -147,7 +143,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         description: desc);
   }
 
-  Future _initLineData(double count) async {
+  void _initLineData(double count) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double range = 50;
     // now in hours
@@ -174,12 +170,12 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     set1.setDrawValues(false);
     set1.setFillAlpha(65);
     set1.setFillColor(ColorUtils.getHoloBlue());
-    set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set1.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     set1.setDrawCircleHole(false);
 
     // create a data object with the data sets
-    controller.data = LineData.fromList([]..add(set1));
-    controller.data!
+    controller!.data = LineData.fromList(<LineDataSet>[set1]);
+    controller!.data!
       ..setValueTextColor(ColorUtils.getHoloBlue())
       ..setValueTextSize(9);
 
@@ -195,7 +191,7 @@ class A extends ValueFormatter {
   final intl.DateFormat mFormat = intl.DateFormat("dd MMM HH:mm");
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     return mFormat.format(DateTime.now());
   }
 }

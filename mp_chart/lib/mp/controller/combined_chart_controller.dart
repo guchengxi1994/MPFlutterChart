@@ -20,14 +20,14 @@ class CombinedChartController
   bool highlightFullBarEnabled;
   bool drawBarShadow;
   bool fitBars;
-  List<DrawOrder> drawOrder;
+  List<DrawOrder>? drawOrder;
 
   CombinedChartController(
       {this.drawValueAboveBar = false,
       this.highlightFullBarEnabled = true,
       this.drawBarShadow = false,
       this.fitBars = true,
-      this.drawOrder = const [],
+      this.drawOrder,
       int maxVisibleCount = 100,
       bool autoScaleMinMaxEnabled = true,
       bool doubleTapToZoomEnabled = true,
@@ -140,18 +140,18 @@ class CombinedChartController
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  CombinedData get data => super.data as CombinedData;
+  CombinedData? get data => super.data as CombinedData?;
 
-  CombinedChartPainter get painter => super.painter;
+  CombinedChartPainter? get painter => super.painter;
 
-  CombinedChartState get state => super.state as CombinedChartState;
+  CombinedChartState? get state => super.state as CombinedChartState?;
 
   @override
   void initialPainter() {
     painter = CombinedChartPainter(
         data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
@@ -159,14 +159,14 @@ class CombinedChartController
         extraRightOffset,
         extraBottomOffset,
         marker,
-        description!,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
@@ -178,23 +178,23 @@ class CombinedChartController
         dragYEnabled,
         scaleXEnabled,
         scaleYEnabled,
-        gridBackgroundPaint!,
-        backgroundPaint!,
-        borderPaint!,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
         drawListener,
-        axisLeft!,
-        axisRight!,
-        axisRendererLeft!,
-        axisRendererRight!,
-        leftAxisTransformer!,
-        rightAxisTransformer!,
-        xAxisRenderer!,
-        zoomMatrixBuffer!,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
         customViewPortEnabled,
         highlightFullBarEnabled,
         drawValueAboveBar,

@@ -12,7 +12,7 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     implements ICandleDataSet {
   /// the width of the shadow of the candle
-  double _shadowWidth = 3;
+  double? _shadowWidth = 3;
 
   /// should the candle bars show?
   /// when false, only "ticks" will show
@@ -50,10 +50,10 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
   CandleDataSet(List<CandleEntry> yVals, String label) : super(yVals, label);
 
   @override
-  DataSet<CandleEntry> copy1() {
-    List<CandleEntry> entries = <CandleEntry>[];
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+  DataSet<CandleEntry?> copy1() {
+    List<CandleEntry> entries = [];
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     CandleDataSet copied = CandleDataSet(entries, getLabel());
     copy(copied);
@@ -79,23 +79,23 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
   }
 
   @override
-  void calcMinMax1(CandleEntry e) {
-    if (e.shadowLow < getYMin()) yMin = e.shadowLow;
+  void calcMinMax1(CandleEntry? e) {
+    if (e!.shadowLow < getYMin()!) yMin = e.shadowLow;
 
-    if (e.shadowHigh > getYMax()) yMax = e.shadowHigh;
+    if (e.shadowHigh > getYMax()!) yMax = e.shadowHigh;
 
     calcMinMaxX1(e);
   }
 
   @override
-  void calcMinMaxY1(CandleEntry e) {
-    if (e.shadowHigh < getYMin()) yMin = e.shadowHigh;
+  void calcMinMaxY1(CandleEntry? e) {
+    if (e!.shadowHigh < getYMin()!) yMin = e.shadowHigh;
 
-    if (e.shadowHigh > getYMax()) yMax = e.shadowHigh;
+    if (e.shadowHigh > getYMax()!) yMax = e.shadowHigh;
 
-    if (e.shadowLow < getYMin()) yMin = e.shadowLow;
+    if (e.shadowLow < getYMin()!) yMin = e.shadowLow;
 
-    if (e.shadowLow > getYMax()) yMax = e.shadowLow;
+    if (e.shadowLow > getYMax()!) yMax = e.shadowLow;
   }
 
   /// Sets the space that is left out on the left and right side of each
@@ -118,11 +118,11 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
   ///
   /// @param width
   void setShadowWidth(double width) {
-    _shadowWidth = width;
+    _shadowWidth = Utils.convertDpToPixel(width);
   }
 
   @override
-  double getShadowWidth() {
+  double? getShadowWidth() {
     return _shadowWidth;
   }
 

@@ -18,27 +18,27 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
-class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
+class BubbleChartPainter extends BarLineChartBasePainter<BubbleData?>
     implements BubbleDataProvider {
   BubbleChartPainter(
-      BubbleData data,
-      Animator animator,
-      ViewPortHandler viewPortHandler,
-      double maxHighlightDistance,
+      BubbleData? data,
+      Animator? animator,
+      ViewPortHandler? viewPortHandler,
+      double? maxHighlightDistance,
       bool highLightPerTapEnabled,
       double extraLeftOffset,
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
       IMarker? marker,
-      Description desc,
+      Description? desc,
       bool drawMarkers,
-      Color infoBgColor,
-      TextPainter infoPainter,
-      TextPainter descPainter,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
+      Color? infoBgColor,
+      TextPainter? infoPainter,
+      TextPainter? descPainter,
+      XAxis? xAxis,
+      Legend? legend,
+      LegendRenderer? legendRenderer,
       DataRendererSettingFunction? rendererSettingFunction,
       OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
@@ -50,23 +50,23 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       bool dragYEnabled,
       bool scaleXEnabled,
       bool scaleYEnabled,
-      Paint gridBackgroundPaint,
-      Paint backgroundPaint,
-      Paint borderPaint,
+      Paint? gridBackgroundPaint,
+      Paint? backgroundPaint,
+      Paint? borderPaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
       OnDrawListener? drawListener,
-      YAxis axisLeft,
-      YAxis axisRight,
-      YAxisRenderer axisRendererLeft,
-      YAxisRenderer axisRendererRight,
-      Transformer leftAxisTransformer,
-      Transformer rightAxisTransformer,
-      XAxisRenderer xAxisRenderer,
-      Matrix4 zoomMatrixBuffer,
+      YAxis? axisLeft,
+      YAxis? axisRight,
+      YAxisRenderer? axisRendererLeft,
+      YAxisRenderer? axisRendererRight,
+      Transformer? leftAxisTransformer,
+      Transformer? rightAxisTransformer,
+      XAxisRenderer? xAxisRenderer,
+      Matrix4? zoomMatrixBuffer,
       bool customViewPortEnabled,
       ChartTransListener? chartTransListener)
       : super(
@@ -126,7 +126,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
   }
 
   @override
-  BubbleData getBubbleData() {
-    return getData() as BubbleData;
+  BubbleData? getBubbleData() {
+    return getData() as BubbleData?;
   }
 }

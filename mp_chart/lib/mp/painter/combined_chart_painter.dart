@@ -29,7 +29,7 @@ import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
 enum DrawOrder { BAR, BUBBLE, LINE, CANDLE, SCATTER }
 
-class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
+class CombinedChartPainter extends BarLineChartBasePainter<CombinedData?>
     implements CombinedDataProvider {
   /// if set to true, all values are drawn above their bars, instead of below
   /// their top
@@ -45,24 +45,24 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   List<DrawOrder>? _drawOrder;
 
   CombinedChartPainter(
-      CombinedData data,
-      Animator animator,
-      ViewPortHandler viewPortHandler,
-      double maxHighlightDistance,
+      CombinedData? data,
+      Animator? animator,
+      ViewPortHandler? viewPortHandler,
+      double? maxHighlightDistance,
       bool highLightPerTapEnabled,
       double extraLeftOffset,
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
       IMarker? marker,
-      Description desc,
+      Description? desc,
       bool drawMarkers,
-      Color infoBgColor,
-      TextPainter infoPainter,
-      TextPainter descPainter,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
+      Color? infoBgColor,
+      TextPainter? infoPainter,
+      TextPainter? descPainter,
+      XAxis? xAxis,
+      Legend? legend,
+      LegendRenderer? legendRenderer,
       DataRendererSettingFunction? rendererSettingFunction,
       OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
@@ -74,29 +74,29 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool dragYEnabled,
       bool scaleXEnabled,
       bool scaleYEnabled,
-      Paint gridBackgroundPaint,
-      Paint backgroundPaint,
-      Paint borderPaint,
+      Paint? gridBackgroundPaint,
+      Paint? backgroundPaint,
+      Paint? borderPaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
       OnDrawListener? drawListener,
-      YAxis axisLeft,
-      YAxis axisRight,
-      YAxisRenderer axisRendererLeft,
-      YAxisRenderer axisRendererRight,
-      Transformer leftAxisTransformer,
-      Transformer rightAxisTransformer,
-      XAxisRenderer xAxisRenderer,
-      Matrix4 zoomMatrixBuffer,
+      YAxis? axisLeft,
+      YAxis? axisRight,
+      YAxisRenderer? axisRendererLeft,
+      YAxisRenderer? axisRendererRight,
+      Transformer? leftAxisTransformer,
+      Transformer? rightAxisTransformer,
+      XAxisRenderer? xAxisRenderer,
+      Matrix4? zoomMatrixBuffer,
       bool customViewPortEnabled,
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
-      List<DrawOrder> drawOrder,
+      List<DrawOrder>? drawOrder,
       ChartTransListener? chartTransListener)
       : _drawBarShadow = drawBarShadow,
         _highlightFullBarEnabled = highlightFullBarEnabled,
@@ -153,12 +153,13 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             chartTransListener);
 
   List<DrawOrder> initDrawOrder() {
-    return []
-      ..add(DrawOrder.BAR)
-      ..add(DrawOrder.BUBBLE)
-      ..add(DrawOrder.LINE)
-      ..add(DrawOrder.CANDLE)
-      ..add(DrawOrder.SCATTER);
+    return <DrawOrder>[
+      DrawOrder.BAR,
+      DrawOrder.BUBBLE,
+      DrawOrder.LINE,
+      DrawOrder.CANDLE,
+      DrawOrder.SCATTER
+    ];
   }
 
   @override
@@ -172,8 +173,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   }
 
   @override
-  CombinedData getCombinedData() {
-    return getData() as CombinedData;
+  CombinedData? getCombinedData() {
+    return getData() as CombinedData?;
   }
 
   /// Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
@@ -185,51 +186,53 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// @return
   @override
   Highlight? getHighlightByTouchPoint(double x, double y) {
-    if (highlighter == null) return null;
+    if (getCombinedData() == null) {
+      return null;
+    } else {
+      Highlight? h = highlighter!.getHighlight(x, y);
+      if (h == null || !isHighlightFullBarEnabled()) return h;
 
-    Highlight? h = highlighter!.getHighlight(x, y);
-    if (h == null || !isHighlightFullBarEnabled()) return h;
-
-    // For isHighlightFullBarEnabled, remove stackIndex
-    return Highlight(
-        x: h.x,
-        y: h.y,
-        xPx: h.xPx,
-        yPx: h.yPx,
-        dataSetIndex: h.dataSetIndex,
-        stackIndex: h.stackIndex,
-        axis: h.axis)
-      ..dataIndex = h.dataIndex;
+      // For isHighlightFullBarEnabled, remove stackIndex
+      return Highlight(
+          x: h.x,
+          y: h.y,
+          xPx: h.xPx,
+          yPx: h.yPx,
+          dataSetIndex: h.dataSetIndex,
+          stackIndex: h.stackIndex,
+          axis: h.axis)
+        ..dataIndex = h.dataIndex;
+    }
   }
 
   @override
   LineData? getLineData() {
-    // if (getCombinedData() == null) return null;
-    return getCombinedData().getLineData();
+    if (getCombinedData() == null) return null;
+    return getCombinedData()!.getLineData();
   }
 
   @override
   BarData? getBarData() {
-    // if (getCombinedData() == null) return null;
-    return getCombinedData().getBarData();
+    if (getCombinedData() == null) return null;
+    return getCombinedData()!.getBarData();
   }
 
   @override
   ScatterData? getScatterData() {
-    // if (getCombinedData() == null) return null;
-    return getCombinedData().getScatterData();
+    if (getCombinedData() == null) return null;
+    return getCombinedData()!.getScatterData();
   }
 
   @override
   CandleData? getCandleData() {
-    // if (getCombinedData() == null) return null;
-    return getCombinedData().getCandleData();
+    if (getCombinedData() == null) return null;
+    return getCombinedData()!.getCandleData();
   }
 
   @override
   BubbleData? getBubbleData() {
-    // if (getCombinedData() == null) return null;
-    return getCombinedData().getBubbleData();
+    if (getCombinedData() == null) return null;
+    return getCombinedData()!.getBubbleData();
   }
 
   @override
@@ -275,8 +278,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// Returns the currently set draw order.
   ///
   /// @return
-  List<DrawOrder> getDrawOrder() {
-    return _drawOrder!;
+  List<DrawOrder>? getDrawOrder() {
+    return _drawOrder;
   }
 
   /// Sets the order in which the provided data objects should be drawn. The
@@ -286,7 +289,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   ///
   /// @param order
   void setDrawOrder(List<DrawOrder> order) {
-    if (order == null || order.length <= 0) return;
+    if (order.length <= 0) return;
     _drawOrder = order;
   }
 
@@ -298,30 +301,26 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     for (int i = 0; i < indicesToHighlight!.length; i++) {
       Highlight highlight = indicesToHighlight![i];
 
-      IDataSet? set = getCombinedData().getDataSetByHighlight(highlight);
+      IDataSet? set = getCombinedData()!.getDataSetByHighlight(highlight);
 
-      if (set == null) continue;
-
-      Entry? e = getCombinedData().getEntryForHighlight(highlight);
+      Entry? e = getCombinedData()!.getEntryForHighlight(highlight);
       if (e == null) continue;
 
-      int entryIndex = set.getEntryIndex2(e);
+      int entryIndex = set!.getEntryIndex2(e);
 
       // make sure entry not null
-      if (entryIndex > set.getEntryCount() * animator.getPhaseX()) continue;
+      if (entryIndex > set.getEntryCount() * animator!.getPhaseX()) continue;
 
-      List<double> pos = getMarkerPosition(highlight);
+      List<double?> pos = getMarkerPosition(highlight);
 
       // check bounds
-      if (!viewPortHandler.isInBounds(pos[0], pos[1])) continue;
+      if (!viewPortHandler!.isInBounds(pos[0], pos[1])) continue;
 
-      if (marker != null) {
-        // callbacks to update the content
-        marker!.refreshContent(e, highlight);
+      // callbacks to update the content
+      marker!.refreshContent(e, highlight);
 
-        // draw the marker
-        marker!.draw(canvas, pos[0], pos[1]);
-      }
+      // draw the marker
+      marker!.draw(canvas, pos[0], pos[1]);
     }
   }
 }

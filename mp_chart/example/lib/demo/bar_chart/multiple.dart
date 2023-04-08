@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class BarChartMultiple extends StatefulWidget {
+  const BarChartMultiple({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return BarChartMultipleState();
@@ -34,12 +35,11 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   var random = Random(1);
   int _count = 10;
   double _range = 100.0;
-  var future;
 
   @override
   void initState() {
     _iniController();
-    future = _initBarData(_count, _range);
+    _initBarData(_count, _range);
     super.initState();
   }
 
@@ -48,94 +48,92 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: isDataInitial
-                  ? BarChart(controller)
-                  : Text("data is not initial"),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: isDataInitial
+              ? BarChart(controller)
+              : const Text("data is not initial"),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBarData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBarData(_count, _range);
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initBarData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
-                  )
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initBarData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _iniController() {
@@ -145,7 +143,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
           ValueFormatter formatter = LargeValueFormatter();
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..setValueFormatter(formatter)
             ..drawGridLines = (false)
@@ -153,10 +151,10 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -168,7 +166,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
             ..textSize = (8);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..setGranularity(1.0)
             ..centerAxisLabels = true
@@ -199,8 +197,8 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   late int endYear;
   bool isDataInitial = false;
 
-  Future _initBarData(int count, double range) async {
-    List<ui.Image?> imgs = List.filled(3, null);
+  void _initBarData(int count, double range) async {
+    List<ui.Image?> imgs = []..length = (3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
@@ -236,19 +234,15 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
     // create 4 DataSets
     set1 = BarDataSet(values1, "Company A");
-    set1.setColor1(Color.fromARGB(255, 104, 241, 175));
+    set1.setColor1(const Color.fromARGB(255, 104, 241, 175));
     set2 = BarDataSet(values2, "Company B");
-    set2.setColor1(Color.fromARGB(255, 164, 228, 251));
+    set2.setColor1(const Color.fromARGB(255, 164, 228, 251));
     set3 = BarDataSet(values3, "Company C");
-    set3.setColor1(Color.fromARGB(255, 242, 247, 158));
+    set3.setColor1(const Color.fromARGB(255, 242, 247, 158));
     set4 = BarDataSet(values4, "Company D");
-    set4.setColor1(Color.fromARGB(255, 255, 102, 0));
+    set4.setColor1(const Color.fromARGB(255, 255, 102, 0));
 
-    controller.data = BarData([]
-      ..add(set1)
-      ..add(set2)
-      ..add(set3)
-      ..add(set4));
+    controller.data = BarData(<BarDataSet>[set1, set2, set3, set4]);
     controller.data!
       ..setValueFormatter(LargeValueFormatter())
       ..setValueTypeface(Util.LIGHT)
@@ -269,7 +263,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
 class A extends ValueFormatter {
   @override
-  String getFormattedValue1(double value) {
-    return value.toInt().toString();
+  String getFormattedValue1(double? value) {
+    return value!.toInt().toString();
   }
 }

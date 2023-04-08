@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
@@ -26,27 +25,26 @@ class BarChartSine extends StatefulWidget {
 }
 
 class BarChartSineState extends BarActionState<BarChartSine> {
-  late List<BarEntry> _data = [];
+  List<BarEntry>? _data;
   var random = Random(1);
   int _count = 150;
 
-  var future;
-
   @override
   void initState() {
-    super.initState();
     _initController();
-    future = Util.loadAsset("othersine.txt").then((value) {
+    Util.loadAsset("othersine.txt").then((value) {
       _data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
         var x = double.parse(datas[1]);
         var y = double.parse(datas[0]);
-        _data.add(BarEntry(x: x, y: y));
+        _data!.add(BarEntry(x: x, y: y));
       }
       _initBarData(_count);
     });
+
+    super.initState();
   }
 
   @override
@@ -54,68 +52,66 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _initBarChart(),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: _initBarChart(),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBarData(_count);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBarData(_count);
+                            })),
                   ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(6, false)
             ..typeface = Util.LIGHT
             ..setAxisMaximum(2.5)
@@ -124,7 +120,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..setGranularity(0.1);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = (false)
             ..typeface = Util.LIGHT
             ..setLabelCount2(6, false)
@@ -133,7 +129,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..setGranularity(0.1);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -144,7 +140,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..xEntrySpace = (4);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -163,16 +159,13 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
     List<BarEntry> entries = [];
     for (int i = 0; i < count; i++) {
-      entries.add(_data[i]);
+      entries.add(_data![i]);
     }
 
     BarDataSet set = BarDataSet(entries, "Sinus Function");
-    set.setColor1(Color.fromARGB(255, 240, 120, 124));
+    set.setColor1(const Color.fromARGB(255, 240, 120, 124));
 
-    controller.data = BarData([]..add(set));
-
-    // print("[controller.data] ${controller.data == null}");
-
+    controller.data = BarData(<BarDataSet>[set]);
     controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
@@ -184,7 +177,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
   Widget _initBarChart() {
     var barChart = BarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateXY1(1500, 1500);
     return barChart;

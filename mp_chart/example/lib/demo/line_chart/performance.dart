@@ -12,6 +12,8 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/action_state.dart';
 
 class LineChartPerformance extends StatefulWidget {
+  const LineChartPerformance({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return LineChartPerformanceState();
@@ -69,14 +71,15 @@ class LineChartPerformanceState
                             })),
                   ),
                   Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
                       child: Center(
                           child: Text(
                         "$_count",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
@@ -94,16 +97,16 @@ class LineChartPerformanceState
     var desc = Description()..enabled = false;
     _controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..drawGridLines = (true)
             ..drawAxisLine = (false);
         },
@@ -123,11 +126,11 @@ class LineChartPerformanceState
 
     for (int i = 0; i < _count; i++) {
       double val = (random.nextDouble() * (range + 1)) + 3;
-      values.add(new Entry(x: i * 0.001, y: val));
+      values.add(Entry(x: i * 0.001, y: val));
     }
 
     // create a dataset and give it a type
-    LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+    LineDataSet set1 = LineDataSet(values, "DataSet 1");
 
     set1.setColor1(ColorUtils.BLACK);
     set1.setLineWidth(0.5);
@@ -137,7 +140,7 @@ class LineChartPerformanceState
     set1.setDrawFilled(false);
 
     // create a data object with the data sets
-    _controller.data = LineData.fromList([]..add(set1));
+    _controller.data = LineData.fromList(<LineDataSet>[set1]);
 
     setState(() {});
   }

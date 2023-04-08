@@ -32,7 +32,7 @@ class XAxis extends AxisBase {
   XAxisPosition _position = XAxisPosition.TOP;
 
   XAxis() : super() {
-    yOffset = 4;
+    yOffset = Utils.convertDpToPixel(4);
   }
 
   // ignore: unnecessary_getters_setters
@@ -91,7 +91,7 @@ class XAxis extends AxisBase {
     _labelWidth = value;
   }
 
-  int getRequiredHeightSpace(TextPainter p) {
+  int getRequiredHeightSpace(TextPainter? p) {
     p = PainterUtils.create(p, null, null, textSize);
 
     int height = Utils.calcTextHeight(p, "A");

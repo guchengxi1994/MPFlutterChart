@@ -111,31 +111,31 @@ class PieChartController extends PieRadarController<PieChartPainter> {
 
   PieData? get data => super.data as PieData?;
 
-  PieChartPainter get painter => super.painter;
+  PieChartPainter? get painter => super.painter;
 
   PieChartState? get state => super.state as PieChartState?;
 
   @override
   void initialPainter() {
     painter = PieChartPainter(
-      data!,
+      data,
       animator,
-      viewPortHandler!,
+      viewPortHandler,
       maxHighlightDistance,
       highLightPerTapEnabled,
       extraLeftOffset,
       extraTopOffset,
       extraRightOffset,
       extraBottomOffset,
-      marker!,
-      description!,
+      marker,
+      description,
       drawMarkers,
-      infoBgColor!,
-      infoPaint!,
-      descPaint!,
-      xAxis!,
-      legend!,
-      legendRenderer!,
+      infoBgColor,
+      infoPaint,
+      descPaint,
+      xAxis,
+      legend,
+      legendRenderer,
       rendererSettingFunction,
       selectionListener,
       rotationAngle,

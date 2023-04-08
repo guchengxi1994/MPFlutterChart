@@ -41,7 +41,7 @@ class OtherChartCombined extends StatefulWidget {
 }
 
 class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
-  int _count = 12;
+  final int _count = 12;
   var random = Random(1);
 
   @override
@@ -72,17 +72,17 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     var desc = Description()..enabled = false;
     controller = CombinedChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..drawGridLines = (false)
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = (false)
             ..setAxisMinimum(0);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..wordWrapEnabled = (true)
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
@@ -90,13 +90,13 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
             ..drawInside = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTH_SIDED)
             ..setAxisMinimum(0)
             ..setGranularity(1)
             ..setValueFormatter(A())
             ..setAxisMaximum(
-                controller.data == null ? 0 : controller.data!.xMax + 0.25);
+                controller.data == null ? 0 : controller.data!.xMax! + 0.25);
         },
         drawGridBackground: false,
         drawBarShadow: false,
@@ -108,17 +108,18 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc,
-        drawOrder: []
-          ..add(DrawOrder.BAR)
-          ..add(DrawOrder.BUBBLE)
-          ..add(DrawOrder.CANDLE)
-          ..add(DrawOrder.LINE)
-          ..add(DrawOrder.SCATTER));
+        drawOrder: <DrawOrder>[
+          DrawOrder.BAR,
+          DrawOrder.BUBBLE,
+          DrawOrder.CANDLE,
+          DrawOrder.LINE,
+          DrawOrder.SCATTER
+        ]);
   }
 
   void _initCombinedData() {
     controller.data = CombinedData();
-    controller.data
+    controller.data!
       ..setData1(generateLineData())
       ..setData2(generateBarData())
       ..setData5(generateBubbleData())
@@ -136,19 +137,20 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
 
     List<Entry> entries = [];
 
-    for (int index = 0; index < _count; index++)
+    for (int index = 0; index < _count; index++) {
       entries.add(Entry(x: index + 0.5, y: getRandom(15, 5)));
+    }
 
     LineDataSet set = LineDataSet(entries, "Line DataSet");
-    set.setColor1(Color.fromARGB(255, 240, 238, 70));
+    set.setColor1(const Color.fromARGB(255, 240, 238, 70));
     set.setLineWidth(2.5);
-    set.setCircleColor(Color.fromARGB(255, 240, 238, 70));
+    set.setCircleColor(const Color.fromARGB(255, 240, 238, 70));
     set.setCircleRadius(5);
-    set.setFillColor(Color.fromARGB(255, 240, 238, 70));
+    set.setFillColor(const Color.fromARGB(255, 240, 238, 70));
     set.setMode(Mode.CUBIC_BEZIER);
     set.setDrawValues(true);
     set.setValueTextSize(10);
-    set.setValueTextColor(Color.fromARGB(255, 240, 238, 70));
+    set.setValueTextColor(const Color.fromARGB(255, 240, 238, 70));
 
     set.setAxisDependency(AxisDependency.LEFT);
     d.addDataSet(set);
@@ -165,28 +167,22 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
 
       // stacked
       entries2.add(BarEntry.fromListYVals(
-          x: 0,
-          vals: <double>[]
-            ..add(getRandom(13, 12))
-            ..add(getRandom(13, 12)),
-          data: null,
-          icon: null));
+          x: 0, vals: <double>[getRandom(13, 12), getRandom(13, 12)]));
     }
 
     BarDataSet set1 = BarDataSet(entries1, "Bar 1");
-    set1.setColor1(Color.fromARGB(255, 60, 220, 78));
-    set1.setValueTextColor(Color.fromARGB(255, 60, 220, 78));
+    set1.setColor1(const Color.fromARGB(255, 60, 220, 78));
+    set1.setValueTextColor(const Color.fromARGB(255, 60, 220, 78));
     set1.setValueTextSize(10);
     set1.setAxisDependency(AxisDependency.LEFT);
 
     BarDataSet set2 = BarDataSet(entries2, "");
-    set2.setStackLabels(<String>[]
-      ..add("Stack 1")
-      ..add("Stack 2"));
-    set2.setColors1(<Color>[]
-      ..add(Color.fromARGB(255, 61, 165, 255))
-      ..add(Color.fromARGB(255, 23, 197, 255)));
-    set2.setValueTextColor(Color.fromARGB(255, 61, 165, 255));
+    set2.setStackLabels(<String>["Stack 1", "Stack 2"]);
+    set2.setColors1(<Color>[
+      const Color.fromARGB(255, 61, 165, 255),
+      const Color.fromARGB(255, 23, 197, 255)
+    ]);
+    set2.setValueTextColor(const Color.fromARGB(255, 61, 165, 255));
     set2.setValueTextSize(10);
     set2.setAxisDependency(AxisDependency.LEFT);
 
@@ -195,9 +191,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     double barWidth = 0.45; // x2 dataset
     // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
 
-    BarData d = BarData([]
-      ..add(set1)
-      ..add(set2));
+    BarData d = BarData(<BarDataSet>[set1, set2]);
     d.barWidth = (barWidth);
 
     // make this BarData object grouped
@@ -211,8 +205,9 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
 
     List<Entry> entries = [];
 
-    for (double index = 0; index < _count; index += 0.5)
+    for (double index = 0; index < _count; index += 0.5) {
       entries.add(Entry(x: index + 0.25, y: getRandom(10, 55)));
+    }
 
     ScatterDataSet set = ScatterDataSet(entries, "Scatter DataSet");
     set.setColors1(ColorUtils.MATERIAL_COLORS);
@@ -229,12 +224,13 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
 
     List<CandleEntry> entries = [];
 
-    for (int index = 0; index < _count; index += 2)
+    for (int index = 0; index < _count; index += 2) {
       entries.add(CandleEntry(
           x: index + 1.0, shadowH: 90, shadowL: 70, open: 85, close: 75));
+    }
 
     CandleDataSet set = CandleDataSet(entries, "Candle DataSet");
-    set.setDecreasingColor(Color.fromARGB(255, 142, 150, 175));
+    set.setDecreasingColor(const Color.fromARGB(255, 142, 150, 175));
     set.setShadowColor(ColorUtils.DKGRAY);
     set.setBarSpace(0.3);
     set.setValueTextSize(10);
@@ -267,23 +263,24 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   }
 }
 
-final List<String> months = []
-  ..add("Jan")
-  ..add("Feb")
-  ..add("Mar")
-  ..add("Apr")
-  ..add("May")
-  ..add("Jun")
-  ..add("Jul")
-  ..add("Aug")
-  ..add("Sep")
-  ..add("Okt")
-  ..add("Nov")
-  ..add("Dec");
+final List<String> months = <String>[
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Okt",
+  "Nov",
+  "Dec"
+];
 
 class A extends ValueFormatter {
   @override
-  String getFormattedValue1(double value) {
-    return months[value.toInt() % months.length];
+  String getFormattedValue1(double? value) {
+    return months[value!.toInt() % months.length];
   }
 }

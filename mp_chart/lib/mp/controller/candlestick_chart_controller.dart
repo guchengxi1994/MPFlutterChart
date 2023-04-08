@@ -129,18 +129,18 @@ class CandlestickChartController
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  CandleData get data => super.data as CandleData;
+  CandleData? get data => super.data as CandleData?;
 
-  CandlestickChartState get state => super.state as CandlestickChartState;
+  CandlestickChartState? get state => super.state as CandlestickChartState?;
 
-  CandlestickChartPainter get painter => super.painter;
+  CandlestickChartPainter? get painter => super.painter;
 
   @override
   void initialPainter() {
     painter = CandlestickChartPainter(
         data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
@@ -148,14 +148,14 @@ class CandlestickChartController
         extraRightOffset,
         extraBottomOffset,
         marker,
-        description!,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
@@ -167,23 +167,23 @@ class CandlestickChartController
         dragYEnabled,
         scaleXEnabled,
         scaleYEnabled,
-        gridBackgroundPaint!,
-        backgroundPaint!,
-        borderPaint!,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
         drawListener,
-        axisLeft!,
-        axisRight!,
-        axisRendererLeft!,
-        axisRendererRight!,
-        leftAxisTransformer!,
-        rightAxisTransformer!,
-        xAxisRenderer!,
-        zoomMatrixBuffer!,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
         customViewPortEnabled,
         chartTransListener);
   }

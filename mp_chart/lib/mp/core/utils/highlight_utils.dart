@@ -5,17 +5,12 @@ import 'package:mp_chart/mp/painter/painter.dart';
 
 abstract class HighlightUtils {
   static Highlight? performHighlight(
-      ChartPainter painter, Highlight? curHighlight, Highlight? lastHighlight) {
-    /// TODO,FIXME
-    if (lastHighlight == null) {
-      painter.highlightValue6(null, true);
-      return null;
-    }
+      ChartPainter? painter, Highlight? curHighlight, Highlight? lastHighlight) {
     if (curHighlight == null || curHighlight.equalTo(lastHighlight)) {
-      painter.highlightValue6(null, true);
+      painter!.highlightValue6(null, true);
       lastHighlight = null;
     } else {
-      painter.highlightValue6(curHighlight, true);
+      painter!.highlightValue6(curHighlight, true);
       lastHighlight = curHighlight;
     }
     return lastHighlight;

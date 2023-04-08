@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_inlined_adds
+
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
@@ -33,16 +34,15 @@ class PieChartBasic extends StatefulWidget {
 
 class PieChartBasicState extends PieActionState<PieChartBasic>
     implements OnChartValueSelectedListener {
-  PercentFormatter _formatter = PercentFormatter();
+  final PercentFormatter _formatter = PercentFormatter();
   var random = Random(1);
   int _count = 4;
   double _range = 10.0;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initPieData(_count, _range);
+    _initPieData(_count, _range);
     super.initState();
   }
 
@@ -51,95 +51,93 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-                right: 0,
-                left: 0,
-                top: 0,
-                bottom: 100,
-                child: PieChart(controller)),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: PieChart(controller)),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 25,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initPieData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 25,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initPieData(_count, _range);
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initPieData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
-                  )
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initPieData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = []
+  final List<String> PARTIES = <String>[]
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -174,7 +172,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
           _formatter.setPieChartPainter(controller as PieChartController);
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -207,7 +205,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
         description: desc);
   }
 
-  Future _initPieData(int count, double range) async {
+  void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<PieEntry> entries = [];
 
@@ -231,11 +229,21 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
 
     // add a lot of colors
     List<Color> colors = [];
-    for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
-    for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
-    for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
-    for (Color c in ColorUtils.LIBERTY_COLORS) colors.add(c);
-    for (Color c in ColorUtils.PASTEL_COLORS) colors.add(c);
+    for (Color c in ColorUtils.VORDIPLOM_COLORS) {
+      colors.add(c);
+    }
+    for (Color c in ColorUtils.JOYFUL_COLORS) {
+      colors.add(c);
+    }
+    for (Color c in ColorUtils.COLORFUL_COLORS) {
+      colors.add(c);
+    }
+    for (Color c in ColorUtils.LIBERTY_COLORS) {
+      colors.add(c);
+    }
+    for (Color c in ColorUtils.PASTEL_COLORS) {
+      colors.add(c);
+    }
     colors.add(ColorUtils.HOLO_BLUE);
     dataSet.setColors1(colors);
 

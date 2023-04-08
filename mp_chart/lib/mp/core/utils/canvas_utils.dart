@@ -6,29 +6,27 @@ import 'package:mp_chart/mp/core/limit_line.dart';
 
 abstract class CanvasUtils {
   static void drawLines(
-      ui.Canvas canvas, List<double> pts, int offset, int count, ui.Paint paint,
+      ui.Canvas canvas, List<double?> pts, int offset, int count, ui.Paint? paint,
       {DashPathEffect? effect}) {
     if (effect == null) {
       for (int i = offset; i < count; i += 4) {
-        canvas.drawLine(ui.Offset(pts[i], pts[i + 1]),
-            ui.Offset(pts[i + 2], pts[i + 3]), paint);
+        canvas.drawLine(ui.Offset(pts[i]!, pts[i + 1]!),
+            ui.Offset(pts[i + 2]!, pts[i + 3]!), paint!);
       }
     } else {
       var path = Path();
       for (int i = offset; i < count; i += 4) {
         path.reset();
-        path.moveTo(pts[i], pts[i + 1]);
-        path.lineTo(pts[i + 2], pts[i + 3]);
+        path.moveTo(pts[i]!, pts[i + 1]!);
+        path.lineTo(pts[i + 2]!, pts[i + 3]!);
         path = effect.convert2DashPath(path);
-        canvas.drawPath(path, paint);
+        canvas.drawPath(path, paint!);
       }
     }
   }
 
-  static void drawImage(ui.Canvas canvas, Offset position, ui.Image? img,
+  static void drawImage(ui.Canvas canvas, Offset position, ui.Image img,
       ui.Size dstSize, ui.Paint paint) {
-    if (img == null) return;
-
     var imgSize = ui.Size(img.width.toDouble(), img.height.toDouble());
 
     FittedSizes sizes = applyBoxFit(BoxFit.contain, imgSize, dstSize);
@@ -47,7 +45,7 @@ abstract class CanvasUtils {
 
   static const double LABEL_SPACE = 2;
 
-  static void renderLimitLabelBackground(Canvas canvas, TextPainter textPainter,
+  static void renderLimitLabelBackground(Canvas canvas, TextPainter? textPainter,
       Offset offset, LimitLine limitLine) {
     if (limitLine.drawBackground) {
       Paint paint = Paint()..color = limitLine.backgroundColor;
@@ -55,7 +53,7 @@ abstract class CanvasUtils {
           Rect.fromLTRB(
               offset.dx - LABEL_SPACE,
               offset.dy - LABEL_SPACE,
-              offset.dx + LABEL_SPACE + textPainter.width,
+              offset.dx + LABEL_SPACE + textPainter!.width,
               offset.dy + LABEL_SPACE + textPainter.height),
           paint);
     }

@@ -18,10 +18,10 @@ import 'package:optimized_gesture_detector/gesture_dectetor.dart';
 
 abstract class Controller<P extends ChartPainter>
     implements AnimatorUpdateListener {
-  late ChartState? state = null;
-  late ChartData? data = null;
-  late Animator animator;
-  late P _painter;
+  ChartState? state;
+  ChartData? data;
+  Animator? animator;
+  P? _painter;
 
   ////// needed
   IMarker? marker;
@@ -33,7 +33,7 @@ abstract class Controller<P extends ChartPainter>
   OnChartValueSelectedListener? selectionListener;
 
   ////// option
-  double maxHighlightDistance;
+  double? maxHighlightDistance;
   bool highLightPerTapEnabled;
   double extraTopOffset, extraRightOffset, extraBottomOffset, extraLeftOffset;
   bool drawMarkers;
@@ -47,8 +47,8 @@ abstract class Controller<P extends ChartPainter>
   LegendSettingFunction? legendSettingFunction;
   DataRendererSettingFunction? rendererSettingFunction;
 
-  late CanDragDownFunction horizontalConflictResolveFunc = () => false;
-  late CanDragDownFunction verticalConflictResolveFunc = () => false;
+  CanDragDownFunction? horizontalConflictResolveFunc;
+  CanDragDownFunction? verticalConflictResolveFunc;
 
   Controller(
       {this.marker,
@@ -93,7 +93,7 @@ abstract class Controller<P extends ChartPainter>
     infoBgColor ??= ColorUtils.WHITE;
 
     if (maxHighlightDistance == 0.0) {
-      maxHighlightDistance = 500;
+      maxHighlightDistance = Utils.convertDpToPixel(500);
     }
 
     this.viewPortHandler ??= initViewPortHandler();
@@ -121,13 +121,13 @@ abstract class Controller<P extends ChartPainter>
   Legend initLegend() => Legend();
 
   LegendRenderer initLegendRenderer() =>
-      LegendRenderer(viewPortHandler!, legend!);
+      LegendRenderer(viewPortHandler, legend);
 
   OnChartValueSelectedListener? initSelectionListener() => null;
 
-  ChartState createChartState() {
+  ChartState? createChartState() {
     state = createRealState();
-    return state!;
+    return state;
   }
 
   ChartState createRealState();
@@ -139,10 +139,10 @@ abstract class Controller<P extends ChartPainter>
       xAxis = initXAxis();
     }
     if (legendSettingFunction != null) {
-      legendSettingFunction!(legend!, this);
+      legendSettingFunction!(legend, this);
     }
     if (xAxisSettingFunction != null) {
-      xAxisSettingFunction!(xAxis!, this);
+      xAxisSettingFunction!(xAxis, this);
     }
   }
 
@@ -150,18 +150,17 @@ abstract class Controller<P extends ChartPainter>
 
   @override
   void onAnimationUpdate(double x, double y) {
-    if (state == null) return;
     state?.setStateIfNotDispose();
   }
 
   @override
-  void onRotateUpdate(double angle) {}
+  void onRotateUpdate(double? angle) {}
 
   // ignore: unnecessary_getters_setters
-  P get painter => _painter;
+  P? get painter => _painter;
 
   // ignore: unnecessary_getters_setters
-  set painter(P value) {
+  set painter(P? value) {
     _painter = value;
   }
 }

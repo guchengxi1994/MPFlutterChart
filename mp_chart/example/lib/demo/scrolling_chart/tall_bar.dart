@@ -81,8 +81,8 @@ class ScrollingChartTallBarState
                   return _renderItem();
                 },
                 physics: _isParentMove
-                    ? PageScrollPhysics()
-                    : NeverScrollableScrollPhysics()),
+                    ? const PageScrollPhysics()
+                    : const NeverScrollableScrollPhysics()),
           ),
         ),
       ],
@@ -91,7 +91,7 @@ class ScrollingChartTallBarState
 
   Widget _renderItem() {
     var barChart = BarChart(_controller);
-    _controller.animator
+    _controller.animator!
       ..reset()
       ..animateY1(800);
     return Column(
@@ -99,8 +99,8 @@ class ScrollingChartTallBarState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-              padding: EdgeInsets.all(15.0),
-              child: Center(
+              padding: const EdgeInsets.all(15.0),
+              child: const Center(
                   child: Text(
                 "START",
                 textDirection: TextDirection.ltr,
@@ -110,14 +110,14 @@ class ScrollingChartTallBarState
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
               ))),
-          Container(
+          SizedBox(
               height: 1000,
               child: Padding(
-                  padding: EdgeInsets.only(top: 100, bottom: 100),
+                  padding: const EdgeInsets.only(top: 100, bottom: 100),
                   child: barChart)),
           Container(
-              padding: EdgeInsets.all(15.0),
-              child: Center(
+              padding: const EdgeInsets.all(15.0),
+              child: const Center(
                   child: Text(
                 "END",
                 textDirection: TextDirection.ltr,
@@ -134,13 +134,13 @@ class ScrollingChartTallBarState
     var desc = Description()..enabled = false;
     _controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (false);
         },

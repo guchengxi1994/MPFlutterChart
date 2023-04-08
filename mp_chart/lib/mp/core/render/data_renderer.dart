@@ -1,3 +1,4 @@
+
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
@@ -7,22 +8,23 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/render/renderer.dart';
 import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
+import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /// the animator object used to perform animations on the chart data
-  late Animator _animator;
+  Animator? _animator;
 
   /// main paint object used for rendering
-  late Paint _renderPaint;
+  Paint? _renderPaint;
 
   /// paint used for highlighting values
-  late Paint _highlightPaint;
+  Paint? _highlightPaint;
 
-  late Paint _drawPaint;
+  Paint? _drawPaint;
 
-  late TextPainter? valuePaint = null;
+  TextPainter? _valuePaint;
 
-  DataRenderer(Animator animator, ViewPortHandler viewPortHandler)
+  DataRenderer(Animator? animator, ViewPortHandler? viewPortHandler)
       : super(viewPortHandler) {
     this._animator = animator;
 
@@ -32,8 +34,8 @@ abstract class DataRenderer extends Renderer {
 
     _drawPaint = Paint();
 
-    valuePaint = PainterUtils.create(
-        valuePaint, null, Color.fromARGB(255, 63, 63, 63), (9));
+    _valuePaint = PainterUtils.create(_valuePaint, null,
+        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
 
     _highlightPaint = Paint()
       ..isAntiAlias = true
@@ -43,29 +45,29 @@ abstract class DataRenderer extends Renderer {
   }
 
   bool isDrawingValuesAllowed(ChartInterface chart) {
-    return chart.getData().getEntryCount() <
-        chart.getMaxVisibleCount() * viewPortHandler.getScaleX();
+    return chart.getData()!.getEntryCount() <
+        chart.getMaxVisibleCount() * viewPortHandler!.getScaleX();
   }
 
-  // // ignore: unnecessary_getters_setters
-  // TextPainter get valuePaint => _valuePaint;
-
-  // // ignore: unnecessary_getters_setters
-  // set valuePaint(TextPainter value) {
-  //   _valuePaint = value;
-  // }
+  // ignore: unnecessary_getters_setters
+  TextPainter? get valuePaint => _valuePaint;
 
   // ignore: unnecessary_getters_setters
-  Paint get highlightPaint => _highlightPaint;
-
-  Paint get renderPaint => _renderPaint;
-
-  Animator get animator => _animator;
-
-  Paint get drawPaint => _drawPaint;
+  set valuePaint(TextPainter? value) {
+    _valuePaint = value;
+  }
 
   // ignore: unnecessary_getters_setters
-  set highlightPaint(Paint value) {
+  Paint? get highlightPaint => _highlightPaint;
+
+  Paint? get renderPaint => _renderPaint;
+
+  Animator? get animator => _animator;
+
+  Paint? get drawPaint => _drawPaint;
+
+  // ignore: unnecessary_getters_setters
+  set highlightPaint(Paint? value) {
     _highlightPaint = value;
   }
 
@@ -74,10 +76,10 @@ abstract class DataRenderer extends Renderer {
   ///
   /// @param set
   void applyValueTextStyle(IDataSet set) {
-    valuePaint = PainterUtils.create(
-        valuePaint, null, Color.fromARGB(255, 63, 63, 63), (9),
-        fontFamily: set?.getValueTypeface()?.fontFamily,
-        fontWeight: set?.getValueTypeface()?.fontWeight);
+    _valuePaint = PainterUtils.create(_valuePaint, null,
+        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9),
+        fontFamily: set.getValueTypeface()?.fontFamily,
+        fontWeight: set.getValueTypeface()?.fontWeight);
   }
 
   /// Initializes the buffers used for rendering with a  size. Since this
@@ -102,8 +104,7 @@ abstract class DataRenderer extends Renderer {
   /// @param x         position
   /// @param y         position
   /// @param color
-  void drawValue(Canvas c, String valueText, double x, double y, Color color,
-      double textSize, TypeFace typeFace);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color, double textSize, TypeFace typeFace);
 
   /// Draws any kind of additional information (e.g. line-circles).
   ///
@@ -114,5 +115,5 @@ abstract class DataRenderer extends Renderer {
   ///
   /// @param c
   /// @param indices the highlighted values
-  void drawHighlighted(Canvas c, List<Highlight> indices);
+  void drawHighlighted(Canvas c, List<Highlight>? indices);
 }

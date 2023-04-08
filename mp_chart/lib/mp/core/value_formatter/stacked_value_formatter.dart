@@ -32,7 +32,7 @@ class StackedValueFormatter extends ValueFormatter {
   @override
   String getBarStackedLabel(double value, BarEntry entry) {
     if (!_drawWholeStack) {
-      List<double> vals = entry.yVals;
+      List<double>? vals = entry.yVals;
 
       if (vals != null) {
         // find out if we are on top of the stack

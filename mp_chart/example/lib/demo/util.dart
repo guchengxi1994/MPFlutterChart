@@ -10,7 +10,7 @@ abstract class Util {
   }
 
   static int currentTimeMillis() {
-    return new DateTime.now().millisecondsSinceEpoch;
+    return DateTime.now().millisecondsSinceEpoch;
   }
 
   static void openGithub() {
@@ -18,9 +18,13 @@ abstract class Util {
   }
 
   static void _launchURL() async {
-    const url = 'https://github.com/SunPointed/mp_flutter_chart';
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri url = Uri(
+      scheme: 'https',
+      host: 'github.com',
+      path: '/SunPointed/mp_flutter_chart',
+    );
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -36,8 +40,7 @@ abstract class Util {
 
   // ignore: non_constant_identifier_names
   static TypeFace BOLD =
-  TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w700);
-
+      TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w700);
 
   // ignore: non_constant_identifier_names
   static TypeFace EXTRA_BOLD =

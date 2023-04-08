@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
@@ -16,6 +15,8 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/action_state.dart';
 
 class LineChartFilled extends StatefulWidget {
+  const LineChartFilled({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return LineChartFilledState();
@@ -27,12 +28,11 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initLineData(_count, _range);
+    _initLineData(_count, _range);
     super.initState();
   }
 
@@ -41,99 +41,97 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: LineChart(_controller),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: LineChart(_controller),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 700,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 700,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 1,
-                                max: 150,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
-                  )
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 1,
+                            max: 150,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     _controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMaximum(900)
             ..setAxisMinimum(-250)
             ..drawAxisLine = (false)
@@ -141,10 +139,10 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
             ..drawGridLines = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
           var formatter1 = (controller as LineChartController)
               .data!
               .getDataSetByIndex(0)!
@@ -152,16 +150,14 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           if (formatter1 is A) {
             formatter1.setPainter(controller);
           }
-          var formatter2 = (controller as LineChartController)
-              .data!
-              .getDataSetByIndex(1)!
-              .getFillFormatter();
+          var formatter2 =
+              controller.data!.getDataSetByIndex(1)!.getFillFormatter();
           if (formatter2 is B) {
             formatter2.setPainter(controller);
           }
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawBorders: true,
         drawGridBackground: true,
@@ -175,7 +171,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         description: desc);
   }
 
-  Future _initLineData(int count, double range) async {
+  void _initLineData(int count, double range) {
     List<Entry> values1 = [];
 
     for (int i = 0; i < count; i++) {
@@ -196,21 +192,21 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     set1 = LineDataSet(values1, "DataSet 1");
 
     set1.setAxisDependency(AxisDependency.LEFT);
-    set1.setColor1(Color.fromARGB(255, 255, 241, 46));
+    set1.setColor1(const Color.fromARGB(255, 255, 241, 46));
     set1.setDrawCircles(false);
     set1.setLineWidth(2);
     set1.setCircleRadius(3);
     set1.setFillAlpha(255);
     set1.setDrawFilled(true);
     set1.setFillColor(ColorUtils.WHITE);
-    set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set1.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     set1.setDrawCircleHole(false);
     set1.setFillFormatter(A());
 
     // create a dataset and give it a type
     set2 = LineDataSet(values2, "DataSet 2");
     set2.setAxisDependency(AxisDependency.LEFT);
-    set2.setColor1(Color.fromARGB(255, 255, 241, 46));
+    set2.setColor1(const Color.fromARGB(255, 255, 241, 46));
     set2.setDrawCircles(false);
     set2.setLineWidth(2);
     set2.setCircleRadius(3);
@@ -218,19 +214,17 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     set2.setDrawFilled(true);
     set2.setFillColor(ColorUtils.WHITE);
     set2.setDrawCircleHole(false);
-    set2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set2.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     set2.setFillFormatter(B());
 
     // create a data object with the data sets
-    _controller.data = LineData.fromList([]
-      ..add(set1)
-      ..add(set2));
+    _controller.data = LineData.fromList(<LineDataSet>[set1, set2]);
     _controller.data!.setDrawValues(false);
 
     setState(() {});
   }
 
-  Color _fillColor = Color.fromARGB(150, 51, 181, 229);
+  final Color _fillColor = const Color.fromARGB(150, 51, 181, 229);
 }
 
 class A implements IFillFormatter {
@@ -242,8 +236,8 @@ class A implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller.painter.axisLeft.axisMinimum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller.painter!.axisLeft!.axisMinimum!;
   }
 }
 
@@ -256,7 +250,7 @@ class B implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller.painter.axisLeft.axisMaximum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller.painter!.axisLeft!.axisMaximum!;
   }
 }

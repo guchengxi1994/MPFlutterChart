@@ -12,17 +12,16 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
-abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
+abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   /// List representing all colors that are used for this DataSet
-  late List<ui.Color> _colors = [];
+  List<ui.Color>? _colors;
 
-  late GradientColor _gradientColor = GradientColor(
-      ui.Color.fromARGB(255, 140, 234, 255), Color.fromARGB(255, 62, 167, 86));
+  GradientColor? _gradientColor;
 
-  late List<GradientColor> _gradientColors = [_gradientColor];
+  List<GradientColor>? _gradientColors;
 
   /// List representing all colors that are used for drawing the actual values for this DataSet
-  late List<ui.Color> _valueColors = [];
+  List<ui.Color>? _valueColors;
 
   /// label that describes the DataSet or the data the DataSet represents
   String _label = "DataSet";
@@ -34,15 +33,15 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   bool _highlightEnabled = true;
 
   /// custom formatter that is used instead of the auto-formatter if set
-  late ValueFormatter? _valueFormatter = null;
+  ValueFormatter? _valueFormatter;
 
   /// the typeface used for the value text
-  late TypeFace _valueTypeface = TypeFace();
+  TypeFace? _valueTypeface;
 
   LegendForm _form = LegendForm.DEFAULT;
   double _formSize = double.nan;
   double _formLineWidth = double.nan;
-  late DashPathEffect? _formLineDashEffect = null;
+  DashPathEffect? _formLineDashEffect;
 
   /// if true, y-values are drawn on the chart
   bool _drawValues = true;
@@ -54,7 +53,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   MPPointF _iconsOffset = MPPointF(0, 0);
 
   /// the size of the value-text labels
-  double _valueTextSize = 17;
+  double? _valueTextSize = 17;
 
   /// flag that indicates if the DataSet is visible or not
   bool _visible = true;
@@ -64,8 +63,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     _colors = [];
     _valueColors = [];
     // default color
-    _colors.add(ui.Color.fromARGB(255, 140, 234, 255));
-    _valueColors.add(ColorUtils.BLACK);
+    _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
+    _valueColors!.add(ColorUtils.BLACK);
   }
 
   /// Constructor with label.
@@ -76,8 +75,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     _valueColors = [];
 
     // default color
-    _colors.add(ui.Color.fromARGB(255, 140, 234, 255));
-    _valueColors.add(ColorUtils.BLACK);
+    _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
+    _valueColors!.add(ColorUtils.BLACK);
     this._label = label;
   }
 
@@ -89,37 +88,37 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// ###### ###### COLOR GETTING RELATED METHODS ##### ######
 
   @override
-  List<ui.Color> getColors() {
+  List<ui.Color>? getColors() {
     return _colors;
   }
 
-  List<ui.Color> getValueColors() {
+  List<ui.Color>? getValueColors() {
     return _valueColors;
   }
 
   @override
   ui.Color getColor1() {
-    return _colors[0];
+    return _colors![0];
   }
 
   @override
   ui.Color getColor2(int index) {
-    return _colors[index % _colors.length];
+    return _colors![index % _colors!.length];
   }
 
   @override
-  GradientColor getGradientColor1() {
+  GradientColor? getGradientColor1() {
     return _gradientColor;
   }
 
   @override
-  List<GradientColor> getGradientColors() {
+  List<GradientColor>? getGradientColors() {
     return _gradientColors;
   }
 
   @override
   GradientColor getGradientColor2(int index) {
-    return _gradientColors[index % _gradientColors.length];
+    return _gradientColors![index % _gradientColors!.length];
   }
 
   /**
@@ -142,7 +141,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// @param color
   void addColor(ui.Color color) {
     if (_colors == null) _colors = [];
-    _colors.add(color);
+    _colors!.add(color);
   }
 
   /// Sets the one and ONLY color that should be used for this DataSet.
@@ -151,13 +150,13 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// @param color
   void setColor1(ui.Color color) {
     resetColors();
-    _colors.add(color);
+    _colors!.add(color);
   }
 
   void setColor3(ui.Color color, int alpha) {
     resetColors();
     alpha = alpha > 255 ? 255 : (alpha < 0 ? 0 : alpha);
-    _colors.add(Color.fromARGB(alpha, color.red, color.green, color.blue));
+    _colors!.add(Color.fromARGB(alpha, color.red, color.green, color.blue));
   }
 
   /// Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
@@ -199,7 +198,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     if (_colors == null) {
       _colors = [];
     }
-    _colors.clear();
+    _colors!.clear();
   }
 
   /// ###### ###### OTHER STYLING RELATED METHODS ##### ######
@@ -226,16 +225,13 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   @override
   void setValueFormatter(ValueFormatter f) {
-    if (f == null)
-      return;
-    else
-      _valueFormatter = f;
+    _valueFormatter = f;
   }
 
   @override
-  ValueFormatter getValueFormatter() {
+  ValueFormatter? getValueFormatter() {
     if (needsFormatter()) return Utils.getDefaultValueFormatter();
-    return _valueFormatter!;
+    return _valueFormatter;
   }
 
   @override
@@ -245,8 +241,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   @override
   void setValueTextColor(ui.Color color) {
-    _valueColors.clear();
-    _valueColors.add(color);
+    _valueColors!.clear();
+    _valueColors!.add(color);
   }
 
   @override
@@ -261,26 +257,26 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   @override
   void setValueTextSize(double size) {
-    _valueTextSize = size;
+    _valueTextSize = Utils.convertDpToPixel(size);
   }
 
   @override
   ui.Color getValueTextColor1() {
-    return _valueColors[0];
+    return _valueColors![0];
   }
 
   @override
   ui.Color getValueTextColor2(int index) {
-    return _valueColors[index % _valueColors.length];
+    return _valueColors![index % _valueColors!.length];
   }
 
   @override
-  TypeFace getValueTypeface() {
+  TypeFace? getValueTypeface() {
     return _valueTypeface;
   }
 
   @override
-  double getValueTextSize() {
+  double? getValueTextSize() {
     return _valueTextSize;
   }
 
@@ -376,7 +372,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   @override
   int getIndexInEntries(int xIndex) {
     for (int i = 0; i < getEntryCount(); i++) {
-      if (xIndex == getEntryForIndex(i).x) return i;
+      if (xIndex == getEntryForIndex(i)!.x) return i;
     }
 
     return -1;
@@ -385,8 +381,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   @override
   bool removeFirst() {
     if (getEntryCount() > 0) {
-      T entry = getEntryForIndex(0);
-      return removeEntry1(entry);
+      T? entry = getEntryForIndex(0);
+      return removeEntry1(entry!);
     } else
       return false;
   }
@@ -394,8 +390,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   @override
   bool removeLast() {
     if (getEntryCount() > 0) {
-      T e = getEntryForIndex(getEntryCount() - 1);
-      return removeEntry1(e);
+      T? e = getEntryForIndex(getEntryCount() - 1);
+      return removeEntry1(e!);
     } else
       return false;
   }
@@ -403,16 +399,13 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   @override
   bool removeEntryByXValue(double xValue) {
     T? e = getEntryForXValue2(xValue, double.nan);
-    if (e == null) {
-      return false;
-    }
-    return removeEntry1(e);
+    return removeEntry1(e!);
   }
 
   @override
   bool removeEntry2(int index) {
-    T e = getEntryForIndex(index);
-    return removeEntry1(e);
+    T? e = getEntryForIndex(index);
+    return removeEntry1(e!);
   }
 
   @override

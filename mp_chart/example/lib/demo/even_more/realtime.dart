@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -29,7 +28,7 @@ class EvenMoreRealtime extends StatefulWidget {
 
 class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
     implements OnChartValueSelectedListener {
-  late LineChartController controller;
+  LineChartController? controller;
   var random = Random(1);
   var isMultipleRun = false;
 
@@ -41,10 +40,6 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
   @override
   Widget getBody() {
-    if (controller.data == null) {
-      return CircularProgressIndicator();
-    }
-
     return Stack(
       children: <Widget>[
         Positioned(
@@ -52,7 +47,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
           left: 0,
           top: 0,
           bottom: 0,
-          child: LineChart(controller),
+          child: LineChart(controller!),
         ),
       ],
     );
@@ -61,12 +56,12 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Add Entry', 'B'),
-          item('Clear Chart', 'C'),
-          item('Add Multiple', 'D'),
-          item('Save to Gallery', 'E'),
-          item('Update Random Single Entry', 'F'),
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Add Entry', 'B') as PopupMenuItem<String>,
+          item('Clear Chart', 'C') as PopupMenuItem<String>,
+          item('Add Multiple', 'D') as PopupMenuItem<String>,
+          item('Save to Gallery', 'E') as PopupMenuItem<String>,
+          item('Update Random Single Entry', 'F') as PopupMenuItem<String>,
         ];
   }
 
@@ -77,7 +72,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
   @override
   void itemClick(String action) {
-    if (controller.state == null) {
+    if (controller!.state == null) {
       return;
     }
 
@@ -87,19 +82,19 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
         break;
       case 'B':
         _addEntry();
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'C':
         _clearChart();
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'D':
         _addMultiple();
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'E':
         captureImg(() {
-          controller.state!.capture();
+          controller!.state!.capture();
         });
         break;
       case 'F':
@@ -112,13 +107,13 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
     var desc = Description()..enabled = false;
     controller = LineChartController(
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..shape = LegendForm.LINE
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE
             ..drawGridLines = true
@@ -126,7 +121,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
             ..enabled = true;
         },
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE
             ..axisMaximum = 100.0
@@ -134,7 +129,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
             ..drawGridLines = true;
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = false;
+          axisRight!.enabled = false;
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -150,7 +145,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
     if (data == null) {
       data = LineData();
-      controller.data = data;
+      controller!.data = data;
     }
   }
 
@@ -161,7 +156,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
   void onValueSelected(Entry? e, Highlight? h) {}
 
   void _addEntry() {
-    LineData data = controller.data!;
+    LineData? data = controller!.data;
 
     if (data != null) {
       ILineDataSet? set = data.getDataSetByIndex(0);
@@ -180,18 +175,18 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
       data.notifyDataChanged();
 
       // limit the number of visible entries
-      controller.setVisibleXRangeMaximum(120);
+      controller!.setVisibleXRangeMaximum(120);
       // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
       // move to the latest entry
-      controller.moveViewToX(data.getEntryCount().toDouble());
+      controller!.moveViewToX(data.getEntryCount().toDouble());
 
-      controller.state?.setStateIfNotDispose();
+      controller!.state?.setStateIfNotDispose();
     }
   }
 
   void _updateEntry() {
-    LineData data = controller.data!;
+    LineData? data = controller!.data;
 
     if (data != null) {
       ILineDataSet? set = data.getDataSetByIndex(0);
@@ -208,26 +203,26 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
       //for test ChartData's updateEntryByIndex
       var index = (random.nextDouble() * set.getEntryCount()).toInt();
-      var x = set.getEntryForIndex(index).x;
+      var x = set.getEntryForIndex(index)!.x;
       data.updateEntryByIndex(
           index, Entry(x: x, y: (random.nextDouble() * 40) + 30.0), 0);
 
       data.notifyDataChanged();
 
       // limit the number of visible entries
-      controller.setVisibleXRangeMaximum(120);
+      controller!.setVisibleXRangeMaximum(120);
       // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
       // move to the latest entry
-      controller.moveViewToX(data.getEntryCount().toDouble());
+      controller!.moveViewToX(data.getEntryCount().toDouble());
 
-      controller.state?.setStateIfNotDispose();
+      controller!.state?.setStateIfNotDispose();
     }
   }
 
   void _clearChart() {
-    controller.data?.clearValues();
-    controller.state?.setStateIfNotDispose();
+    controller!.data?.clearValues();
+    controller!.state?.setStateIfNotDispose();
   }
 
   void _addMultiple() {
@@ -237,7 +232,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
     isMultipleRun = true;
     var i = 0;
-    Timer.periodic(Duration(milliseconds: 25), (timer) {
+    Timer.periodic(const Duration(milliseconds: 25), (timer) {
       _addEntry();
       if (i++ > 1000) {
         timer.cancel();
@@ -247,7 +242,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
   }
 
   LineDataSet _createSet() {
-    LineDataSet set = LineDataSet(null, "Dynamic Data");
+    LineDataSet set = LineDataSet([], "Dynamic Data");
     set.setAxisDependency(AxisDependency.LEFT);
     set.setColor1(ColorUtils.getHoloBlue());
     set.setCircleColor(ColorUtils.WHITE);
@@ -255,7 +250,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
     set.setCircleRadius(4.0);
     set.setFillAlpha(65);
     set.setFillColor(ColorUtils.getHoloBlue());
-    set.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     set.setValueTextColor(ColorUtils.WHITE);
     set.setValueTextSize(9.0);
     set.setDrawValues(false);

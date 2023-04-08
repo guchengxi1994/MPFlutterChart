@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
@@ -19,6 +18,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class LineChartCubic extends StatefulWidget {
+  const LineChartCubic({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return LineChartCubicState();
@@ -29,12 +30,11 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initLineData(_count, _range);
+    _initLineData(_count, _range);
     super.initState();
   }
 
@@ -43,99 +43,97 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _initLineChart(),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: _initLineChart(),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 700,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 700,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 150,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_count, _range);
-                                })),
-                      ),
-                      Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Center(
-                              child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ],
-                  )
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
                 ],
               ),
-            )
-          ],
-        ),
-        future);
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 150,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..setLabelCount2(6, false)
             ..textColor = (ColorUtils.WHITE)
@@ -144,12 +142,12 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
             ..axisLineColor = (ColorUtils.WHITE);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
-          legend.enabled = (false);
-          var data = (controller as LineChartController).data;
+          legend!.enabled = (false);
+          var data = controller.data;
           if (data != null) {
             var formatter = data.getDataSetByIndex(0)!.getFillFormatter();
             if (formatter is A) {
@@ -158,7 +156,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
           }
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: true,
         dragXEnabled: true,
@@ -166,12 +164,12 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        gridBackColor: Color.fromARGB(255, 104, 241, 175),
-        backgroundColor: Color.fromARGB(255, 104, 241, 175),
+        gridBackColor: const Color.fromARGB(255, 104, 241, 175),
+        backgroundColor: const Color.fromARGB(255, 104, 241, 175),
         description: desc);
   }
 
-  Future _initLineData(int count, double range) async {
+  void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = [];
 
@@ -191,7 +189,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setLineWidth(1.8);
     set1.setCircleRadius(4);
     set1.setCircleColor(ColorUtils.WHITE);
-    set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set1.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     set1.setColor1(ColorUtils.WHITE);
     set1.setFillColor(ColorUtils.WHITE);
     set1.setFillAlpha(100);
@@ -199,7 +197,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    controller.data = LineData.fromList([]..add(set1))
+    controller!.data = LineData.fromList(<LineDataSet>[set1])
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
       ..setDrawValues(false);
@@ -208,8 +206,8 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   }
 
   Widget _initLineChart() {
-    var lineChart = LineChart(controller);
-    controller.animator
+    var lineChart = LineChart(controller!);
+    controller!.animator!
       ..reset()
       ..animateXY1(2000, 2000);
     return lineChart;
@@ -225,7 +223,7 @@ class A implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller.painter.axisLeft.axisMinimum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller.painter!.axisLeft!.axisMinimum!;
   }
 }

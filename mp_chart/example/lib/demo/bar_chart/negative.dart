@@ -25,18 +25,18 @@ class BarChartNegative extends StatefulWidget {
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   late BarChartController _controller;
-  List<Data> _data = [];
+  final List<Data> _data = [];
 
   @override
   void initState() {
     _initController();
     _data.clear();
     _data
-      ..add(Data(0, -224.1, "12-29"))
-      ..add(Data(1, 238.5, "12-30"))
-      ..add(Data(2, 1280.1, "12-31"))
-      ..add(Data(3, -442.3, "01-01"))
-      ..add(Data(4, -2280.1, "01-02"));
+      ..add(const Data(0, -224.1, "12-29"))
+      ..add(const Data(1, 238.5, "12-30"))
+      ..add(const Data(2, 1280.1, "12-31"))
+      ..add(const Data(3, -442.3, "01-01"))
+      ..add(const Data(4, -2280.1, "01-02"));
     _initBarData();
     super.initState();
   }
@@ -63,8 +63,8 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     List<BarEntry> values = [];
     List<Color> colors = [];
 
-    Color green = Color.fromARGB(255, 110, 190, 102);
-    Color red = Color.fromARGB(255, 211, 74, 88);
+    Color green = const Color.fromARGB(255, 110, 190, 102);
+    Color red = const Color.fromARGB(255, 211, 74, 88);
 
     for (int i = 0; i < _data.length; i++) {
       Data d = _data[i];
@@ -72,10 +72,11 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
       values.add(entry);
 
       // specific colors
-      if (d.yValue >= 0)
+      if (d.yValue >= 0) {
         colors.add(red);
-      else
+      } else {
         colors.add(green);
+      }
     }
 
     BarDataSet set;
@@ -84,7 +85,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setColors1(colors);
     set.setValueTextColors(colors);
 
-    _controller.data = BarData([]..add(set));
+    _controller.data = BarData(<BarDataSet>[set]);
     _controller.data!
       ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
@@ -96,7 +97,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     var desc = Description()..enabled = false;
     _controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..drawLabels = (false)
             ..spacePercentTop = (25)
             ..spacePercentBottom = (25)
@@ -107,13 +108,13 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
             ..zeroLineWidth = 0.7;
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..typeface = Util.LIGHT
             ..drawGridLines = (false)
@@ -147,8 +148,8 @@ class A extends ValueFormatter {
   A(this._data) : super();
 
   @override
-  String getFormattedValue1(double value) {
-    return _data[min(max(value.toInt(), 0), _data.length - 1)].xAxisValue;
+  String getFormattedValue1(double? value) {
+    return _data[min(max(value!.toInt(), 0), _data.length - 1)].xAxisValue;
   }
 }
 
@@ -168,7 +169,7 @@ class Formatter extends ValueFormatter {
   }
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     return _format.format(value);
   }
 }

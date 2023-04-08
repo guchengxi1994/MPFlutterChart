@@ -23,12 +23,9 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
     MPPointD pos = getValsForTouch(x, y);
 
-    BarData? barData = provider.getBarData();
+    BarData barData = provider!.getBarData()!;
 
-    if (barData == null) return null;
-
-    IBarDataSet? set = barData.getDataSetByIndex(high.dataSetIndex);
-    if (set == null) return null;
+    IBarDataSet set = barData.getDataSetByIndex(high.dataSetIndex)!;
     if (set.isStacked()) {
       return getStackedHighlight(high, set, pos.x, pos.y);
     }
@@ -47,7 +44,7 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
   /// @param yVal
   /// @return
   Highlight? getStackedHighlight(
-      Highlight high, IBarDataSet set, double xVal, double yVal) {
+      Highlight high, IBarDataSet set, double? xVal, double? yVal) {
     BarEntry? entry = set.getEntryForXValue2(xVal, yVal);
 
     if (entry == null) return null;
@@ -56,13 +53,13 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
     if (entry.yVals == null) {
       return high;
     } else {
-      List<Range?> ranges = entry.ranges;
+      List<Range?>? ranges = entry.ranges;
 
-      if (ranges.length > 0) {
+      if (ranges != null && ranges.length > 0) {
         int stackIndex = getClosestStackIndex(ranges, yVal);
 
-        MPPointD pixels = provider
-            .getTransformer(set.getAxisDependency())
+        MPPointD pixels = provider!
+            .getTransformer(set.getAxisDependency())!
             .getPixelForValues(high.x, ranges[stackIndex]!.to);
 
         Highlight stackedHigh = Highlight(
@@ -89,22 +86,17 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
   /// @param ranges
   /// @param value
   /// @return
-  int getClosestStackIndex(List<Range?>? ranges, double value) {
+  int getClosestStackIndex(List<Range?>? ranges, double? value) {
     if (ranges == null || ranges.length == 0) return 0;
     int stackIndex = 0;
-    for (final range in ranges) {
-      if (range == null) {
-        stackIndex++;
-        continue;
-      }
-
-      if (range.contains(value))
+    for (Range? range in ranges) {
+      if (range!.contains(value!))
         return stackIndex;
       else
         stackIndex++;
     }
     int length = max(ranges.length - 1, 0);
-    return (value > ranges[length]!.to) ? length : 0;
+    return (value! > ranges[length]!.to) ? length : 0;
   }
 
   @override
@@ -113,7 +105,7 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
   }
 
   @override
-  BarLineScatterCandleBubbleData getData() {
-    return provider.getBarData()!;
+  BarLineScatterCandleBubbleData? getData() {
+    return provider!.getBarData();
   }
 }

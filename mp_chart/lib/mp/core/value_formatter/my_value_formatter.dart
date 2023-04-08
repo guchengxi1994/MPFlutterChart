@@ -13,15 +13,15 @@ class MyValueFormatter extends ValueFormatter {
   }
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     return _format.format(value) + _suffix;
   }
 
   @override
-  String getAxisLabel(double value, AxisBase axis) {
+  String getAxisLabel(double? value, AxisBase? axis) {
     if (axis is XAxis) {
       return _format.format(value);
-    } else if (value > 0) {
+    } else if (value! > 0) {
       return _format.format(value) + _suffix;
     } else {
       return _format.format(value);

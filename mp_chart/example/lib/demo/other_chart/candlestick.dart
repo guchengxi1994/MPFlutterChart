@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/candlestick_chart.dart';
 import 'package:mp_chart/mp/controller/candlestick_chart_controller.dart';
@@ -28,12 +27,11 @@ class OtherChartCandlestickState
   var random = Random(1);
   int _count = 40;
   double _range = 100.0;
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initCandleData(_count, _range);
+    _initCandleData(_count, _range);
     super.initState();
   }
 
@@ -42,114 +40,112 @@ class OtherChartCandlestickState
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-                right: 0,
-                left: 0,
-                top: 0,
-                bottom: 100,
-                child: CandlestickChart(controller)),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+    return Stack(
+      children: <Widget>[
+        Positioned(
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: CandlestickChart(controller)),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 3000,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initCandleData(_count, _range);
+                            })),
+                  ),
+                  Container(
+                      constraints:
+                          const BoxConstraints.expand(height: 50, width: 60),
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Center(
+                          child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ))),
+                ],
+              ),
+              Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
                         child: Center(
                             child: Slider(
-                                value: _count.toDouble(),
+                                value: _range,
                                 min: 0,
-                                max: 3000,
+                                max: 200,
                                 onChanged: (value) {
-                                  _count = value.toInt();
+                                  _range = value;
                                   _initCandleData(_count, _range);
                                 })),
                       ),
                       Container(
-                          constraints:
-                              BoxConstraints.expand(height: 50, width: 60),
-                          padding: EdgeInsets.only(right: 15.0),
+                          constraints: const BoxConstraints.expand(
+                              height: 50, width: 60),
+                          padding: const EdgeInsets.only(right: 15.0),
                           child: Center(
                               child: Text(
-                            "$_count",
+                            "${_range.toInt()}",
                             textDirection: TextDirection.ltr,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: ColorUtils.BLACK,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold),
                           ))),
                     ],
-                  ),
-                  Container(
-                      decoration: new BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Center(
-                                child: Slider(
-                                    value: _range,
-                                    min: 0,
-                                    max: 200,
-                                    onChanged: (value) {
-                                      _range = value;
-                                      _initCandleData(_count, _range);
-                                    })),
-                          ),
-                          Container(
-                              constraints:
-                                  BoxConstraints.expand(height: 50, width: 60),
-                              padding: EdgeInsets.only(right: 15.0),
-                              child: Center(
-                                  child: Text(
-                                "${_range.toInt()}",
-                                textDirection: TextDirection.ltr,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: ColorUtils.BLACK,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              ))),
-                        ],
-                      ))
-                ],
-              ),
-            )
-          ],
-        ),
-        future);
+                  ))
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initController() {
     var desc = Description()..enabled = false;
     controller = CandlestickChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(7, false)
             ..drawGridLines = (false)
             ..drawAxisLine = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (true);
         },
@@ -164,7 +160,7 @@ class OtherChartCandlestickState
         description: desc);
   }
 
-  Future _initCandleData(int count, double range) async {
+  void _initCandleData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
 //    chart.resetTracking();
 
@@ -200,12 +196,12 @@ class OtherChartCandlestickState
     set1.setShadowWidth(0.7);
     set1.setDecreasingColor(ColorUtils.RED);
     set1.setDecreasingPaintStyle(PaintingStyle.fill);
-    set1.setIncreasingColor(Color.fromARGB(255, 122, 242, 84));
+    set1.setIncreasingColor(const Color.fromARGB(255, 122, 242, 84));
     set1.setIncreasingPaintStyle(PaintingStyle.stroke);
     set1.setNeutralColor(ColorUtils.BLUE);
     //set1.setHighlightLineWidth(1f);
 
-    controller.data = CandleData.fromList([]..add(set1));
+    controller.data = CandleData.fromList(<CandleDataSet>[set1]);
 
     setState(() {});
   }

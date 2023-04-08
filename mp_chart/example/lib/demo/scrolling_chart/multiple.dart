@@ -40,7 +40,7 @@ class ScrollingChartMultiple extends StatefulWidget {
 
 class ScrollingChartMultipleState
     extends SimpleActionState<ScrollingChartMultiple> {
-  List<Controller> _controllers = [];
+  final List<Controller> _controllers = [];
   var random = Random(1);
   bool _isParentMove = true;
   double _curX = 0.0;
@@ -97,8 +97,8 @@ class ScrollingChartMultipleState
                   return _renderItem(index);
                 },
                 physics: _isParentMove
-                    ? PageScrollPhysics()
-                    : NeverScrollableScrollPhysics()),
+                    ? const PageScrollPhysics()
+                    : const NeverScrollableScrollPhysics()),
           ),
         ),
       ],
@@ -106,7 +106,7 @@ class ScrollingChartMultipleState
   }
 
   Widget _renderItem(int index) {
-    late Chart chart;
+    Chart? chart;
     if (_controllers[index] is LineChartController) {
       chart = _getLineChart(_controllers[index] as LineChartController);
     } else if (_controllers[index] is BarChartController) {
@@ -115,7 +115,7 @@ class ScrollingChartMultipleState
       chart = _getPieChart(_controllers[index] as PieChartController);
     }
 
-    return Container(height: 200, child: chart);
+    return SizedBox(height: 200, child: chart);
   }
 
   void _initController() {
@@ -125,18 +125,18 @@ class ScrollingChartMultipleState
       if (i % 3 == 0) {
         _controllers.add(LineChartController(
             axisLeftSettingFunction: (axisLeft, controller) {
-              axisLeft
+              axisLeft!
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0);
             },
             axisRightSettingFunction: (axisRight, controller) {
-              axisRight
+              axisRight!
                 ..setLabelCount2(5, false)
                 ..drawGridLines = (false)
                 ..setAxisMinimum(0);
             },
             xAxisSettingFunction: (xAxis, controller) {
-              xAxis
+              xAxis!
                 ..position = (XAxisPosition.BOTTOM)
                 ..drawGridLines = (false)
                 ..drawAxisLine = (true);
@@ -150,19 +150,19 @@ class ScrollingChartMultipleState
       } else if (i % 3 == 1) {
         _controllers.add(BarChartController(
             axisLeftSettingFunction: (axisLeft, controller) {
-              axisLeft
+              axisLeft!
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0)
                 ..spacePercentTop = (20);
             },
             axisRightSettingFunction: (axisRight, controller) {
-              axisRight
+              axisRight!
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0)
                 ..spacePercentTop = (20);
             },
             xAxisSettingFunction: (xAxis, controller) {
-              xAxis
+              xAxis!
                 ..position = (XAxisPosition.BOTTOM)
                 ..drawAxisLine = (true)
                 ..drawGridLines = (false);
@@ -178,7 +178,7 @@ class ScrollingChartMultipleState
       } else if (i % 3 == 2) {
         _controllers.add(PieChartController(
             legendSettingFunction: (legend, controller) {
-              legend
+              legend!
                 ..verticalAlignment = (LegendVerticalAlignment.TOP)
                 ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
                 ..orientation = (LegendOrientation.VERTICAL)
@@ -221,19 +221,19 @@ class ScrollingChartMultipleState
     LineDataSet d1 = LineDataSet(values1, "New DataSet $cnt, (1)");
     d1.setLineWidth(2.5);
     d1.setCircleRadius(4.5);
-    d1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    d1.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     d1.setDrawValues(false);
 
     List<Entry> values2 = [];
 
     for (int i = 0; i < 12; i++) {
-      values2.add(Entry(x: i.toDouble(), y: values1[i].y - 30));
+      values2.add(Entry(x: i.toDouble(), y: values1[i].y! - 30));
     }
 
     LineDataSet d2 = LineDataSet(values2, "New DataSet $cnt, (2)");
     d2.setLineWidth(2.5);
     d2.setCircleRadius(4.5);
-    d2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    d2.setHighLightColor(const Color.fromARGB(255, 244, 117, 117));
     d2.setColor1(ColorUtils.VORDIPLOM_COLORS[0]);
     d2.setCircleColor(ColorUtils.VORDIPLOM_COLORS[0]);
     d2.setDrawValues(false);
@@ -257,7 +257,7 @@ class ScrollingChartMultipleState
     d.setColors1(ColorUtils.VORDIPLOM_COLORS);
     d.setHighLightAlpha(255);
 
-    BarData cd = BarData([]..add(d));
+    BarData cd = BarData(<BarDataSet>[d]);
     cd.barWidth = (0.9);
     return cd;
   }
@@ -281,7 +281,7 @@ class ScrollingChartMultipleState
 
   LineChart _getLineChart(LineChartController controller) {
     var lineChart = LineChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateX1(750);
     return lineChart;
@@ -289,7 +289,7 @@ class ScrollingChartMultipleState
 
   BarChart _getBarChart(BarChartController controller) {
     var barChart = BarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateY1(700);
     return barChart;
@@ -301,7 +301,7 @@ class ScrollingChartMultipleState
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.WHITE);
     var pieChart = PieChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateY1(900);
     return pieChart;

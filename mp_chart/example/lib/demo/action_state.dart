@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -25,43 +26,46 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/util.dart';
-import 'package:mp_chart/mp/core/utils/platform_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-PopupMenuItem<String> item(String text, String id) {
+PopupMenuItem item(String text, String id) {
   return PopupMenuItem<String>(
-      value: id,
-      child: Container(
-          padding: EdgeInsets.only(top: 15.0),
-          child: Center(
-              child: Text(
-            text,
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: ColorUtils.BLACK,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
-          ))));
+    value: id,
+    child: Container(
+      padding: const EdgeInsets.only(top: 15),
+      child: Center(
+        child: Text(
+          text,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: ColorUtils.BLACK,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 abstract class ActionState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            actions: <Widget>[
-              PopupMenuButton<String>(
-                itemBuilder: getBuilder(),
-                onSelected: (String action) {
-                  itemClick(action);
-                },
-              ),
-            ],
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text(getTitle())),
-        body: getBody());
+      appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            itemBuilder: getBuilder(),
+            onSelected: itemClick,
+          ),
+        ],
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(getTitle()),
+      ),
+      body: getBody(),
+    );
   }
 
   void itemClick(String action);
@@ -72,24 +76,17 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
 
   PopupMenuItemBuilder<String> getBuilder();
 
-  void captureImg(CaptureCallback callback) {
-    if (PlatformUtils.isAndroid ||
-        PlatformUtils.isWindows ||
-        PlatformUtils.isIOS) {
-      Permission p = Permission.storage;
-
-      Future.delayed(Duration.zero).then((v) async {
-        final status = await p.status;
-        if (!status.isGranted) {
-          await p.request();
-        }
-
-        if (status.isGranted) {
-          callback();
-        }
-      });
-    } else {
+  Future<void> captureImg(CaptureCallback callback) async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
       callback();
+      return;
+    }
+    if (Platform.isIOS) {
+      if (status.isRestricted) {
+        callback();
+        return;
+      }
     }
   }
 }
@@ -105,39 +102,40 @@ abstract class SimpleActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) =>
-        <PopupMenuItem<String>>[item('View on GitHub', 'A')];
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>
+        ];
   }
 }
 
 abstract class LineActionState<T extends StatefulWidget>
     extends ActionState<T> {
-  late LineChartController controller;
+  LineChartController? controller;
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Values', 'B'),
-          item('Toggle Icons', 'C'),
-          item('Toggle Filled', 'D'),
-          item('Toggle Circles', 'E'),
-          item('Toggle Cubic', 'F'),
-          item('Toggle Stepped', 'G'),
-          item('Toggle Horizontal Cubic', 'H'),
-          item('Toggle PinchZoom', 'I'),
-          item('Toggle Auto Scale', 'J'),
-          item('Toggle Highlight', 'K'),
-          item('Animate X', 'L'),
-          item('Animate Y', 'M'),
-          item('Animate XY', 'N'),
-          item('Save to Gallery', 'O'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Icons', 'C') as PopupMenuItem<String>,
+          item('Toggle Filled', 'D') as PopupMenuItem<String>,
+          item('Toggle Circles', 'E') as PopupMenuItem<String>,
+          item('Toggle Cubic', 'F') as PopupMenuItem<String>,
+          item('Toggle Stepped', 'G') as PopupMenuItem<String>,
+          item('Toggle Horizontal Cubic', 'H') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'I') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'J') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'K') as PopupMenuItem<String>,
+          item('Animate X', 'L') as PopupMenuItem<String>,
+          item('Animate Y', 'M') as PopupMenuItem<String>,
+          item('Animate XY', 'N') as PopupMenuItem<String>,
+          item('Save to Gallery', 'O') as PopupMenuItem<String>,
         ];
   }
 
   @override
   void itemClick(String action) {
-    if (controller.state == null) {
+    if (controller!.state == null) {
       return;
     }
 
@@ -146,47 +144,49 @@ abstract class LineActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'C':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'D':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
-          if (set.isDrawFilledEnabled())
+          if (set.isDrawFilledEnabled()) {
             set.setDrawFilled(false);
-          else
+          } else {
             set.setDrawFilled(true);
+          }
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'E':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
-          if (set.isDrawCirclesEnabled())
+          if (set.isDrawCirclesEnabled()) {
             set.setDrawCircles(false);
-          else
+          } else {
             set.setDrawCircles(true);
+          }
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'F':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -194,20 +194,20 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.CUBIC_BEZIER);
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'G':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
           set.setMode(
               set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'H':
-        List<ILineDataSet> sets = controller.data!.dataSets;
+        List<ILineDataSet> sets = controller!.data!.dataSets!;
 
         for (ILineDataSet iSet in sets) {
           LineDataSet set = iSet as LineDataSet;
@@ -215,41 +215,42 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.HORIZONTAL_BEZIER);
         }
-        controller.state!.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'I':
-        controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state!.setStateIfNotDispose();
+        controller!.pinchZoomEnabled = !controller!.pinchZoomEnabled;
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state!.setStateIfNotDispose();
+        controller!.autoScaleMinMaxEnabled =
+            !controller!.autoScaleMinMaxEnabled;
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'K':
-        if (controller.data != null) {
-          controller.data!
-              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
-          controller.state!.setStateIfNotDispose();
+        if (controller!.data != null) {
+          controller!.data!
+              .setHighlightEnabled(!controller!.data!.isHighlightEnabled());
+          controller!.state!.setStateIfNotDispose();
         }
         break;
       case 'L':
-        controller.animator
+        controller!.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'M':
-        controller.animator
+        controller!.animator!
           ..reset()
           ..animateY2(2000, Easing.EaseInCubic);
         break;
       case 'N':
-        controller.animator
+        controller!.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'O':
         captureImg(() {
-          controller.state!.capture();
+          controller!.state!.capture();
         });
         break;
     }
@@ -261,18 +262,18 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Bar Borders', 'B'),
-          item('Toggle Values', 'C'),
-          item('Toggle Icons', 'D'),
-          item('Toggle Highlight', 'E'),
-          item('Toggle PinchZoom', 'F'),
-          item('Toggle Auto Scale', 'G'),
-          item('Animate X', 'H'),
-          item('Animate Y', 'I'),
-          item('Animate XY', 'J'),
-          item('Save to Gallery', 'K'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Bar Borders', 'B') as PopupMenuItem<String>,
+          item('Toggle Values', 'C') as PopupMenuItem<String>,
+          item('Toggle Icons', 'D') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'E') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'F') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'G') as PopupMenuItem<String>,
+          item('Animate X', 'H') as PopupMenuItem<String>,
+          item('Animate Y', 'I') as PopupMenuItem<String>,
+          item('Animate XY', 'J') as PopupMenuItem<String>,
+          item('Save to Gallery', 'K') as PopupMenuItem<String>,
         ];
   }
 
@@ -287,18 +288,20 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         Util.openGithub();
         break;
       case 'B':
-        for (IBarDataSet set in controller.data!.dataSets)
+        for (IBarDataSet set in controller.data!.dataSets!) {
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data!.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        List<IBarDataSet> sets = controller.data!.dataSets;
+        List<IBarDataSet> sets = controller.data!.dataSets!;
         for (IBarDataSet iSet in sets) {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
@@ -321,17 +324,17 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.state!.setStateIfNotDispose();
         break;
       case 'H':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -350,18 +353,18 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Bar Borders', 'B'),
-          item('Toggle Values', 'C'),
-          item('Toggle Icons', 'D'),
-          item('Toggle Highlight', 'E'),
-          item('Toggle PinchZoom', 'F'),
-          item('Toggle Auto Scale', 'G'),
-          item('Animate X', 'H'),
-          item('Animate Y', 'I'),
-          item('Animate XY', 'J'),
-          item('Save to Gallery', 'K'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Bar Borders', 'B') as PopupMenuItem<String>,
+          item('Toggle Values', 'C') as PopupMenuItem<String>,
+          item('Toggle Icons', 'D') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'E') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'F') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'G') as PopupMenuItem<String>,
+          item('Animate X', 'H') as PopupMenuItem<String>,
+          item('Animate Y', 'I') as PopupMenuItem<String>,
+          item('Animate XY', 'J') as PopupMenuItem<String>,
+          item('Save to Gallery', 'K') as PopupMenuItem<String>,
         ];
   }
 
@@ -376,18 +379,20 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IBarDataSet set in controller.data!.dataSets)
+        for (IBarDataSet set in controller.data!.dataSets!) {
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data!.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        List<IBarDataSet> sets = controller.data!.dataSets;
+        List<IBarDataSet> sets = controller.data!.dataSets!;
         for (IBarDataSet iSet in sets) {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
@@ -410,17 +415,17 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         controller.state!.setStateIfNotDispose();
         break;
       case 'H':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -438,21 +443,21 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Y-Values', 'B'),
-          item('Toggle X-Values', 'C'),
-          item('Toggle Icons', 'D'),
-          item('Toggle Percent', 'E'),
-          item('Toggle Minimum Angles', 'F'),
-          item('Toggle Hole', 'G'),
-          item('Toggle Curved Slices Cubic', 'H'),
-          item('Draw Center Text', 'I'),
-          item('Spin Animation', 'J'),
-          item('Animate X', 'K'),
-          item('Animate Y', 'L'),
-          item('Animate XY', 'M'),
-          item('Save to Gallery', 'N'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Y-Values', 'B') as PopupMenuItem<String>,
+          item('Toggle X-Values', 'C') as PopupMenuItem<String>,
+          item('Toggle Icons', 'D') as PopupMenuItem<String>,
+          item('Toggle Percent', 'E') as PopupMenuItem<String>,
+          item('Toggle Minimum Angles', 'F') as PopupMenuItem<String>,
+          item('Toggle Hole', 'G') as PopupMenuItem<String>,
+          item('Toggle Curved Slices Cubic', 'H') as PopupMenuItem<String>,
+          item('Draw Center Text', 'I') as PopupMenuItem<String>,
+          item('Spin Animation', 'J') as PopupMenuItem<String>,
+          item('Animate X', 'K') as PopupMenuItem<String>,
+          item('Animate Y', 'L') as PopupMenuItem<String>,
+          item('Animate XY', 'M') as PopupMenuItem<String>,
+          item('Save to Gallery', 'N') as PopupMenuItem<String>,
         ];
   }
 
@@ -467,7 +472,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data!.dataSets) {
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
         controller.state!.setStateIfNotDispose();
@@ -477,7 +482,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        for (IDataSet set in controller.data!.dataSets) {
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
         controller.state!.setStateIfNotDispose();
@@ -514,23 +519,23 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(1400, 1400);
         break;
@@ -549,12 +554,12 @@ abstract class CombinedActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Line Values', 'B'),
-          item('Toggle Bar Values', 'C'),
-          item('Remove Data Set', 'D'),
-          item('Set Y Range Test', 'E')
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Line Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Bar Values', 'C') as PopupMenuItem<String>,
+          item('Remove Data Set', 'D') as PopupMenuItem<String>,
+          item('Set Y Range Test', 'E') as PopupMenuItem<String>
         ];
   }
 
@@ -569,30 +574,30 @@ abstract class CombinedActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data.dataSets) {
+        for (IDataSet set in controller.data!.dataSets!) {
           if (set is LineDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets) {
+        for (IDataSet set in controller.data!.dataSets!) {
           if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        if (controller.data.getDataSetCount() > 1) {
-          int rnd = _getRandom(controller.data.getDataSetCount().toDouble(), 0)
+        if (controller.data!.getDataSetCount() > 1) {
+          int rnd = _getRandom(controller.data!.getDataSetCount().toDouble(), 0)
               .toInt();
-          controller.data
-              .removeDataSet1(controller.data.getDataSetByIndex(rnd)!);
-          controller.data.notifyDataChanged();
-          controller.state.setStateIfNotDispose();
+          controller.data!
+              .removeDataSet1(controller.data!.getDataSetByIndex(rnd));
+          controller.data!.notifyDataChanged();
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'E':
         controller.setVisibleYRangeMaximum(100, AxisDependency.LEFT);
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
     }
   }
@@ -608,17 +613,17 @@ abstract class ScatterActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Values', 'B'),
-          item('Toggle Icons', 'C'),
-          item('Toggle Highlight', 'D'),
-          item('Animate X', 'E'),
-          item('Animate Y', 'F'),
-          item('Animate XY', 'G'),
-          item('Toggle PinchZoom', 'H'),
-          item('Toggle Auto Scale', 'I'),
-          item('Save to Gallery', 'J'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Icons', 'C') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'D') as PopupMenuItem<String>,
+          item('Animate X', 'E') as PopupMenuItem<String>,
+          item('Animate Y', 'F') as PopupMenuItem<String>,
+          item('Animate XY', 'G') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'H') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'I') as PopupMenuItem<String>,
+          item('Save to Gallery', 'J') as PopupMenuItem<String>,
         ];
   }
 
@@ -633,51 +638,52 @@ abstract class ScatterActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        List<IScatterDataSet> sets = controller.data.dataSets;
+        List<IScatterDataSet> sets = controller.data!.dataSets!;
         for (IScatterDataSet iSet in sets) {
           ScatterDataSet set = iSet as ScatterDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(3000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(3000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(3000, 3000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }
@@ -690,17 +696,17 @@ abstract class BubbleActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Values', 'B'),
-          item('Toggle Icons', 'C'),
-          item('Toggle Highlight', 'D'),
-          item('Toggle PinchZoom', 'H'),
-          item('Toggle Auto Scale', 'I'),
-          item('Animate X', 'E'),
-          item('Animate Y', 'F'),
-          item('Animate XY', 'G'),
-          item('Save to Gallery', 'J'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Icons', 'C') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'D') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'H') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'I') as PopupMenuItem<String>,
+          item('Animate X', 'E') as PopupMenuItem<String>,
+          item('Animate Y', 'F') as PopupMenuItem<String>,
+          item('Animate XY', 'G') as PopupMenuItem<String>,
+          item('Save to Gallery', 'J') as PopupMenuItem<String>,
         ];
   }
 
@@ -715,48 +721,50 @@ abstract class BubbleActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }
@@ -769,18 +777,18 @@ abstract class CandlestickActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Values', 'B'),
-          item('Toggle Icons', 'C'),
-          item('Toggle Highlight', 'D'),
-          item('Toggle Shadow Color', 'K'),
-          item('Toggle PinchZoom', 'H'),
-          item('Toggle Auto Scale', 'I'),
-          item('Animate X', 'E'),
-          item('Animate Y', 'F'),
-          item('Animate XY', 'G'),
-          item('Save to Gallery', 'J'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Icons', 'C') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'D') as PopupMenuItem<String>,
+          item('Toggle Shadow Color', 'K') as PopupMenuItem<String>,
+          item('Toggle PinchZoom', 'H') as PopupMenuItem<String>,
+          item('Toggle Auto Scale', 'I') as PopupMenuItem<String>,
+          item('Animate X', 'E') as PopupMenuItem<String>,
+          item('Animate Y', 'F') as PopupMenuItem<String>,
+          item('Animate XY', 'G') as PopupMenuItem<String>,
+          item('Save to Gallery', 'J') as PopupMenuItem<String>,
         ];
   }
 
@@ -795,56 +803,58 @@ abstract class CandlestickActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.state.setStateIfNotDispose();
+        }
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
       case 'K':
-        for (ICandleDataSet set in controller.data.dataSets) {
+        for (ICandleDataSet set in controller.data!.dataSets!) {
           (set as CandleDataSet)
               .setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
     }
   }
@@ -856,21 +866,21 @@ abstract class RadarActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Toggle Values', 'B'),
-          item('Toggle Icons', 'C'),
-          item('Toggle Filled', 'D'),
-          item('Toggle Highlight', 'E'),
-          item('Toggle Highlight Circle', 'F'),
-          item('Toggle Rotation', 'G'),
-          item('Toggle Y-Values', 'H'),
-          item('Toggle X-Values', 'I'),
-          item('Spin Animation', 'J'),
-          item('Animate X', 'K'),
-          item('Animate Y', 'L'),
-          item('Animate XY', 'M'),
-          item('Save to Gallery', 'N'),
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Toggle Values', 'B') as PopupMenuItem<String>,
+          item('Toggle Icons', 'C') as PopupMenuItem<String>,
+          item('Toggle Filled', 'D') as PopupMenuItem<String>,
+          item('Toggle Highlight', 'E') as PopupMenuItem<String>,
+          item('Toggle Highlight Circle', 'F') as PopupMenuItem<String>,
+          item('Toggle Rotation', 'G') as PopupMenuItem<String>,
+          item('Toggle Y-Values', 'H') as PopupMenuItem<String>,
+          item('Toggle X-Values', 'I') as PopupMenuItem<String>,
+          item('Spin Animation', 'J') as PopupMenuItem<String>,
+          item('Animate X', 'K') as PopupMenuItem<String>,
+          item('Animate Y', 'L') as PopupMenuItem<String>,
+          item('Animate XY', 'M') as PopupMenuItem<String>,
+          item('Save to Gallery', 'N') as PopupMenuItem<String>,
         ];
   }
 
@@ -885,34 +895,37 @@ abstract class RadarActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawValues(!set.isDrawValuesEnabled());
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets!) {
           set.setDrawIcons(!set.isDrawIconsEnabled());
+        }
         controller.state!.setStateIfNotDispose();
         break;
       case 'D':
-        List<IRadarDataSet> sets = controller.data.dataSets;
+        List<IRadarDataSet> sets = controller.data!.dataSets!;
         for (IRadarDataSet set in sets) {
-          if (set.isDrawFilledEnabled())
+          if (set.isDrawFilledEnabled()) {
             set.setDrawFilled(false);
-          else
+          } else {
             set.setDrawFilled(true);
+          }
         }
         controller.state!.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
           controller.state!.setStateIfNotDispose();
         }
         break;
       case 'F':
-        List<IRadarDataSet> sets = controller.data.dataSets;
+        List<IRadarDataSet> sets = controller.data!.dataSets!;
         for (IRadarDataSet set in sets) {
           set.setDrawHighlightCircleEnabled(
               !set.isDrawHighlightCircleEnabled());
@@ -932,23 +945,23 @@ abstract class RadarActionState<T extends StatefulWidget>
         controller.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(1400, 1400);
         break;

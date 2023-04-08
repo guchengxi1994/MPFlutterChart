@@ -5,25 +5,22 @@ import 'package:mp_chart/mp/core/range.dart';
 
 class BarEntry extends Entry {
   /// the values the stacked barchart holds
-  late List<double> _yVals = [];
+  List<double>? _yVals;
 
   /// the ranges for the individual stack values - automatically calculated
-  late List<Range?> _ranges = [];
+  List<Range?>? _ranges;
 
   /// the sum of all negative values this entry (if stacked) contains
-  late double _negativeSum = 0;
+  double? _negativeSum;
 
   /// the sum of all positive values this entry (if stacked) contains
-  late double _positiveSum = 0;
+  double? _positiveSum;
 
-  BarEntry({required double x, required double y, ui.Image? icon, Object? data})
+  BarEntry({double? x, double? y, ui.Image? icon, Object? data})
       : super(x: x, y: y, icon: icon, data: data);
 
   BarEntry.fromListYVals(
-      {required double x,
-      required List<double> vals,
-      ui.Image? icon,
-      Object? data})
+      {double? x, List<double>? vals, ui.Image? icon, Object? data})
       : super(x: x, y: calcSum(vals), icon: icon, data: data) {
     this._yVals = vals;
     calcPosNegSum();
@@ -31,24 +28,24 @@ class BarEntry extends Entry {
   }
 
   BarEntry copy() {
-    BarEntry copied = BarEntry(x: x, y: y, data: mData, icon: mIcon);
+    BarEntry copied = BarEntry(x: x, y: y, data: mData);
     copied.setVals(_yVals);
     return copied;
   }
 
-  List<double> get yVals => _yVals;
+  List<double>? get yVals => _yVals;
 
   /// Set the array of values this BarEntry should represent.
   ///
   /// @param vals
-  void setVals(List<double> vals) {
+  void setVals(List<double>? vals) {
     y = calcSum(vals);
     _yVals = vals;
     calcPosNegSum();
     calcRanges();
   }
 
-  List<Range?> get ranges => _ranges;
+  List<Range?>? get ranges => _ranges;
 
   /// Returns true if this BarEntry is stacked (has a values array), false if not.
   ///
@@ -61,18 +58,18 @@ class BarEntry extends Entry {
     if (_yVals == null) return 0;
 
     double remainder = 0.0;
-    int index = _yVals.length - 1;
+    int index = _yVals!.length - 1;
     while (index > stackIndex && index >= 0) {
-      remainder += _yVals[index];
+      remainder += _yVals![index];
       index--;
     }
 
     return remainder;
   }
 
-  double get negativeSum => _negativeSum;
+  double? get negativeSum => _negativeSum;
 
-  double get positiveSum => _positiveSum;
+  double? get positiveSum => _positiveSum;
 
   void calcPosNegSum() {
     if (_yVals == null) {
@@ -84,7 +81,7 @@ class BarEntry extends Entry {
     double sumNeg = 0.0;
     double sumPos = 0.0;
 
-    for (double f in _yVals) {
+    for (double f in _yVals!) {
       if (f <= 0.0)
         sumNeg += f.abs();
       else
@@ -99,7 +96,7 @@ class BarEntry extends Entry {
   ///
   /// @param vals
   /// @return
-  static double calcSum(List<double> vals) {
+  static double calcSum(List<double>? vals) {
     if (vals == null) return 0.0;
     double sum = 0.0;
     for (double f in vals) sum += f;
@@ -107,24 +104,23 @@ class BarEntry extends Entry {
   }
 
   void calcRanges() {
-    List<double> values = yVals;
+    List<double>? values = yVals;
 
     if (values == null || values.length == 0) return;
 
-    // _ranges = []..length = values.length;
-    _ranges = List.filled(values.length, null);
+    _ranges = []..length = values.length;
 
-    double negRemain = -negativeSum;
+    double negRemain = -negativeSum!;
     double posRemain = 0.0;
 
-    for (int i = 0; i < _ranges.length; i++) {
+    for (int i = 0; i < _ranges!.length; i++) {
       double value = values[i];
 
       if (value < 0) {
-        _ranges[i] = Range(negRemain, negRemain - value);
+        _ranges![i] = Range(negRemain, negRemain - value);
         negRemain -= value;
       } else {
-        _ranges[i] = Range(posRemain, posRemain + value);
+        _ranges![i] = Range(posRemain, posRemain + value);
         posRemain += value;
       }
     }

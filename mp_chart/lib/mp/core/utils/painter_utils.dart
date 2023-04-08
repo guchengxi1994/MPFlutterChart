@@ -8,29 +8,30 @@ abstract class PainterUtils {
       {String? fontFamily, FontWeight? fontWeight = FontWeight.w400}) {
     if (painter == null) {
       return _create(text, color, fontSize,
-          fontFamily: fontFamily, fontWeight: fontWeight ?? FontWeight.w400);
+          fontFamily: fontFamily, fontWeight: fontWeight);
     }
 
     if (painter.text != null && (painter.text is TextSpan)) {
       var preText = (painter.text as TextSpan).text;
-      var preColor = painter.text?.style?.color;
+      var preColor = painter.text!.style!.color;
       preColor = preColor == null ? ColorUtils.BLACK : preColor;
-      var preFontSize = painter.text?.style?.fontSize;
-      preFontSize = preFontSize == null ? 13 : preFontSize;
+      var preFontSize = painter.text!.style!.fontSize;
+      preFontSize =
+          preFontSize == null ? Utils.convertDpToPixel(13) : preFontSize;
       return _create(
           text == null ? preText : text,
           color == null ? preColor : color,
           fontSize == null ? preFontSize : fontSize,
           fontFamily: fontFamily,
-          fontWeight: fontWeight ?? FontWeight.w400);
+          fontWeight: fontWeight);
     } else {
       return _create(text, color, fontSize,
-          fontFamily: fontFamily, fontWeight: fontWeight ?? FontWeight.w400);
+          fontFamily: fontFamily, fontWeight: fontWeight);
     }
   }
 
   static TextPainter _create(String? text, Color? color, double? fontSize,
-      {String? fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+      {String? fontFamily, FontWeight? fontWeight = FontWeight.w400}) {
     return TextPainter(
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -41,7 +42,7 @@ abstract class PainterUtils {
   }
 
   static TextStyle createTextStyle(Color? color, double? fontSize,
-      {String? fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+      {String? fontFamily, FontWeight? fontWeight = FontWeight.w400}) {
     if (fontWeight == null) {
       fontWeight = FontWeight.w400;
     }

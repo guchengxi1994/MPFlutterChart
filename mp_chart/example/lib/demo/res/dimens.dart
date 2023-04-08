@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class Dimens {
   static const double font_sp10 = 10;
   static const double font_sp12 = 12;

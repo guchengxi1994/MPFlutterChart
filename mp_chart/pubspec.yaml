@@ -13,7 +13,8 @@ dependencies:
   # image_gallery_saver: ^1.6.9
   intl: ^0.18.0
   optimized_gesture_detector: 
-    path: D:/github_repo/OptimizedGestureDetector/
+    git:
+      url: https://github.com/guchengxi1994/OptimizedGestureDetector
   path_drawing: ^1.0.1
   path_provider: ^2.0.14
   screenshot: ^1.3.0

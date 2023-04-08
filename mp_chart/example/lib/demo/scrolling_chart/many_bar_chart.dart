@@ -24,7 +24,7 @@ class ScrollingChartManyBar extends StatefulWidget {
 
 class ScrollingChartManyBarState
     extends SimpleActionState<ScrollingChartManyBar> {
-  List<BarChartController> _controllers = [];
+  final List<BarChartController> _controllers = [];
   var random = Random(1);
   bool _isParentMove = true;
   double _curX = 0.0;
@@ -81,8 +81,8 @@ class ScrollingChartManyBarState
                   return _renderItem(index);
                 },
                 physics: _isParentMove
-                    ? PageScrollPhysics()
-                    : NeverScrollableScrollPhysics()),
+                    ? const PageScrollPhysics()
+                    : const NeverScrollableScrollPhysics()),
           ),
         ),
       ],
@@ -95,17 +95,17 @@ class ScrollingChartManyBarState
     for (int i = 0; i < 20; i++) {
       _controllers.add(BarChartController(
           axisLeftSettingFunction: (axisLeft, controller) {
-            axisLeft
+            axisLeft!
               ..setLabelCount2(5, false)
               ..spacePercentTop = (15);
           },
           axisRightSettingFunction: (axisRight, controller) {
-            axisRight
+            axisRight!
               ..setLabelCount2(5, false)
               ..spacePercentTop = (15);
           },
           xAxisSettingFunction: (xAxis, controller) {
-            xAxis
+            xAxis!
               ..position = (XAxisPosition.BOTTOM)
               ..drawGridLines = (false);
           },
@@ -121,10 +121,10 @@ class ScrollingChartManyBarState
 
   Widget _renderItem(int index) {
     var barChart = BarChart(_controllers[index]);
-    _controllers[index].animator
+    _controllers[index].animator!
       ..reset()
       ..animateY1(700);
-    return Container(height: 200, child: barChart);
+    return SizedBox(height: 200, child: barChart);
   }
 
   void _initBarDatas() {
@@ -143,7 +143,7 @@ class ScrollingChartManyBarState
 
     BarDataSet d = BarDataSet(entries, "New DataSet $cnt");
     d.setColors1(ColorUtils.VORDIPLOM_COLORS);
-    d.setBarShadowColor(Color.fromARGB(255, 203, 203, 203));
+    d.setBarShadowColor(const Color.fromARGB(255, 203, 203, 203));
 
     List<IBarDataSet> sets = [];
     sets.add(d);

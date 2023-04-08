@@ -6,23 +6,23 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class LineScatterCandleRadarDataSet<T extends Entry>
-    extends BarLineScatterCandleBubbleDataSet<T>
-    implements ILineScatterCandleRadarDataSet<T> {
+    extends BarLineScatterCandleBubbleDataSet<T?>
+    implements ILineScatterCandleRadarDataSet<T?> {
   bool _drawVerticalHighlightIndicator = true;
   bool _drawHorizontalHighlightIndicator = true;
 
   /// the width of the highlight indicator lines
-  double _highlightLineWidth = 0.5;
+  double? _highlightLineWidth = 0.5;
 
   /// the path effect for dashed highlight-lines
-  late DashPathEffect? _highlightDashPathEffect = null;
+  DashPathEffect? _highlightDashPathEffect;
 
   /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
 
-  LineScatterCandleRadarDataSet(List<T>? yVals, String label)
+  LineScatterCandleRadarDataSet(List<T> yVals, String label)
       : super(yVals, label) {
-    _highlightLineWidth = 0.5;
+    _highlightLineWidth = Utils.convertDpToPixel(0.5);
   }
 
   /// Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
@@ -57,11 +57,11 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   /// Sets the width of the highlight line in dp.
   /// @param width
   void setHighlightLineWidth(double width) {
-    _highlightLineWidth = width;
+    _highlightLineWidth = Utils.convertDpToPixel(width);
   }
 
   @override
-  double getHighlightLineWidth() {
+  double? getHighlightLineWidth() {
     return _highlightLineWidth;
   }
 
@@ -116,30 +116,30 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   /// the added entry's x value must be in range of Pre's x value(Pre : Entry at index - 1)
   /// and Cur's x value(Cur: Entry at index).
   @override
-  bool addEntryByIndex(int index, T e) {
-    if (index < 0 || index > getEntryCount()) {
+  bool addEntryByIndex(int index, T? e) {
+    if(index < 0 || index > getEntryCount()){
       return false;
     }
 
-    List<T> valueDatas = values;
+    List<T?>? valueDatas = values;
     if (getEntryCount() == 0) {
       return addEntry(e);
     }
 
-    if (index == 0) {
-      var cur = valueDatas[index];
-      if (e.x >= cur.x) {
+    if(index == 0){
+      T cur = valueDatas![index]!;
+      if (e!.x! >= cur.x!) {
         return false;
       }
-    } else if (index == getEntryCount()) {
-      var pre = valueDatas[index - 1];
-      if (e.x <= pre.x) {
+    } else if(index == getEntryCount()){
+      T pre = valueDatas![index - 1]!;
+      if(e!.x! <= pre.x!){
         return false;
       }
-    } else {
-      var cur = valueDatas[index];
+    }else {
+      T cur = valueDatas![index]!;
       var pre = valueDatas[index - 1];
-      if (e.x >= cur.x || e.x <= pre.x) {
+      if (e!.x! >= cur.x! || e.x! <= pre!.x!) {
         return false;
       }
     }

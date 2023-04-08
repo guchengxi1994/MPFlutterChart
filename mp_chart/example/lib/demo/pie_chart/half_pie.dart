@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_inlined_adds
+
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
@@ -31,12 +32,11 @@ class PieChartHalfPie extends StatefulWidget {
 class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   late PieChartController _controller;
   var random = Random(1);
-  var future;
 
   @override
   void initState() {
     _initController();
-    future = _initPieData();
+    _initPieData();
     super.initState();
   }
 
@@ -45,18 +45,15 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-                right: 0, left: 0, top: 0, bottom: 0, child: _initPieChart())
-          ],
-        ),
-        future);
+    return Stack(
+      children: <Widget>[
+        Positioned(right: 0, left: 0, top: 0, bottom: 0, child: _initPieChart())
+      ],
+    );
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = []
+  final List<String> PARTIES = <String>[]
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -89,7 +86,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     _controller = PieChartController(
         legendSettingFunction: (legend, controller) {
           _formatter.setPieChartPainter(controller as PieChartController);
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -124,9 +121,9 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         description: desc);
   }
 
-  PercentFormatter _formatter = PercentFormatter();
+  final PercentFormatter _formatter = PercentFormatter();
 
-  Future _initPieData() async {
+  void _initPieData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     var count = 4;
     var range = 100;
@@ -134,7 +131,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     List<PieEntry> values = [];
 
     for (int i = 0; i < count; i++) {
-      values.add(new PieEntry(
+      values.add(PieEntry(
           icon: img,
           value: ((random.nextDouble() * range) + range / 5),
           label: PARTIES[i % PARTIES.length]));
@@ -148,7 +145,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     //dataSet.setSelectionShift(0f);
 
     _controller.data = PieData(dataSet)
-      ..setValueFormatter(new PercentFormatter())
+      ..setValueFormatter(PercentFormatter())
       ..setValueTextColor(ColorUtils.WHITE)
       ..setValueTypeface(Util.LIGHT);
 
@@ -157,7 +154,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   Widget _initPieChart() {
     var pieChart = PieChart(_controller);
-    _controller.animator.animateY2(1400, Easing.EaseInOutQuad);
+    _controller.animator!.animateY2(1400, Easing.EaseInOutQuad);
     return pieChart;
   }
 }

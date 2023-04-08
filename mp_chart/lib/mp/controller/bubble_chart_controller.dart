@@ -129,18 +129,18 @@ class BubbleChartController
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  BubbleData get data => super.data as BubbleData;
+  BubbleData? get data => super.data as BubbleData?;
 
-  BubbleChartState get state => super.state as BubbleChartState;
+  BubbleChartState? get state => super.state as BubbleChartState?;
 
-  BubbleChartPainter get painter => super.painter;
+  BubbleChartPainter? get painter => super.painter;
 
   @override
   void initialPainter() {
     painter = BubbleChartPainter(
         data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
@@ -148,14 +148,14 @@ class BubbleChartController
         extraRightOffset,
         extraBottomOffset,
         marker,
-        description!,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
@@ -167,23 +167,23 @@ class BubbleChartController
         dragYEnabled,
         scaleXEnabled,
         scaleYEnabled,
-        gridBackgroundPaint!,
-        backgroundPaint!,
-        borderPaint!,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
         drawListener,
-        axisLeft!,
-        axisRight!,
-        axisRendererLeft!,
-        axisRendererRight!,
-        leftAxisTransformer!,
-        rightAxisTransformer!,
-        xAxisRenderer!,
-        zoomMatrixBuffer!,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
         customViewPortEnabled,
         chartTransListener);
   }

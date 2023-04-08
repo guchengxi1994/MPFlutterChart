@@ -7,6 +7,6 @@ Widget buildFuture(Widget child, dynamic future) {
         if (s.connectionState == ConnectionState.done) {
           return child;
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       });
 }

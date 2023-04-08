@@ -6,7 +6,7 @@ class DefaultAxisValueFormatter extends ValueFormatter {
   late NumberFormat _format;
 
   /// the number of decimal digits this formatter uses
-  late int _digits;
+  int? _digits;
 
   /// Constructor that specifies to how many digits the value should be
   /// formatted.
@@ -25,10 +25,10 @@ class DefaultAxisValueFormatter extends ValueFormatter {
   }
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     // avoid memory allocations here (for performance)
     return _format.format(value);
   }
 
-  int get digits => _digits;
+  int? get digits => _digits;
 }

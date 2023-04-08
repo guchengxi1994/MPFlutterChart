@@ -22,7 +22,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   double _shapeSize = 15;
 
   /// Renderer responsible for rendering this DataSet, default: square
-  IShapeRenderer _shapeRenderer = SquareShapeRenderer();
+  IShapeRenderer? _shapeRenderer = SquareShapeRenderer();
 
   /// The radius of the hole in the shape (applies to Square, Circle and Triangle)
   /// - default: 0.0
@@ -36,10 +36,10 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ScatterDataSet(List<Entry> yVals, String label) : super(yVals, label);
 
   @override
-  DataSet<Entry> copy1() {
-    List<Entry> entries = <Entry>[];
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+  DataSet<Entry?> copy1() {
+    List<Entry> entries = [];
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     ScatterDataSet copied = ScatterDataSet(entries, getLabel());
     copy(copied);
@@ -76,7 +76,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param shape
   void setScatterShape(ScatterShape shape) {
-    _shapeRenderer = getRendererForShape(shape)!;
+    _shapeRenderer = getRendererForShape(shape);
   }
 
   /// Sets a  IShapeRenderer responsible for drawing this DataSet.
@@ -88,7 +88,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   }
 
   @override
-  IShapeRenderer getShapeRenderer() {
+  IShapeRenderer? getShapeRenderer() {
     return _shapeRenderer;
   }
 
@@ -133,8 +133,6 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
         return ChevronUpShapeRenderer();
       case ScatterShape.CHEVRON_DOWN:
         return ChevronDownShapeRenderer();
-      default:
-        return null;
     }
   }
 }

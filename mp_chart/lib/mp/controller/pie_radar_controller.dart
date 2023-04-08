@@ -10,7 +10,7 @@ import 'package:mp_chart/mp/painter/pie_redar_chart_painter.dart';
 abstract class PieRadarController<P extends PieRadarChartPainter>
     extends Controller<P> {
   double rotationAngle;
-  double rawRotationAngle;
+  double? rawRotationAngle;
   bool rotateEnabled;
   double minOffset;
 
@@ -64,11 +64,11 @@ abstract class PieRadarController<P extends PieRadarChartPainter>
             infoTextColor: infoTextColor);
 
   @override
-  void onRotateUpdate(double angle) {
+  void onRotateUpdate(double? angle) {
     rawRotationAngle = angle;
-    rotationAngle = Utils.getNormalizedAngle(rawRotationAngle);
+    rotationAngle = Utils.getNormalizedAngle(rawRotationAngle!);
     state!.setStateIfNotDispose();
   }
 
-  P get painter => super.painter;
+  P? get painter => super.painter;
 }

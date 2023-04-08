@@ -5,7 +5,7 @@ class DefaultValueFormatter extends ValueFormatter {
   /// DecimalFormat for formatting
   late NumberFormat _format;
 
-  late int _decimalDigits;
+  int? _decimalDigits;
 
   /// Constructor that specifies to how many digits the value should be
   /// formatted.
@@ -34,7 +34,7 @@ class DefaultValueFormatter extends ValueFormatter {
   }
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     // put more logic here ...
     // avoid memory allocations here (for performance reasons)
 
@@ -46,5 +46,5 @@ class DefaultValueFormatter extends ValueFormatter {
     return _format.toString();
   }
 
-  int get decimalDigits => _decimalDigits;
+  int? get decimalDigits => _decimalDigits;
 }

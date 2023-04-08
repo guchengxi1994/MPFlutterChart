@@ -2,16 +2,16 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 
 class Highlight {
   /// the x-value of the highlighted value
-  double _x = double.nan;
+  double? _x = double.nan;
 
   /// the y-value of the highlighted value
-  double _y = double.nan;
+  double? _y = double.nan;
 
   /// the x-pixel of the highlight
-  late double _xPx;
+  double? _xPx;
 
   /// the y-pixel of the highlight
-  late double _yPx;
+  double? _yPx;
 
   /// the index of the data object - in case it refers to more than one
   int _dataIndex = -1;
@@ -19,26 +19,26 @@ class Highlight {
   ///
   /// the index of the datase
   /// t the highlighted value is in
-  late int _dataSetIndex;
+  int? _dataSetIndex;
 
   /// index which value of a stacked bar entry is highlighted, default -1
   int _stackIndex = -1;
 
   /// the axis the highlighted value belongs to
-  late AxisDependency? axis;
+  AxisDependency? _axis;
 
   /// the x-position (pixels) on which this highlight object was last drawn
-  late double _drawX;
+  double? _drawX;
 
   /// the y-position (pixels) on which this highlight object was last drawn
-  late double _drawY;
+  double? _drawY;
 
   Highlight(
-      {double x = double.nan,
-      double y = double.nan,
-      double xPx = 0,
-      double yPx = 0,
-      int dataSetIndex = 0,
+      {double? x = double.nan,
+      double? y = double.nan,
+      double? xPx = 0,
+      double? yPx = 0,
+      int? dataSetIndex = 0,
       int stackIndex = -1,
       // ignore: avoid_init_to_null
       AxisDependency? axis = null}) {
@@ -47,17 +47,17 @@ class Highlight {
     this._xPx = xPx;
     this._yPx = yPx;
     this._dataSetIndex = dataSetIndex;
-    this.axis = axis;
+    this._axis = axis;
     this._stackIndex = stackIndex;
   }
 
-  double get x => _x;
+  double? get x => _x;
 
-  double get y => _y;
+  double? get y => _y;
 
-  double get xPx => _xPx;
+  double? get xPx => _xPx;
 
-  double get yPx => _yPx;
+  double? get yPx => _yPx;
 
   // ignore: unnecessary_getters_setters
   int get dataIndex => _dataIndex;
@@ -67,7 +67,7 @@ class Highlight {
     _dataIndex = value;
   }
 
-  int get dataSetIndex => _dataSetIndex;
+  int? get dataSetIndex => _dataSetIndex;
 
   int get stackIndex => _stackIndex;
 
@@ -75,27 +75,27 @@ class Highlight {
     return _stackIndex >= 0;
   }
 
-  // AxisDependency get axis => _axis;
+  AxisDependency? get axis => _axis;
 
   /// Sets the x- and y-position (pixels) where this highlight was last drawn.
   ///
   /// @param x
   /// @param y
-  void setDraw(double x, double y) {
+  void setDraw(double? x, double? y) {
     this._drawX = x;
     this._drawY = y;
   }
 
-  double get drawX => _drawX;
+  double? get drawX => _drawX;
 
-  double get drawY => _drawY;
+  double? get drawY => _drawY;
 
   /// Returns true if this highlight object is equal to the other (compares
   /// xIndex and dataSetIndex)
   ///
   /// @param h
   /// @return
-  bool equalTo(Highlight h) {
+  bool equalTo(Highlight? h) {
     if (h == null)
       return false;
     else {

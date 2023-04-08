@@ -7,7 +7,7 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class LineRadarDataSet<T extends Entry>
-    extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
+    extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T?> {
   /// the color that is used for filling the line surface
   Color _fillColor = Color.fromARGB(255, 140, 234, 255);
 
@@ -20,14 +20,14 @@ abstract class LineRadarDataSet<T extends Entry>
   int _fillAlpha = 85;
 
   /// the width of the drawn data lines
-  double _lineWidth = 2.5;
+  double? _lineWidth = 2.5;
 
   /// if true, the data will also be drawn filled
   bool _drawFilled = false;
 
   bool _gradientEnable = false;
 
-  LineRadarDataSet(List<T>? yVals, String label) : super(yVals, label);
+  LineRadarDataSet(List<T> yVals, String label) : super(yVals, label);
 
   @override
   Color getFillColor() {
@@ -39,18 +39,13 @@ abstract class LineRadarDataSet<T extends Entry>
   ///
   /// @param color
   void setFillColor(Color color) {
-    if (color != null) {
-      _fillColor = color;
-//    mFillDrawable = null;
-      setGradientFilled(false);
-    }
+    _fillColor = color;
+    setGradientFilled(false);
   }
 
   void setGradientColor(Color start, Color end) {
-    if (start != null && end != null) {
-      super.setGradientColor(start, end);
-      setGradientFilled(true);
-    }
+    super.setGradientColor(start, end);
+    setGradientFilled(true);
   }
 
 //  @override
@@ -85,11 +80,11 @@ abstract class LineRadarDataSet<T extends Entry>
   void setLineWidth(double width) {
     if (width < 0.0) width = 0.0;
     if (width > 10.0) width = 10.0;
-    _lineWidth = width;
+    _lineWidth = Utils.convertDpToPixel(width);
   }
 
   @override
-  double getLineWidth() {
+  double? getLineWidth() {
     return _lineWidth;
   }
 

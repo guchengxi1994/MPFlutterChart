@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_inlined_adds
+
 import 'dart:math';
 
-import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
@@ -52,20 +53,15 @@ class ScrollingChartViewPagerState
   late PieChartController _pieChartController;
   var random = Random(1);
 
-  var future;
-
   @override
   void initState() {
     _initController();
-
+    _initLineData1();
+    _initLineData2();
     _initBarData();
     _initScatterData();
     _initPieData();
     super.initState();
-
-    future = Future.delayed(Duration.zero)
-        .then((value) async => {await _initLineData1()})
-        .then((value) async => {await _initLineData2()});
   }
 
   @override
@@ -73,54 +69,52 @@ class ScrollingChartViewPagerState
 
   @override
   Widget getBody() {
-    return buildFuture(
-        Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: PageView.builder(
-                physics: PageScrollPhysics(),
-                itemBuilder: (context, index) {
-                  switch (index) {
-                    case 0:
-                      {
-                        _initLineChart1();
-                        return getChildWidget(LineChart(_lineChartController1));
-                      }
-                    case 1:
-                      {
-                        _initLineChart2();
-                        return getChildWidget(LineChart(_lineChartController2),
-                            showText:
-                                "this chart's controller not set resolveGestureHorizontalConflict, so chart move horizontal conflict with page view");
-                      }
-                    case 2:
-                      {
-                        _initBarChart();
-                        return getChildWidget(BarChart(_barChartController));
-                      }
-                    case 3:
-                      {
-                        _initScatterChart();
-                        return getChildWidget(
-                            ScatterChart(_scatterChartController));
-                      }
-                    default:
-                      {
-                        _initPieChart();
-                        return getChildWidget(PieChart(_pieChartController));
-                      }
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: PageView.builder(
+            physics: const PageScrollPhysics(),
+            itemBuilder: (context, index) {
+              switch (index) {
+                case 0:
+                  {
+                    _initLineChart1();
+                    return getChildWidget(LineChart(_lineChartController1));
                   }
-                },
-                itemCount: 5,
-              ),
-            ),
-          ],
+                case 1:
+                  {
+                    _initLineChart2();
+                    return getChildWidget(LineChart(_lineChartController2),
+                        showText:
+                            "this chart's controller not set resolveGestureHorizontalConflict, so chart move horizontal conflict with page view");
+                  }
+                case 2:
+                  {
+                    _initBarChart();
+                    return getChildWidget(BarChart(_barChartController));
+                  }
+                case 3:
+                  {
+                    _initScatterChart();
+                    return getChildWidget(
+                        ScatterChart(_scatterChartController));
+                  }
+                default:
+                  {
+                    _initPieChart();
+                    return getChildWidget(PieChart(_pieChartController));
+                  }
+              }
+            },
+            itemCount: 5,
+          ),
         ),
-        future);
+      ],
+    );
   }
 
   Widget getChildWidget(Widget child,
@@ -135,13 +129,13 @@ class ScrollingChartViewPagerState
             bottom: 0,
             child: Container(
                 color: ColorUtils.HOLO_BLUE_LIGHT,
-                constraints: BoxConstraints.expand(height: 100),
+                constraints: const BoxConstraints.expand(height: 100),
                 child: Center(
                     child: Text(
                   showText,
                   textDirection: TextDirection.ltr,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColorUtils.BLACK,
                       fontSize: 12,
                       fontWeight: FontWeight.bold),
@@ -156,15 +150,15 @@ class ScrollingChartViewPagerState
     _lineChartController1 = LineChartController(
         resolveGestureHorizontalConflict: true,
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMaximum(1.2)
             ..setAxisMinimum(-1.2);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -175,10 +169,10 @@ class ScrollingChartViewPagerState
 
     _lineChartController2 = LineChartController(
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -190,13 +184,13 @@ class ScrollingChartViewPagerState
     _barChartController = BarChartController(
         resolveGestureHorizontalConflict: true,
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.setAxisMinimum(0);
+          axisLeft!.setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -209,17 +203,17 @@ class ScrollingChartViewPagerState
     _scatterChartController = ScatterChartController(
         resolveGestureHorizontalConflict: true,
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.drawGridLines = (false);
+          axisRight!.drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..wordWrapEnabled = (true)
             ..formSize = (14)
             ..textSize = (9)
             ..yOffset = (13);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.position = (XAxisPosition.BOTTOM);
+          xAxis!.position = (XAxisPosition.BOTTOM);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -232,7 +226,7 @@ class ScrollingChartViewPagerState
     _pieChartController = PieChartController(
         resolveGestureHorizontalConflict: true,
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -244,10 +238,10 @@ class ScrollingChartViewPagerState
         description: desc);
   }
 
-  Future _initLineData1() async {
+  void _initLineData1() {
     List<ILineDataSet> sets = [];
 
-    await Util.loadAsset("sine.txt").then((value) {
+    Util.loadAsset("sine.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -268,7 +262,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    await Util.loadAsset("cosine.txt").then((value) {
+    Util.loadAsset("cosine.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -290,10 +284,10 @@ class ScrollingChartViewPagerState
     });
   }
 
-  Future _initLineData2() async {
+  void _initLineData2() {
     List<ILineDataSet> sets = [];
 
-    await Util.loadAsset("n.txt").then((value) {
+    Util.loadAsset("n.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -316,7 +310,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    await Util.loadAsset("nlogn.txt").then((value) {
+    Util.loadAsset("nlogn.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -339,7 +333,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    await Util.loadAsset("square.txt").then((value) {
+    Util.loadAsset("square.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -362,7 +356,7 @@ class ScrollingChartViewPagerState
       }
     });
 
-    await Util.loadAsset("three.txt").then((value) {
+    Util.loadAsset("three.txt").then((value) {
       List<Entry> data = [];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
@@ -386,7 +380,7 @@ class ScrollingChartViewPagerState
     });
   }
 
-  List<String> _labels = []
+  final List<String> _labels = <String>[]
     ..add("Company A")
     ..add("Company B")
     ..add("Company C")
@@ -403,10 +397,7 @@ class ScrollingChartViewPagerState
 
       for (int j = 0; j < 12; j++) {
         entries.add(BarEntry(
-            x: j.toDouble(),
-            y: (random.nextDouble() * range) + range / 4,
-            data: null,
-            icon: null));
+            x: j.toDouble(), y: (random.nextDouble() * range) + range / 4));
       }
 
       BarDataSet ds = BarDataSet(entries, _labels[i]);
@@ -453,12 +444,7 @@ class ScrollingChartViewPagerState
 
     for (int i = 0; i < count; i++) {
       entries1.add(PieEntry(
-          value: (random.nextDouble() * 60) + 40,
-          label: "Quarter ${i + 1}",
-          data: null,
-          icon: null,
-          labelColor: null,
-          labelTextSize: null));
+          value: (random.nextDouble() * 60) + 40, label: "Quarter ${i + 1}"));
     }
 
     PieDataSet ds1 = PieDataSet(entries1, "Quarterly Revenues 2015");
@@ -473,7 +459,7 @@ class ScrollingChartViewPagerState
 
   Widget _initLineChart1() {
     var lineChart = LineChart(_lineChartController1);
-    _lineChartController1.animator
+    _lineChartController1.animator!
       ..reset()
       ..animateX1(3000);
     return lineChart;
@@ -481,7 +467,7 @@ class ScrollingChartViewPagerState
 
   Widget _initLineChart2() {
     var lineChart = LineChart(_lineChartController2);
-    _lineChartController2.animator
+    _lineChartController2.animator!
       ..reset()
       ..animateX1(3000);
     return lineChart;

@@ -13,7 +13,7 @@ import 'package:mp_chart/mp/core/highlight/i_highlighter.dart';
 class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider>
     implements IHighlighter {
   /// bar highlighter for supporting stacked highlighting
-  late BarHighlighter? _barHighlighter = null;
+  BarHighlighter? _barHighlighter;
 
   CombinedHighlighter(CombinedDataProvider chart, BarDataProvider barChart)
       : super(chart) {
@@ -23,14 +23,14 @@ class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider>
   }
 
   @override
-  List<Highlight> getHighlightsAtXValue(double xVal, double x, double y) {
+  List<Highlight> getHighlightsAtXValue(double? xVal, double x, double y) {
     highlightBuffer.clear();
 
-    List<BarLineScatterCandleBubbleData> dataObjects =
-        provider.getCombinedData().getAllData();
+    List<BarLineScatterCandleBubbleData?> dataObjects =
+        provider!.getCombinedData()!.getAllData();
 
     for (int i = 0; i < dataObjects.length; i++) {
-      ChartData dataObject = dataObjects[i];
+      ChartData? dataObject = dataObjects[i];
 
       // in case of BarData, let the BarHighlighter take over
       if (_barHighlighter != null && dataObject is BarData) {
@@ -41,11 +41,11 @@ class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider>
           highlightBuffer.add(high);
         }
       } else {
-        for (int j = 0, dataSetCount = dataObject.getDataSetCount();
+        for (int j = 0, dataSetCount = dataObject!.getDataSetCount();
             j < dataSetCount;
             j++) {
-          IDataSet? dataSet = dataObjects[i].getDataSetByIndex(j);
-          if (dataSet == null) continue;
+          IDataSet dataSet = dataObjects[i]!.getDataSetByIndex(j)!;
+
           // don't include datasets that cannot be highlighted
           if (!dataSet.isHighlightEnabled()) continue;
 

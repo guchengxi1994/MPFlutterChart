@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
@@ -13,14 +12,14 @@ import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 class LineChartMarker implements IMarker {
   late Entry _entry;
   // ignore: unused_field
-  late Highlight _highlight;
+  Highlight? _highlight;
   double _dx = 0.0;
   double _dy = 0.0;
 
   late DefaultValueFormatter _formatter;
-  late Color? _textColor;
-  late Color? _backColor;
-  late double? _fontSize;
+  Color? _textColor;
+  Color? _backColor;
+  double? _fontSize;
 
   LineChartMarker({Color? textColor, Color? backColor, double? fontSize})
       : _textColor = textColor,
@@ -31,11 +30,11 @@ class LineChartMarker implements IMarker {
 //    _backColor ??= Color.fromARGB((_textColor.alpha * 0.5).toInt(),
 //        _textColor.red, _textColor.green, _textColor.blue);
     this._backColor ??= ColorUtils.WHITE;
-    this._fontSize ??= 10;
+    this._fontSize ??= Utils.convertDpToPixel(10);
   }
 
   @override
-  void draw(Canvas canvas, double posX, double posY) {
+  void draw(Canvas canvas, double? posX, double? posY) {
     TextPainter painter = PainterUtils.create(
         null,
         "${_formatter.getFormattedValue1(_entry.x)},${_formatter.getFormattedValue1(_entry.y)}",
@@ -54,7 +53,7 @@ class LineChartMarker implements IMarker {
 //    canvas.translate(posX + offset.x, posY + offset.y);
     painter.layout();
     Offset pos = calculatePos(
-        posX + offset.x, posY + offset.y, painter.width, painter.height);
+        posX! + offset.x!, posY! + offset.y!, painter.width, painter.height);
     canvas.drawRRect(
         RRect.fromLTRBR(pos.dx - 5, pos.dy - 5, pos.dx + painter.width + 5,
             pos.dy + painter.height + 5, Radius.circular(5)),
@@ -73,7 +72,7 @@ class LineChartMarker implements IMarker {
   }
 
   @override
-  MPPointF getOffsetForDrawingAtPoint(double posX, double posY) {
+  MPPointF getOffsetForDrawingAtPoint(double? posX, double? posY) {
     return getOffset();
   }
 

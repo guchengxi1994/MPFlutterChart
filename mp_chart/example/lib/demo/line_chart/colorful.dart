@@ -12,6 +12,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class LineChartColorful extends StatefulWidget {
+  const LineChartColorful({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return LineChartColorfulState();
@@ -19,17 +21,17 @@ class LineChartColorful extends StatefulWidget {
 }
 
 class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
-  // List<LineChartController> _controllers = []..length = 4;
-  List<LineChartController?> _controllers = List.filled(4, null);
+  final List<LineChartController?> _controllers = []..length = (4);
   var random = Random(1);
-  int _count = 36;
-  double _range = 100.0;
+  final int _count = 36;
+  final double _range = 100.0;
 
-  List<Color> _colors = []
-    ..add(Color.fromARGB(255, 137, 230, 81))
-    ..add(Color.fromARGB(255, 240, 240, 30))
-    ..add(Color.fromARGB(255, 89, 199, 250))
-    ..add(Color.fromARGB(255, 250, 104, 104));
+  final List<Color> _colors = <Color>[
+    const Color.fromARGB(255, 137, 230, 81),
+    const Color.fromARGB(255, 240, 240, 30),
+    const Color.fromARGB(255, 89, 199, 250),
+    const Color.fromARGB(255, 250, 104, 104)
+  ];
 
   @override
   void initState() {
@@ -97,11 +99,11 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
-      values.add(new Entry(x: i.toDouble(), y: val));
+      values.add(Entry(x: i.toDouble(), y: val));
     }
 
     // create a dataset and give it a type
-    LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+    LineDataSet set1 = LineDataSet(values, "DataSet 1");
     set1.setFillAlpha(110);
     set1.setFillColor(ColorUtils.RED);
 
@@ -114,27 +116,27 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
     set1.setDrawValues(false);
 
     // create a data object with the data sets
-    return LineData.fromList([]..add(set1));
+    return LineData.fromList(<LineDataSet>[set1]);
   }
 
   LineChartController _setupChartController(Color color) {
     var desc = Description()..enabled = false;
     return LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..enabled = (false)
             ..spacePercentTop = (40)
             ..spacePercentBottom = (40);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: true,
         dragXEnabled: true,
@@ -149,7 +151,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   Widget getLineChart(LineChartController controller) {
     var lineChart = LineChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateX1(2500);
     return lineChart;

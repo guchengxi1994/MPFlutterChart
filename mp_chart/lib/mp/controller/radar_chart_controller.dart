@@ -92,9 +92,9 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
 
   YAxis initYAxis() => YAxis(position: AxisDependency.LEFT);
 
-  RadarData get data => super.data as RadarData;
+  RadarData? get data => super.data as RadarData?;
 
-  RadarChartPainter get painter => super.painter;
+  RadarChartPainter? get painter => super.painter;
 
   RadarChartState? get state => super.state as RadarChartState?;
 
@@ -103,7 +103,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
     painter = RadarChartPainter(
         data,
         animator,
-        viewPortHandler!,
+        viewPortHandler,
         maxHighlightDistance,
         highLightPerTapEnabled,
         extraLeftOffset,
@@ -111,14 +111,14 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
         extraRightOffset,
         extraBottomOffset,
         marker,
-        description!,
+        description,
         drawMarkers,
-        infoBgColor!,
-        infoPaint!,
-        descPaint!,
-        xAxis!,
-        legend!,
-        legendRenderer!,
+        infoBgColor,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
         rendererSettingFunction,
         selectionListener,
         rotationAngle,
@@ -127,12 +127,12 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
         minOffset,
         webLineWidth,
         innerWebLineWidth,
-        webColor!,
-        webColorInner!,
+        webColor,
+        webColorInner,
         webAlpha,
         drawWeb,
         skipWebLineCount,
-        yAxis!,
+        yAxis,
         backgroundColor);
   }
 
@@ -143,7 +143,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
     webColorInner ??= Color.fromARGB(255, 122, 122, 122);
     yAxis = initYAxis();
     if (yAxisSettingFunction != null) {
-      yAxisSettingFunction!(yAxis!, this);
+      yAxisSettingFunction!(yAxis, this);
     }
   }
 
