@@ -45,7 +45,7 @@ class Legend extends ComponentBase {
   double _formLineWidth = 3;
 
   /// Line dash path effect used for shapes that consist of lines.
-  late DashPathEffect _formLineDashEffect;
+  late DashPathEffect? _formLineDashEffect = null;
 
   /// the space between the legend entries on a horizontal axis, default 6f
   double _xEntrySpace = 6;
@@ -281,7 +281,7 @@ class Legend extends ComponentBase {
   }
 
   /// @return The line dash path effect used for shapes that consist of lines.
-  DashPathEffect getFormLineDashEffect() {
+  DashPathEffect? getFormLineDashEffect() {
     return _formLineDashEffect;
   }
 

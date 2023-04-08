@@ -69,10 +69,12 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
         "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.dataSetIndex}");
   }
 
+  var future;
+
   @override
   void initState() {
     _initController();
-    _initLineData(_count, _range);
+    future = _initLineData(_count, _range);
     super.initState();
   }
 
@@ -81,87 +83,96 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-            right: 0,
-            left: 0,
-            top: 0,
-            bottom: 100,
-            child: LineChart(controller)),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initLineData(_count, _range);
-                            })),
+    return FutureBuilder(
+        future: future,
+        builder: (c, s) {
+          if (s.connectionState == ConnectionState.done) {
+            return Stack(
+              children: <Widget>[
+                Positioned(
+                    right: 0,
+                    left: 0,
+                    top: 0,
+                    bottom: 100,
+                    child: LineChart(controller)),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Center(
+                                child: Slider(
+                                    value: _count.toDouble(),
+                                    min: 0,
+                                    max: 500,
+                                    onChanged: (value) {
+                                      _count = value.toInt();
+                                      _initLineData(_count, _range);
+                                    })),
+                          ),
+                          Container(
+                              constraints:
+                                  BoxConstraints.expand(height: 50, width: 60),
+                              padding: EdgeInsets.only(right: 15.0),
+                              child: Center(
+                                  child: Text(
+                                "$_count",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ))),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Center(
+                                child: Slider(
+                                    value: _range,
+                                    min: 0,
+                                    max: 150,
+                                    onChanged: (value) {
+                                      _range = value;
+                                      _initLineData(_count, _range);
+                                    })),
+                          ),
+                          Container(
+                              constraints:
+                                  BoxConstraints.expand(height: 50, width: 60),
+                              padding: EdgeInsets.only(right: 15.0),
+                              child: Center(
+                                  child: Text(
+                                "${_range.toInt()}",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ))),
+                        ],
+                      )
+                    ],
                   ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 150,
-                            onChanged: (value) {
-                              _range = value;
-                              _initLineData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    );
+                )
+              ],
+            );
+          }
+          return CircularProgressIndicator();
+        });
   }
 
   void _initController() {
@@ -199,7 +210,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
         description: desc);
   }
 
-  void _initLineData(int count, double range) async {
+  Future _initLineData(int count, double range) async {
     // List<ui.Image> imgs = []..length = 3;
     List<ui.Image?> imgs = List.filled(3, null);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');

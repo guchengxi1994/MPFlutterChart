@@ -287,18 +287,18 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         Util.openGithub();
         break;
       case 'B':
-        for (IBarDataSet set in controller.data.dataSets)
+        for (IBarDataSet set in controller.data!.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
         controller.state.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
         controller.state.setStateIfNotDispose();
         break;
       case 'D':
-        List<IBarDataSet> sets = controller.data.dataSets;
+        List<IBarDataSet> sets = controller.data!.dataSets;
         for (IBarDataSet iSet in sets) {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
@@ -307,8 +307,8 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         break;
       case 'E':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
           controller.state.setStateIfNotDispose();
         }
         break;
@@ -376,18 +376,18 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         Util.openGithub();
         break;
       case 'B':
-        for (IBarDataSet set in controller.data.dataSets)
+        for (IBarDataSet set in controller.data!.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
         controller.state.setStateIfNotDispose();
         break;
       case 'C':
-        for (IDataSet set in controller.data.dataSets)
+        for (IDataSet set in controller.data!.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
         controller.state.setStateIfNotDispose();
         break;
       case 'D':
-        List<IBarDataSet> sets = controller.data.dataSets;
+        List<IBarDataSet> sets = controller.data!.dataSets;
         for (IBarDataSet iSet in sets) {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
@@ -396,8 +396,8 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         break;
       case 'E':
         if (controller.data != null) {
-          controller.data
-              .setHighlightEnabled(!controller.data.isHighlightEnabled());
+          controller.data!
+              .setHighlightEnabled(!controller.data!.isHighlightEnabled());
           controller.state.setStateIfNotDispose();
         }
         break;

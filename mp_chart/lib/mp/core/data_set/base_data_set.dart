@@ -41,7 +41,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   LegendForm _form = LegendForm.DEFAULT;
   double _formSize = double.nan;
   double _formLineWidth = double.nan;
-  late DashPathEffect _formLineDashEffect;
+  late DashPathEffect? _formLineDashEffect = null;
 
   /// if true, y-values are drawn on the chart
   bool _drawValues = true;
@@ -315,7 +315,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  DashPathEffect getFormLineDashEffect() {
+  DashPathEffect? getFormLineDashEffect() {
     return _formLineDashEffect;
   }
 

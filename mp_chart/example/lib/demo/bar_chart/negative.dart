@@ -15,6 +15,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class BarChartNegative extends StatefulWidget {
+  const BarChartNegative({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return BarChartNegativeState();
@@ -83,7 +85,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setValueTextColors(colors);
 
     _controller.data = BarData([]..add(set));
-    _controller.data
+    _controller.data!
       ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
       ..setValueFormatter(Formatter())

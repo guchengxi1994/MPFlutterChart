@@ -1,3 +1,4 @@
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mp_chart/mp/chart/horizontal_bar_chart.dart';
@@ -30,29 +31,33 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   @override
   void initState() {
     _initController();
-    _initBarData();
+    future = _initBarData();
     super.initState();
   }
+
+  var future;
 
   @override
   String getTitle() => "Bar Chart Stacked2";
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: HorizontalBarChart(controller),
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: HorizontalBarChart(controller),
+            ),
+          ],
         ),
-      ],
-    );
+        future);
   }
 
-  void _initBarData() async {
+  Future _initBarData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
     List<BarEntry> values = [];
@@ -144,7 +149,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
       ..add("Women"));
 
     controller.data = BarData([]..add(set));
-    controller.data.barWidth = (8.5);
+    controller.data!.barWidth = (8.5);
 
     setState(() {});
   }

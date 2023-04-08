@@ -358,7 +358,8 @@ class LineChartRenderer extends LineRadarRenderer {
     // more than 1 color
     if (dataSet.getColors().length > 1) {
       if (mLineBuffer.length <= pointsPerEntryPair * 2)
-        mLineBuffer = [pointsPerEntryPair * 4];
+        // mLineBuffer = [pointsPerEntryPair * 4];
+        mLineBuffer = List.filled(pointsPerEntryPair * 4, 0);
 
       for (int j = xBounds.min; j <= xBounds.range + xBounds.min; j++) {
         Entry e = dataSet.getEntryForIndex(j);

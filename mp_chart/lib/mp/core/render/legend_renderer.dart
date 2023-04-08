@@ -475,7 +475,7 @@ class LegendRenderer extends Renderer {
           final double formLineWidth = (entry.formLineWidth.isNaN
               ? legend.formLineWidth
               : entry.formLineWidth);
-          final DashPathEffect formLineDashEffect =
+          final DashPathEffect? formLineDashEffect =
               entry.formLineDashEffect == null
                   ? legend.getFormLineDashEffect()
                   : entry.formLineDashEffect!;

@@ -28,7 +28,6 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     this._values = values;
 
     if (_values == null) _values = <T>[];
-
     calcMinMax();
   }
 

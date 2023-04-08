@@ -146,7 +146,7 @@ class HorizontalBarChartController extends BarChartController {
   @override
   void initialPainter() {
     painter = HorizontalBarChartPainter(
-        data,
+        data!,
         animator,
         viewPortHandler!,
         maxHighlightDistance,

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
@@ -14,6 +15,8 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/action_state.dart';
 
 class BarChartBasic2 extends StatefulWidget {
+  const BarChartBasic2({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return BarChartBasic2State();
@@ -24,11 +27,12 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   var random = Random(1);
   int _count = 10;
   double _range = 100.0;
+  var future;
 
   @override
   void initState() {
     _initController();
-    _initBarData(_count, _range);
+    future = _initBarData(_count, _range);
     super.initState();
   }
 
@@ -37,103 +41,107 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: _initBarChart(),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 100,
+              child: _initBarChart(),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 1500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initBarData(_count, _range);
-                            })),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _count.toDouble(),
+                                min: 0,
+                                max: 1500,
+                                onChanged: (value) {
+                                  _count = value.toInt();
+                                  _initBarData(_count, _range);
+                                })),
+                      ),
+                      Container(
+                          constraints:
+                              BoxConstraints.expand(height: 50, width: 60),
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Center(
+                              child: Text(
+                            "$_count",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ],
                   ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _range,
+                                min: 0,
+                                max: 200,
+                                onChanged: (value) {
+                                  _range = value;
+                                  _initBarData(_count, _range);
+                                })),
+                      ),
+                      Container(
+                          constraints:
+                              BoxConstraints.expand(height: 50, width: 60),
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Center(
+                              child: Text(
+                            "${_range.toInt()}",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ],
+                  )
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 200,
-                            onChanged: (value) {
-                              _range = value;
-                              _initBarData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    );
+            )
+          ],
+        ),
+        future);
   }
 
-  void _initBarData(int count, double range) async {
+  Future _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<BarEntry> values = [];
 
     for (int i = 0; i < count; i++) {
       double multi = (range + 1);
       double val = (random.nextDouble() * multi) + multi / 3;
-      values.add(new BarEntry(x: i.toDouble(), y: val, icon: img));
+      values.add(BarEntry(x: i.toDouble(), y: val, icon: img));
     }
 
     BarDataSet set1;
 
-    set1 = new BarDataSet(values, "Data Set");
+    set1 = BarDataSet(values, "Data Set");
     set1.setColors1(ColorUtils.VORDIPLOM_COLORS);
     set1.setDrawValues(false);
 
@@ -141,7 +149,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    controller.data
+    controller.data!
       ..setValueTextSize(10)
       ..barWidth = 0.9;
 

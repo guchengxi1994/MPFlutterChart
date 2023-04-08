@@ -135,7 +135,7 @@ class LineChartController
 
   LineData? get data => super.data as LineData?;
 
-  LineChartState get state => super.state as LineChartState;
+  LineChartState? get state => super.state as LineChartState?;
 
   LineChartPainter get painter => super.painter;
 

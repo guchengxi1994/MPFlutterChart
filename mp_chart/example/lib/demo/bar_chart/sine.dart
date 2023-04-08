@@ -16,6 +16,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class BarChartSine extends StatefulWidget {
+  const BarChartSine({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return BarChartSineState();
@@ -163,7 +165,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
     controller.data = BarData([]..add(set));
-    controller.data
+    controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..setDrawValues(false)

@@ -55,20 +55,20 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
+                flex: 1,
                 child: getLineChart(_controllers[0]!),
-                flex: 1,
               ),
               Expanded(
+                flex: 1,
                 child: getLineChart(_controllers[1]!),
-                flex: 1,
               ),
               Expanded(
+                flex: 1,
                 child: getLineChart(_controllers[2]!),
-                flex: 1,
               ),
               Expanded(
-                child: getLineChart(_controllers[3]!),
                 flex: 1,
+                child: getLineChart(_controllers[3]!),
               ),
             ],
           ),

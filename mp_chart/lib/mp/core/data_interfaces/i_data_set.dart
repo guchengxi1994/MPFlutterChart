@@ -112,7 +112,7 @@ mixin IDataSet<T extends Entry> {
 
   double getFormLineWidth();
 
-  DashPathEffect getFormLineDashEffect();
+  DashPathEffect? getFormLineDashEffect();
 
   void setDrawValues(bool enabled);
 

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
@@ -33,11 +34,13 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   int _count = 20;
   double _range = 30.0;
 
+  var future;
+
   @override
   void initState() {
     _initController();
-    _initLineData(_count, _range);
     super.initState();
+    future = _initLineData(_count, _range);
   }
 
   @override
@@ -45,88 +48,92 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 
   @override
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: _initLineChart(),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+    return buildFuture(
+        Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 100,
+              child: _initLineChart(),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initLineData(_count, _range);
-                            })),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _count.toDouble(),
+                                min: 0,
+                                max: 500,
+                                onChanged: (value) {
+                                  _count = value.toInt();
+                                  _initLineData(_count, _range);
+                                })),
+                      ),
+                      Container(
+                          constraints:
+                              BoxConstraints.expand(height: 50, width: 60),
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Center(
+                              child: Text(
+                            "$_count",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ],
                   ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _range,
+                                min: 0,
+                                max: 150,
+                                onChanged: (value) {
+                                  _range = value;
+                                  _initLineData(_count, _range);
+                                })),
+                      ),
+                      Container(
+                          constraints:
+                              BoxConstraints.expand(height: 50, width: 60),
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Center(
+                              child: Text(
+                            "${_range.toInt()}",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ],
+                  )
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 150,
-                            onChanged: (value) {
-                              _range = value;
-                              _initLineData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    );
+            )
+          ],
+        ),
+        future);
   }
 
   @override
@@ -136,7 +143,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   void onValueSelected(Entry? e, Highlight? h) {
     if (e == null || h == null) return;
 
-    controller?.centerViewToAnimated(
+    controller.centerViewToAnimated(
         e.x,
         e.y,
         controller.data!.getDataSetByIndex(h.dataSetIndex)!.getAxisDependency(),
@@ -198,7 +205,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         description: desc);
   }
 
-  void _initLineData(int count, double range) async {
+  Future _initLineData(int count, double range) async {
     // List<ui.Image> imgs = []..length = 3;
     List<ui.Image?> imgs = List.filled(3, null);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
@@ -215,14 +222,14 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;
-      values2.add(new Entry(x: i.toDouble(), y: val, icon: imgs[1]));
+      values2.add(Entry(x: i.toDouble(), y: val, icon: imgs[1]));
     }
 
     List<Entry> values3 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 500;
-      values3.add(new Entry(x: i.toDouble(), y: val, icon: imgs[2]));
+      values3.add(Entry(x: i.toDouble(), y: val, icon: imgs[2]));
     }
 
     LineDataSet set1, set2, set3;
@@ -257,7 +264,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     set2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
     //set2.setFillFormatter(new MyFillFormatter(900f));
 
-    set3 = new LineDataSet(values3, "DataSet 3");
+    set3 = LineDataSet(values3, "DataSet 3");
     set3.setAxisDependency(AxisDependency.RIGHT);
     set3.setColor1(ColorUtils.YELLOW);
     set3.setCircleColor(ColorUtils.WHITE);
@@ -270,10 +277,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     set3.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
 
     // create a data object with the data sets
-    controller.data = LineData.fromList([]
-      ..add(set1)
-      ..add(set2)
-      ..add(set3));
+    controller.data = LineData.fromList([set1, set2, set3]);
     controller.data!
       ..setValueTextColor(ColorUtils.WHITE)
       ..setValueTextSize(9);

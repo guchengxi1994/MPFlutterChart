@@ -150,6 +150,7 @@ abstract class Controller<P extends ChartPainter>
 
   @override
   void onAnimationUpdate(double x, double y) {
+    if (state == null) return;
     state?.setStateIfNotDispose();
   }
 
