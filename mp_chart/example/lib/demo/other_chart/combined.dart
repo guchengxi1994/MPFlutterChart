@@ -32,6 +32,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class OtherChartCombined extends StatefulWidget {
+  const OtherChartCombined({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return OtherChartCombinedState();

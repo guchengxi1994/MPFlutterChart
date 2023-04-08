@@ -73,7 +73,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
+      IMarker? marker,
       Description desc,
       bool drawMarkers,
       Color infoBgColor,
@@ -82,8 +82,8 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       double rotationAngle,
       double rawRotationAngle,
       bool rotateEnabled,
@@ -96,7 +96,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
       bool drawWeb,
       int skipWebLineCount,
       YAxis yAxis,
-      Color backgroundColor)
+      Color? backgroundColor)
       : _webLineWidth = webLineWidth,
         _innerWebLineWidth = innerWebLineWidth,
         _webColor = webColor,

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:example/demo/simple_simple_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/radar_chart.dart';
 import 'package:mp_chart/mp/controller/radar_chart_controller.dart';
@@ -20,6 +21,8 @@ import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 
 class OtherChartRadar extends StatefulWidget {
+  const OtherChartRadar({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return OtherChartRadarState();
@@ -28,11 +31,12 @@ class OtherChartRadar extends StatefulWidget {
 
 class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   var random = Random(1);
+  var future;
 
   @override
   void initState() {
     _initController();
-    _initRadarData();
+    future = _initRadarData();
     super.initState();
   }
 
@@ -41,18 +45,20 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
   @override
   Widget getBody() {
-    return Container(
-        color: Color.fromARGB(255, 60, 65, 82),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-                right: 0,
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: _initCandleChart()),
-          ],
-        ));
+    return buildFuture(
+        Container(
+            color: Color.fromARGB(255, 60, 65, 82),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                    right: 0,
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: _initCandleChart()),
+              ],
+            )),
+        future);
   }
 
   void _initController() {
@@ -97,7 +103,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
         description: desc);
   }
 
-  void _initRadarData() async {
+  Future _initRadarData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double mul = 80;
     double min = 20;

@@ -887,12 +887,12 @@ abstract class RadarActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'D':
         List<IRadarDataSet> sets = controller.data.dataSets;
@@ -902,13 +902,13 @@ abstract class RadarActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.state.setStateIfNotDispose();
+          controller.state!.setStateIfNotDispose();
         }
         break;
       case 'F':
@@ -917,19 +917,19 @@ abstract class RadarActionState<T extends StatefulWidget>
           set.setDrawHighlightCircleEnabled(
               !set.isDrawHighlightCircleEnabled());
         }
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'G':
         controller.rotateEnabled = !controller.rotateEnabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'H':
         controller.yAxis!.enabled = !controller.yAxis!.enabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'I':
         controller.xAxis!.enabled = !controller.xAxis!.enabled;
-        controller.state.setStateIfNotDispose();
+        controller.state!.setStateIfNotDispose();
         break;
       case 'J':
         controller.animator
@@ -954,7 +954,7 @@ abstract class RadarActionState<T extends StatefulWidget>
         break;
       case 'N':
         captureImg(() {
-          controller.state.capture();
+          controller.state!.capture();
         });
         break;
     }

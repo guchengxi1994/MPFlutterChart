@@ -54,7 +54,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
+      IMarker? marker,
       Description desc,
       bool drawMarkers,
       Color infoBgColor,
@@ -63,8 +63,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -82,7 +82,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
+      OnDrawListener? drawListener,
       YAxis axisLeft,
       YAxis axisRight,
       YAxisRenderer axisRendererLeft,
@@ -97,7 +97,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool drawBarShadow,
       bool fitBars,
       List<DrawOrder> drawOrder,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : _drawBarShadow = drawBarShadow,
         _highlightFullBarEnabled = highlightFullBarEnabled,
         _drawValueAboveBar = drawValueAboveBar,
@@ -313,11 +313,13 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       // check bounds
       if (!viewPortHandler.isInBounds(pos[0], pos[1])) continue;
 
-      // callbacks to update the content
-      marker.refreshContent(e, highlight);
+      if (marker != null) {
+        // callbacks to update the content
+        marker!.refreshContent(e, highlight);
 
-      // draw the marker
-      marker.draw(canvas, pos[0], pos[1]);
+        // draw the marker
+        marker!.draw(canvas, pos[0], pos[1]);
+      }
     }
   }
 }

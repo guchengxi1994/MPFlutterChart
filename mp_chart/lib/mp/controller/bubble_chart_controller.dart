@@ -147,7 +147,7 @@ class BubbleChartController
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
+        marker,
         description!,
         drawMarkers,
         infoBgColor!,
@@ -156,8 +156,8 @@ class BubbleChartController
         xAxis!,
         legend!,
         legendRenderer!,
-        rendererSettingFunction!,
-        selectionListener!,
+        rendererSettingFunction,
+        selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
         pinchZoomEnabled,
@@ -175,7 +175,7 @@ class BubbleChartController
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
-        drawListener!,
+        drawListener,
         axisLeft!,
         axisRight!,
         axisRendererLeft!,
@@ -185,7 +185,7 @@ class BubbleChartController
         xAxisRenderer!,
         zoomMatrixBuffer!,
         customViewPortEnabled,
-        chartTransListener!);
+        chartTransListener);
   }
 
   @override

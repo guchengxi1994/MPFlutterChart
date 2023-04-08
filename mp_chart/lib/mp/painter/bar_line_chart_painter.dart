@@ -150,7 +150,7 @@ abstract class BarLineChartBasePainter<
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
+      IMarker? marker,
       Description desc,
       bool drawMarkers,
       Color infoBgColor,

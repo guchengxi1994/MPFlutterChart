@@ -46,7 +46,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       _extraLeftOffset;
 
   /// the view that represents the marker
-  final IMarker _marker;
+  IMarker? _marker = null;
 
   /// the object responsible for representing the description text
   final Description _description;
@@ -110,7 +110,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   double get extraBottomOffset => _extraBottomOffset;
 
-  IMarker get marker => _marker;
+  IMarker? get marker => _marker;
 
   bool get isDrawMarkers => _drawMarkers;
 
@@ -132,7 +132,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
+      IMarker? marker,
       Description desc,
       bool drawMarkers,
       Color infoBgColor,
@@ -429,11 +429,13 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       // check bounds
       if (!_viewPortHandler.isInBounds(pos[0], pos[1])) continue;
 
-      // callbacks to update the content
-      _marker.refreshContent(e, highlight);
+      if (_marker != null) {
+// callbacks to update the content
+        _marker!.refreshContent(e, highlight);
 
-      // draw the marker
-      _marker.draw(canvas, pos[0], pos[1]);
+        // draw the marker
+        _marker!.draw(canvas, pos[0], pos[1]);
+      }
     }
   }
 

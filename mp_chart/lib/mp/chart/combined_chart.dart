@@ -30,7 +30,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
   bool _isScaleDirectionConfirm = false;
   bool _isYDirection = false;
 
-  late Highlight? lastHighlighted;
+  late Highlight? lastHighlighted = null;
 
   MPPointF _getTrans(double x, double y) {
     return Utils.local2Chart(widget.controller, x, y, inverted: _inverted());
@@ -146,10 +146,13 @@ class CombinedChartState extends ChartState<CombinedChart> {
     if (widget.controller.painter.highlightPerDragEnabled) {
       final highlighted = widget.controller.painter.getHighlightByTouchPoint(
           details.localPoint.dx, details.localPoint.dy);
-      if (highlighted?.equalTo(lastHighlighted!) == false) {
-        lastHighlighted = HighlightUtils.performHighlight(
-            widget.controller.painter, highlighted, lastHighlighted);
-        needStateIfNotDispose = true;
+
+      if (lastHighlighted != null) {
+        if (highlighted?.equalTo(lastHighlighted!) == false) {
+          lastHighlighted = HighlightUtils.performHighlight(
+              widget.controller.painter, highlighted, lastHighlighted);
+          needStateIfNotDispose = true;
+        }
       }
     }
 

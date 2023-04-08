@@ -30,7 +30,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
+      IMarker? marker,
       Description desc,
       bool drawMarkers,
       Color infoBgColor,
@@ -39,8 +39,8 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -58,7 +58,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
+      OnDrawListener? drawListener,
       YAxis axisLeft,
       YAxis axisRight,
       YAxisRenderer axisRendererLeft,
@@ -68,7 +68,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : super(
             data,
             animator,

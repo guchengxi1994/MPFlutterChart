@@ -104,7 +104,8 @@ class YAxisRendererRadarChart extends YAxisRenderer {
 
       if (axis.entries.length < n) {
         // Ensure stops contains at least numStops elements.
-        axis.entries = [n * 1.0];
+        // axis.entries = [n * 1.0];
+        axis.entries = List.filled(n, 0);
       }
 
       f = first;

@@ -158,7 +158,7 @@ class CombinedChartController
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
+        marker,
         description!,
         drawMarkers,
         infoBgColor!,
@@ -167,8 +167,8 @@ class CombinedChartController
         xAxis!,
         legend!,
         legendRenderer!,
-        rendererSettingFunction!,
-        selectionListener!,
+        rendererSettingFunction,
+        selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
         pinchZoomEnabled,
@@ -186,7 +186,7 @@ class CombinedChartController
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
-        drawListener!,
+        drawListener,
         axisLeft!,
         axisRight!,
         axisRendererLeft!,
@@ -201,7 +201,7 @@ class CombinedChartController
         drawBarShadow,
         fitBars,
         drawOrder,
-        chartTransListener!);
+        chartTransListener);
   }
 
   @override

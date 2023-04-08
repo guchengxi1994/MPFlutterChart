@@ -147,7 +147,7 @@ class ScatterChartController
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
+        marker,
         description!,
         drawMarkers,
         infoBgColor!,
@@ -156,8 +156,8 @@ class ScatterChartController
         xAxis!,
         legend!,
         legendRenderer!,
-        rendererSettingFunction!,
-        selectionListener!,
+        rendererSettingFunction,
+        selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,
         pinchZoomEnabled,
@@ -175,7 +175,7 @@ class ScatterChartController
         clipValuesToContent,
         minOffset,
         keepPositionOnRotation,
-        drawListener!,
+        drawListener,
         axisLeft!,
         axisRight!,
         axisRendererLeft!,
@@ -185,7 +185,7 @@ class ScatterChartController
         xAxisRenderer!,
         zoomMatrixBuffer!,
         customViewPortEnabled,
-        chartTransListener!);
+        chartTransListener);
   }
 
   @override

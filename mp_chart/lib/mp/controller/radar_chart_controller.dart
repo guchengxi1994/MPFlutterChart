@@ -96,7 +96,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
 
   RadarChartPainter get painter => super.painter;
 
-  RadarChartState get state => super.state as RadarChartState;
+  RadarChartState? get state => super.state as RadarChartState?;
 
   @override
   void initialPainter() {
@@ -110,7 +110,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
         extraTopOffset,
         extraRightOffset,
         extraBottomOffset,
-        marker!,
+        marker,
         description!,
         drawMarkers,
         infoBgColor!,
@@ -119,8 +119,8 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
         xAxis!,
         legend!,
         legendRenderer!,
-        rendererSettingFunction!,
-        selectionListener!,
+        rendererSettingFunction,
+        selectionListener,
         rotationAngle,
         rawRotationAngle,
         rotateEnabled,
@@ -133,7 +133,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
         drawWeb,
         skipWebLineCount,
         yAxis!,
-        backgroundColor!);
+        backgroundColor);
   }
 
   @override

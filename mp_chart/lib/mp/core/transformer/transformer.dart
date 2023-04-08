@@ -196,7 +196,8 @@ class Transformer {
     count = count % 2 == 0 ? count : count - 1;
 
     if (_valuePointsForGenerateTransformedValuesCandle.length != count) {
-      _valuePointsForGenerateTransformedValuesCandle = []..length = count;
+      // _valuePointsForGenerateTransformedValuesCandle = []..length = count;
+      _valuePointsForGenerateTransformedValuesCandle = List.filled(count, 0);
     }
     List<double> valuePoints = _valuePointsForGenerateTransformedValuesCandle;
 
