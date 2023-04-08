@@ -66,9 +66,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   /// @param e
   void calcMinMax1(T e) {
     if (e == null) return;
-
     calcMinMaxX1(e);
-
     calcMinMaxY1(e);
   }
 

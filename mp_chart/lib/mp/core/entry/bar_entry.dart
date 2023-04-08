@@ -5,16 +5,16 @@ import 'package:mp_chart/mp/core/range.dart';
 
 class BarEntry extends Entry {
   /// the values the stacked barchart holds
-  late List<double> _yVals;
+  late List<double> _yVals = [];
 
   /// the ranges for the individual stack values - automatically calculated
   late List<Range?> _ranges = [];
 
   /// the sum of all negative values this entry (if stacked) contains
-  late double _negativeSum;
+  late double _negativeSum = 0;
 
   /// the sum of all positive values this entry (if stacked) contains
-  late double _positiveSum;
+  late double _positiveSum = 0;
 
   BarEntry({required double x, required double y, ui.Image? icon, Object? data})
       : super(x: x, y: y, icon: icon, data: data);

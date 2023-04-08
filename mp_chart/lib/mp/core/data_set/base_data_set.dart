@@ -14,14 +14,16 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// List representing all colors that are used for this DataSet
-  late List<ui.Color> _colors;
+  late List<ui.Color> _colors = [];
 
-  late GradientColor _gradientColor;
+  late GradientColor _gradientColor = GradientColor(
+      ui.Color.fromARGB(255, 140, 234, 255),
+      ui.Color.fromARGB(255, 140, 234, 255));
 
-  late List<GradientColor> _gradientColors;
+  late List<GradientColor> _gradientColors = [];
 
   /// List representing all colors that are used for drawing the actual values for this DataSet
-  late List<ui.Color> _valueColors;
+  late List<ui.Color> _valueColors = [];
 
   /// label that describes the DataSet or the data the DataSet represents
   String _label = "DataSet";

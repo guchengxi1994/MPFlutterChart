@@ -251,7 +251,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    print("[data == null]:${controller.data == null}");
 
     controller.data!
       ..setValueTextSize(10)
